@@ -17,20 +17,22 @@
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.4.0",
     "@mui/material": "^9.4.0",
+    "@tanstack/react-query": "^5.104.0",
     "axios": "^1.20.0",
+    "dayjs": "^1.11.23",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-router": "^8.4.0"
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.14",
+    "@tanstack/react-query-devtools": "^5.104.0",
     "@types/node": "^24.13.3",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "typescript": "~6.0.2",
-    "vite": "^8.3.0",
-    "vite-tsconfig-paths": "^6.1.1"
+    "vite": "^8.3.0"
   },
   "packageManager": "pnpm@12.6.0+sha512.3ef68f951cb111ac204b4a5a16f0b2ddf0da56a96e0413e81d855d9f0b55ef926714709028e1cd00c405c2c5fb7b9e8ec4dc46777c805d0373c2f2ff00fd20ec"
 }
