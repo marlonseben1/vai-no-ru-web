@@ -1,5 +1,8 @@
+import { RouterProvider } from 'react-router';
+import { router } from 'routes/Router';
+
 function App() {
-  return <h1>vai-no-ru</h1>;
+  return <RouterProvider router={router} />;
 }
 
 export default App;
