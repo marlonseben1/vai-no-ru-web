@@ -1,3 +1,5 @@
+import { Typography } from '@mui/material';
+
 export function ReservasPage() {
-  return <h1>Reservas</h1>;
+  return <Typography variant="h4">Reservas</Typography>;
 }

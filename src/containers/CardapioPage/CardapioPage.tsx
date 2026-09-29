@@ -1,3 +1,5 @@
+import { Typography } from '@mui/material';
+
 export function CardapioPage() {
-  return <h1>Cardápio</h1>;
+  return <Typography variant="h4">Cardápio</Typography>;
 }

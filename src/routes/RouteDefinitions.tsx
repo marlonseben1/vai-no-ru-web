@@ -10,7 +10,6 @@ const publicRoutes = [
   {
     Component: PublicLayout,
     children: [
-      { index: true, Component: LoginPage },
       { path: 'cardapio', Component: CardapioPage },
       { path: '*', Component: Erro404Page },
     ],
@@ -25,6 +24,7 @@ const privateRoutes = [
 ] as const satisfies RouteObject[];
 
 export const routeDefinitions = [
+  { index: true, Component: LoginPage },
   ...publicRoutes,
   ...privateRoutes,
 ] as const satisfies RouteObject[];
