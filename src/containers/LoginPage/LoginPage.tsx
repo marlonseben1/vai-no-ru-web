@@ -1,7 +1,46 @@
-import GoogleIcon from '@mui/icons-material/Google';
-import { Box, Button, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { GoogleLogin } from '@react-oauth/google';
+import { useLoginMutation } from 'queries/auth/useLoginMutation';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 export function LoginPage() {
+  const loginMutation = useLoginMutation();
+  const navigate = useNavigate();
+
+  const [googleToken, setGoogleToken] = useState<string | null>(null);
+  const [aceitarPolitica, setAceitarPolitica] = useState(false);
+
+  const precisaAceitarPolitica =
+    loginMutation.isError && loginMutation.error.code === 'CONSENT_REQUIRED';
+
+  function enviarLogin(token: string, aceitar?: boolean) {
+    loginMutation.mutate(
+      { token, aceitarPolitica: aceitar },
+      { onSuccess: () => navigate('/cardapio') },
+    );
+  }
+
+  function handleGoogleSuccess(credentialResponse: { credential?: string }) {
+    if (!credentialResponse.credential) return;
+    setGoogleToken(credentialResponse.credential);
+    enviarLogin(credentialResponse.credential);
+  }
+
+  function handleAceitarEContinuar() {
+    if (!googleToken) return;
+    enviarLogin(googleToken, true);
+  }
+
   return (
     <Box
       sx={{
@@ -49,42 +88,82 @@ export function LoginPage() {
           py: 6,
         }}
       >
-        <Box sx={{ maxWidth: 380, width: '100%', mx: 'auto' }}>
-          <Typography
-            variant="h5"
-            component="h2"
-            sx={{ fontWeight: 700, mb: 3 }}
-          >
-            Entre com o Google
-          </Typography>
+        <Stack spacing={3} sx={{ maxWidth: 360, width: '100%', mx: 'auto' }}>
+          {!precisaAceitarPolitica && (
+            <>
+              <Stack spacing={1}>
+                <Typography
+                  component="h2"
+                  variant="h5"
+                  sx={{ fontWeight: 700 }}
+                >
+                  Acesse com sua conta Google
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Contas <strong>@upf.br</strong> têm acesso liberado na hora.
+                  Outros e-mails ficam como convidado, pendente de aprovação.
+                </Typography>
+              </Stack>
 
-          <Button
-            variant="outlined"
-            size="large"
-            fullWidth
-            startIcon={<GoogleIcon />}
-            sx={{
-              color: 'text.primary',
-              borderColor: 'grey.400',
-              borderRadius: 2,
-              textTransform: 'none',
-              fontWeight: 600,
-              fontSize: '1rem',
-              py: 1.5,
-              '&:hover': {
-                borderColor: 'text.primary',
-                bgcolor: 'grey.100',
-              },
-            }}
-          >
-            Entrar com o Google
-          </Button>
+              <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => {}} />
+            </>
+          )}
 
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
-            Acesso exclusivo para alunos e professores com e-mail acadêmico
-            @upf.br. Não é aluno ou professor? <u>Clique aqui</u>.
-          </Typography>
-        </Box>
+          {precisaAceitarPolitica && (
+            <>
+              <Stack spacing={1}>
+                <Typography
+                  component="h2"
+                  variant="h5"
+                  sx={{ fontWeight: 700 }}
+                >
+                  Só mais uma etapa
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Antes de continuar, você precisa aceitar nossa política de
+                  privacidade.
+                </Typography>
+              </Stack>
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={aceitarPolitica}
+                    onChange={(event) =>
+                      setAceitarPolitica(event.target.checked)
+                    }
+                  />
+                }
+                label={
+                  <>
+                    Li e aceito a{' '}
+                    <Link href="/privacidade" target="_blank" rel="noopener">
+                      política de privacidade
+                    </Link>
+                  </>
+                }
+              />
+
+              <Button
+                variant="contained"
+                size="large"
+                fullWidth
+                disabled={!aceitarPolitica || loginMutation.isPending}
+                onClick={handleAceitarEContinuar}
+                sx={{
+                  bgcolor: 'secondary.main',
+                  '&:hover': { bgcolor: 'secondary.dark' },
+                }}
+              >
+                Aceitar e continuar
+              </Button>
+            </>
+          )}
+
+          {loginMutation.isError && !precisaAceitarPolitica && (
+            <Alert severity="warning">{loginMutation.error.message}</Alert>
+          )}
+        </Stack>
       </Box>
     </Box>
   );

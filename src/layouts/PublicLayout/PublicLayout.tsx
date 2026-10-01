@@ -1,7 +1,10 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
+import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
 import { Link, Outlet } from 'react-router';
 
 export function PublicLayout() {
+  const { data: usuario } = useUsuarioAtualQuery();
+
   return (
     <Box>
       <AppBar position="static">
@@ -12,6 +15,11 @@ export function PublicLayout() {
           <Button color="inherit" component={Link} to="/cardapio">
             Cardápio
           </Button>
+          {usuario && (
+            <Button color="inherit" component={Link} to="/reservas">
+              Reservas
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
 

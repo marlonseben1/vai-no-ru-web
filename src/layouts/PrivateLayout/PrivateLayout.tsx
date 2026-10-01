@@ -1,7 +1,20 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
-import { Link, Outlet } from 'react-router';
+import { useLogoutMutation } from 'queries/auth/useLogoutMutation';
+import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { Link, Outlet, useNavigate } from 'react-router';
+import { requireAuthLoader } from 'routes/guards/requireAuthLoader';
 
-export function PrivateLayout() {
+export const loader = requireAuthLoader;
+
+export const Component = () => {
+  const { data: usuario } = useUsuarioAtualQuery();
+  const logoutMutation = useLogoutMutation();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logoutMutation.mutate(undefined, { onSuccess: () => navigate('/') });
+  }
+
   return (
     <Box>
       <AppBar position="static">
@@ -15,6 +28,18 @@ export function PrivateLayout() {
           <Button color="inherit" component={Link} to="/reservas">
             Reservas
           </Button>
+          {usuario && (
+            <Typography variant="body2" sx={{ mx: 2 }}>
+              {usuario.nome}
+            </Typography>
+          )}
+          <Button
+            color="inherit"
+            onClick={handleLogout}
+            disabled={logoutMutation.isPending}
+          >
+            Sair
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -23,4 +48,4 @@ export function PrivateLayout() {
       </Box>
     </Box>
   );
-}
+};

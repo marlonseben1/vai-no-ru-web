@@ -1,4 +1,3 @@
-import { PrivateLayout } from 'layouts/PrivateLayout/PrivateLayout';
 import { PublicLayout } from 'layouts/PublicLayout/PublicLayout';
 import type { RouteObject } from 'react-router';
 import { CardapioPage } from '../containers/CardapioPage/CardapioPage';
@@ -18,7 +17,7 @@ const publicRoutes = [
 
 const privateRoutes = [
   {
-    Component: PrivateLayout,
+    lazy: () => import('layouts/PrivateLayout/PrivateLayout'),
     children: [{ path: 'reservas', Component: ReservasPage }],
   },
 ] as const satisfies RouteObject[];
