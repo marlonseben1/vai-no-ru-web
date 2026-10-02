@@ -16,9 +16,17 @@ export const Component = () => {
   }
 
   return (
-    <Box>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100dvh',
+        width: '100%',
+        overflowX: 'hidden',
+      }}
+    >
       <AppBar position="static">
-        <Toolbar>
+        <Toolbar sx={{ overflowX: 'auto', scrollbarWidth: 'none' }}>
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             vai-no-ru
           </Typography>
@@ -43,7 +51,16 @@ export const Component = () => {
         </Toolbar>
       </AppBar>
 
-      <Box component="main" sx={{ p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          p: { xs: 0, sm: 3 },
+          minHeight: 0,
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <Outlet />
       </Box>
     </Box>
