@@ -11,6 +11,7 @@ export function useReservasPage() {
   const [page, setPage] = useState(1);
   const [situacao, setSituacao] = useState<StatusReserva | ''>('');
   const [dataFiltro, setDataFiltro] = useState<DataFiltroReserva | ''>('');
+  const [criarAberto, setCriarAberto] = useState(false);
 
   const reservasQuery = useReservasQuery({
     page,
@@ -28,6 +29,14 @@ export function useReservasPage() {
   const totalPaginas = reservasQuery.data
     ? Math.ceil(reservasQuery.data.total / PAGE_SIZE_RESERVAS)
     : 0;
+
+  function handleAbrirCriar() {
+    setCriarAberto(true);
+  }
+
+  function handleFecharCriar() {
+    setCriarAberto(false);
+  }
 
   function handleMudarPagina(novaPagina: number) {
     setPage(novaPagina);
@@ -80,6 +89,9 @@ export function useReservasPage() {
     situacao,
     dataFiltro,
     reservasQuery,
+    criarAberto,
+    handleAbrirCriar,
+    handleFecharCriar,
     handleMudarPagina,
     handleMudarSituacao,
     handleMudarDataFiltro,

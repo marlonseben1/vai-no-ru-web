@@ -1,6 +1,7 @@
 import {
   Alert,
   Box,
+  Button,
   CircularProgress,
   Divider,
   MenuItem,
@@ -14,6 +15,7 @@ import {
 } from '@mui/material';
 import { LABEL_STATUS_RESERVA } from 'shared/labels';
 import type { StatusReserva } from 'types/statusReserva';
+import { CriarReservaDialog } from './CriarReservaDialog/CriarReservaDialog';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { OPCOES_DATA_FILTRO } from './ReservasPage.static';
 import { useReservasPage } from './useReservasPage';
@@ -25,6 +27,9 @@ export function ReservasPage() {
     situacao,
     dataFiltro,
     reservasQuery,
+    criarAberto,
+    handleAbrirCriar,
+    handleFecharCriar,
     handleMudarPagina,
     handleMudarSituacao,
     handleMudarDataFiltro,
@@ -102,9 +107,20 @@ export function ReservasPage() {
       }}
     >
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h5" component="h1" color="primary">
-          Minhas Reservas
-        </Typography>
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Typography variant="h4" component="h1">
+            Minhas reservas
+          </Typography>
+          <Button variant="contained" onClick={handleAbrirCriar}>
+            Nova reserva
+          </Button>
+        </Stack>
         <Typography variant="body2" color="text.secondary">
           Acompanhe o status e histórico dos seus agendamentos no RU
         </Typography>
@@ -158,6 +174,8 @@ export function ReservasPage() {
       </Stack>
 
       {renderLista()}
+
+      <CriarReservaDialog open={criarAberto} onClose={handleFecharCriar} />
     </Paper>
   );
 }
