@@ -22,7 +22,7 @@ import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { useCallback } from 'react';
 import { LABEL_REFEICAO } from 'shared/labels';
-import { REFEICAO_VALUES } from 'types/refeicao';
+import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
 
 interface CriarReservaDialogProps {
@@ -171,7 +171,11 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
                 >
                   <Typography
                     variant="body2"
-                    sx={{ fontWeight: 600, minWidth: 84, whiteSpace: 'nowrap' }}
+                    sx={{
+                      fontWeight: 600,
+                      minWidth: 84,
+                      whiteSpace: 'nowrap',
+                    }}
                   >
                     {dayjs(dia.data).format('DD/MM/YYYY')}
                   </Typography>
@@ -189,7 +193,7 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
                     }
                     sx={{ flex: 1, minWidth: 0 }}
                   >
-                    {REFEICAO_VALUES.map((valor) => (
+                    {refeicoesDisponiveis(dia.data).map((valor) => (
                       <MenuItem key={valor} value={valor}>
                         {LABEL_REFEICAO[valor]}
                       </MenuItem>

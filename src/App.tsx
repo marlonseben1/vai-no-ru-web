@@ -4,6 +4,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { DialogGeral } from 'components/DialogGeral/DialogGeral';
 import { ScreenLoading } from 'components/ScreenLoading/ScreenLoading';
 import { env } from 'config/env';
 import { ConfirmacaoProvider } from 'contexts/ConfirmacaoContext';
@@ -21,6 +22,7 @@ function AppContent() {
       <ConfirmacaoProvider>
         <RouterProvider router={router} />
         <ScreenLoading />
+        <DialogGeral />
         {import.meta.env.DEV && <ReactQueryDevtools />}
       </ConfirmacaoProvider>
     </LocalizationProvider>

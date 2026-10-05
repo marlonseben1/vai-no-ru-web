@@ -2,8 +2,10 @@ import dayjs, { type Dayjs } from 'dayjs';
 import { useCriarReservasMutation } from 'queries/reserva/useCriarReservasMutation';
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
 import { useMemo, useState } from 'react';
+import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import type { Refeicao } from 'types/refeicao';
 import type { ReservaDiaInput } from 'types/reserva';
+import { abrirAvisoPendente } from '../AvisoPendente/avisoPendente';
 
 interface UseCriarReservaDialogParams {
   onClose: () => void;
@@ -36,10 +38,12 @@ export function useCriarReservaDialog({
 
   function desabilitarData(data: Dayjs): boolean {
     const diaSemana = data.day();
+    const dataISO = data.format('YYYY-MM-DD');
     return (
       diaSemana === 0 ||
       diaSemana === 6 ||
-      diasBloqueados.includes(data.format('YYYY-MM-DD'))
+      diasBloqueados.includes(dataISO) ||
+      refeicoesDisponiveis(dataISO).length === 0
     );
   }
 
@@ -50,7 +54,8 @@ export function useCriarReservaDialog({
     if (dias.some((dia) => dia.data === dataISO)) {
       setDias(dias.filter((dia) => dia.data !== dataISO));
     } else {
-      setDias(ordenarPorData([...dias, { data: dataISO, refeicao: 'Almoco' }]));
+      const refeicao = refeicoesDisponiveis(dataISO)[0] ?? 'Almoco';
+      setDias(ordenarPorData([...dias, { data: dataISO, refeicao }]));
     }
   }
 
@@ -65,7 +70,18 @@ export function useCriarReservaDialog({
   }
 
   function handleReservar() {
-    criarReservasMutation.mutate({ dias }, { onSuccess: onClose });
+    // o total só chega a 0 para quem nunca reservou (reservas canceladas continuam contando)
+    const ehPrimeiraReserva = reservasQuery.data?.total === 0;
+
+    criarReservasMutation.mutate(
+      { dias },
+      {
+        onSuccess: () => {
+          onClose();
+          if (ehPrimeiraReserva) abrirAvisoPendente();
+        },
+      },
+    );
   }
 
   // só limpa depois da animação de saída, para o conteúdo não "piscar"
