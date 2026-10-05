@@ -19,7 +19,6 @@ async function loginComGoogle(input: LoginInput): Promise<Usuario> {
 interface OnboardingInput {
   nome: string;
   perfil: Perfil;
-  matricula?: string;
 }
 
 async function concluirOnboarding(input: OnboardingInput): Promise<Usuario> {

@@ -18,8 +18,8 @@ export function OnboardingPage() {
     control,
     email,
     perfisDisponiveis,
-    exigeMatricula,
-    matriculaSugerida,
+    perfilSugerido,
+    matriculaExibida,
     concluirOnboardingMutation,
     handleSubmit,
   } = useOnboardingPage();
@@ -101,7 +101,12 @@ export function OnboardingPage() {
                 label="Seu perfil"
                 required
                 error={!!fieldState.error}
-                helperText={fieldState.error?.message}
+                helperText={
+                  fieldState.error?.message ??
+                  (perfilSugerido && field.value === perfilSugerido
+                    ? 'Sugerido a partir do seu e-mail. Confira antes de continuar.'
+                    : undefined)
+                }
                 fullWidth
               >
                 {perfisDisponiveis.map((perfil) => (
@@ -113,27 +118,14 @@ export function OnboardingPage() {
             )}
           />
 
-          {exigeMatricula && (
-            <Controller
-              control={control}
-              name="matricula"
-              render={({ field, fieldState }) => (
-                <TextField
-                  {...field}
-                  label="Matrícula"
-                  placeholder="Ex: 123456"
-                  required
-                  error={!!fieldState.error}
-                  helperText={
-                    fieldState.error?.message ??
-                    (matriculaSugerida && field.value === matriculaSugerida
-                      ? 'Sugerida a partir do seu e-mail. Confira antes de continuar.'
-                      : undefined)
-                  }
-                  fullWidth
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
-              )}
+          {matriculaExibida !== undefined && (
+            <TextField
+              label="Matrícula"
+              value={matriculaExibida}
+              disabled
+              helperText="Identificada a partir do seu e-mail."
+              fullWidth
+              slotProps={{ inputLabel: { shrink: true } }}
             />
           )}
 

@@ -4,14 +4,16 @@ import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
 import { useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { PERFIS_POR_ORIGEM } from 'shared/perfisPorOrigem';
+import type { Perfil } from 'types/perfil';
 import {
   type OnboardingFormValues,
   onboardingFormSchema,
 } from './OnboardingPage.schema';
 
-// e-mails institucionais de alunos têm a matrícula antes do @ (ex: 123456@upf.br)
-function sugerirMatriculaPeloEmail(email: string): string {
-  return email.match(/^(\d+)@upf\.br$/i)?.[1] ?? '';
+// e-mail de aluno é a matrícula: 123456@upf.br. O servidor deduz a matrícula dele,
+// então só quem tem esse formato pode ser aluno de graduação
+function extrairMatriculaDoEmail(email: string) {
+  return email.match(/^(\d+)@upf\.br$/i)?.[1];
 }
 
 export function useOnboardingPage() {
@@ -19,31 +21,37 @@ export function useOnboardingPage() {
   const concluirOnboardingMutation = useConcluirOnboardingMutation();
   const navigate = useNavigate();
 
-  const matriculaSugerida = sugerirMatriculaPeloEmail(usuario?.email ?? '');
-  const perfisDisponiveis = usuario ? PERFIS_POR_ORIGEM[usuario.origem] : [];
+  const matricula = extrairMatriculaDoEmail(usuario?.email ?? '');
+  const alunoGraduacaoPermitido = !!matricula;
+  const perfilSugerido: Perfil | undefined = alunoGraduacaoPermitido
+    ? 'AlunoGraduacaoUPF'
+    : undefined;
+  const perfisDisponiveis = (
+    usuario ? PERFIS_POR_ORIGEM[usuario.origem] : []
+  ).filter(
+    (perfil) => perfil !== 'AlunoGraduacaoUPF' || alunoGraduacaoPermitido,
+  );
+  const perfilSalvo =
+    usuario?.perfil && perfisDisponiveis.includes(usuario.perfil)
+      ? usuario.perfil
+      : undefined;
 
   const { control, handleSubmit } = useForm<OnboardingFormValues>({
     resolver: zodResolver(onboardingFormSchema),
     defaultValues: {
       nome: usuario?.nome ?? '',
-      perfil: usuario?.perfil ?? undefined,
-      matricula: usuario?.matricula ?? matriculaSugerida,
+      perfil: perfilSalvo ?? perfilSugerido,
     },
   });
 
+  // só exibe o valor que o servidor vai usar; ele não é enviado
   const perfil = useWatch({ control, name: 'perfil' });
-  const exigeMatricula = perfil === 'AlunoGraduacaoUPF';
+  const matriculaExibida =
+    perfil === 'AlunoGraduacaoUPF' ? (matricula ?? '') : undefined;
 
   function onSubmit(valores: OnboardingFormValues) {
     concluirOnboardingMutation.mutate(
-      {
-        nome: valores.nome.trim(),
-        perfil: valores.perfil,
-        matricula:
-          valores.perfil === 'AlunoGraduacaoUPF'
-            ? valores.matricula.trim()
-            : undefined,
-      },
+      { nome: valores.nome.trim(), perfil: valores.perfil },
       { onSuccess: () => navigate('/cardapio') },
     );
   }
@@ -52,8 +60,8 @@ export function useOnboardingPage() {
     control,
     email: usuario?.email ?? '',
     perfisDisponiveis,
-    exigeMatricula,
-    matriculaSugerida,
+    perfilSugerido,
+    matriculaExibida,
     concluirOnboardingMutation,
     handleSubmit: handleSubmit(onSubmit),
   };

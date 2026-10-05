@@ -8,7 +8,6 @@ import type { Usuario } from 'types/usuario';
 interface OnboardingInput {
   nome: string;
   perfil: Perfil;
-  matricula?: string;
 }
 
 export function useConcluirOnboardingMutation() {
