@@ -19,6 +19,10 @@ export function useCriarReservaDialog({
   onClose,
 }: UseCriarReservaDialogParams) {
   const [dias, setDias] = useState<ReservaDiaInput[]>([]);
+  // oferece aplicar última refeição escolhida manualmente para todos os dias
+  const [refeicaoParaTodos, setRefeicaoParaTodos] = useState<Refeicao | null>(
+    null,
+  );
   const criarReservasMutation = useCriarReservasMutation();
   const reservasQuery = useReservasQuery({
     pageSize: 100,
@@ -35,6 +39,15 @@ export function useCriarReservaDialog({
   }, [reservasQuery.data]);
 
   const diasSelecionados = useMemo(() => dias.map((dia) => dia.data), [dias]);
+
+  const mostrarAplicarParaTodos =
+    refeicaoParaTodos !== null &&
+    dias.length > 1 &&
+    dias.some(
+      (dia) =>
+        dia.refeicao !== refeicaoParaTodos &&
+        refeicoesDisponiveis(dia.data).includes(refeicaoParaTodos),
+    );
 
   function desabilitarData(data: Dayjs): boolean {
     const diaSemana = data.day();
@@ -63,6 +76,20 @@ export function useCriarReservaDialog({
     setDias(
       dias.map((dia) => (dia.data === data ? { ...dia, refeicao } : dia)),
     );
+    setRefeicaoParaTodos(refeicao);
+  }
+
+  // dias em que a refeição já encerrou o prazo (hoje) mantêm o valor atual
+  function handleAplicarRefeicaoParaTodos() {
+    if (!refeicaoParaTodos) return;
+    setDias(
+      dias.map((dia) =>
+        refeicoesDisponiveis(dia.data).includes(refeicaoParaTodos)
+          ? { ...dia, refeicao: refeicaoParaTodos }
+          : dia,
+      ),
+    );
+    setRefeicaoParaTodos(null);
   }
 
   function handleRemover(data: string) {
@@ -87,6 +114,7 @@ export function useCriarReservaDialog({
   // só limpa depois da animação de saída, para o conteúdo não "piscar"
   function handleExited() {
     setDias([]);
+    setRefeicaoParaTodos(null);
     criarReservasMutation.reset();
   }
 
@@ -97,7 +125,10 @@ export function useCriarReservaDialog({
     criarReservasMutation,
     desabilitarData,
     handleToggleData,
+    refeicaoParaTodos,
+    mostrarAplicarParaTodos,
     handleTrocarRefeicao,
+    handleAplicarRefeicaoParaTodos,
     handleRemover,
     handleReservar,
     handleExited,

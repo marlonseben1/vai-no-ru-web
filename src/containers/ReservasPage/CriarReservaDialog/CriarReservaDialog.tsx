@@ -39,7 +39,10 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
     criarReservasMutation,
     desabilitarData,
     handleToggleData,
+    refeicaoParaTodos,
+    mostrarAplicarParaTodos,
     handleTrocarRefeicao,
+    handleAplicarRefeicaoParaTodos,
     handleRemover,
     handleReservar,
     handleExited,
@@ -150,65 +153,81 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
               sx={isResponsivo ? { my: 1, width: '100%' } : { mx: 2, my: 2 }}
             />
 
-            <Stack
-              spacing={1.5}
-              sx={{
-                width: '100%',
-                minWidth: { md: 360 },
-                maxHeight: isResponsivo ? 300 : 420,
-                overflowY: 'auto',
-                overflowX: 'hidden',
-                py: 1,
-                px: isResponsivo ? 1 : 0,
-              }}
-            >
-              {dias.map((dia) => (
-                <Stack
-                  key={dia.data}
-                  direction="row"
-                  spacing={1}
-                  sx={{ alignItems: 'center' }}
+            <Stack sx={{ width: '100%', minWidth: { md: 360 } }}>
+              {mostrarAplicarParaTodos && refeicaoParaTodos && (
+                <Button
+                  size="small"
+                  variant="outlined"
+                  onClick={handleAplicarRefeicaoParaTodos}
+                  sx={{
+                    alignSelf: isResponsivo ? 'stretch' : 'flex-start',
+                    mt: 1,
+                    mx: isResponsivo ? 1 : 0,
+                  }}
                 >
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 600,
-                      minWidth: 84,
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {dayjs(dia.data).format('DD/MM/YYYY')}
-                  </Typography>
+                  Alterar para todos ({LABEL_REFEICAO[refeicaoParaTodos]})
+                </Button>
+              )}
 
-                  <TextField
-                    select
-                    size="small"
-                    label="Refeição"
-                    value={dia.refeicao}
-                    onChange={(event) =>
-                      handleTrocarRefeicao(
-                        dia.data,
-                        event.target.value as typeof dia.refeicao,
-                      )
-                    }
-                    sx={{ flex: 1, minWidth: 0 }}
+              <Stack
+                spacing={2.5}
+                sx={{
+                  width: '100%',
+                  maxHeight: isResponsivo ? 300 : 420,
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                  py: 1.5,
+                  px: isResponsivo ? 1 : 0,
+                }}
+              >
+                {dias.map((dia) => (
+                  <Stack
+                    key={dia.data}
+                    direction="row"
+                    spacing={1}
+                    sx={{ alignItems: 'center' }}
                   >
-                    {refeicoesDisponiveis(dia.data).map((valor) => (
-                      <MenuItem key={valor} value={valor}>
-                        {LABEL_REFEICAO[valor]}
-                      </MenuItem>
-                    ))}
-                  </TextField>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        fontWeight: 600,
+                        minWidth: 84,
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {dayjs(dia.data).format('DD/MM/YYYY')}
+                    </Typography>
 
-                  <IconButton
-                    size="small"
-                    onClick={() => handleRemover(dia.data)}
-                    aria-label="Remover data"
-                  >
-                    <DeleteOutlined fontSize="small" />
-                  </IconButton>
-                </Stack>
-              ))}
+                    <TextField
+                      select
+                      size="small"
+                      label="Refeição"
+                      value={dia.refeicao}
+                      onChange={(event) =>
+                        handleTrocarRefeicao(
+                          dia.data,
+                          event.target.value as typeof dia.refeicao,
+                        )
+                      }
+                      sx={{ flex: 1, minWidth: 0 }}
+                    >
+                      {refeicoesDisponiveis(dia.data).map((valor) => (
+                        <MenuItem key={valor} value={valor}>
+                          {LABEL_REFEICAO[valor]}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+
+                    <IconButton
+                      size="small"
+                      onClick={() => handleRemover(dia.data)}
+                      aria-label="Remover data"
+                    >
+                      <DeleteOutlined fontSize="small" />
+                    </IconButton>
+                  </Stack>
+                ))}
+              </Stack>
             </Stack>
           </>
         )}
