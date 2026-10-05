@@ -9,11 +9,17 @@ import {
   onboardingFormSchema,
 } from './OnboardingPage.schema';
 
+// e-mails institucionais de alunos têm a matrícula antes do @ (ex: 123456@upf.br)
+function sugerirMatriculaPeloEmail(email: string): string {
+  return email.match(/^(\d+)@upf\.br$/i)?.[1] ?? '';
+}
+
 export function useOnboardingPage() {
   const { data: usuario } = useUsuarioAtualQuery();
   const concluirOnboardingMutation = useConcluirOnboardingMutation();
   const navigate = useNavigate();
 
+  const matriculaSugerida = sugerirMatriculaPeloEmail(usuario?.email ?? '');
   const perfisDisponiveis = usuario ? PERFIS_POR_ORIGEM[usuario.origem] : [];
 
   const { control, handleSubmit } = useForm<OnboardingFormValues>({
@@ -21,7 +27,7 @@ export function useOnboardingPage() {
     defaultValues: {
       nome: usuario?.nome ?? '',
       perfil: usuario?.perfil ?? undefined,
-      matricula: usuario?.matricula ?? '',
+      matricula: usuario?.matricula ?? matriculaSugerida,
     },
   });
 
@@ -47,6 +53,7 @@ export function useOnboardingPage() {
     email: usuario?.email ?? '',
     perfisDisponiveis,
     exigeMatricula,
+    matriculaSugerida,
     concluirOnboardingMutation,
     handleSubmit: handleSubmit(onSubmit),
   };

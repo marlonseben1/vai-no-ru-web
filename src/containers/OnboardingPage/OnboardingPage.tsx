@@ -19,6 +19,7 @@ export function OnboardingPage() {
     email,
     perfisDisponiveis,
     exigeMatricula,
+    matriculaSugerida,
     concluirOnboardingMutation,
     handleSubmit,
   } = useOnboardingPage();
@@ -123,7 +124,12 @@ export function OnboardingPage() {
                   placeholder="Ex: 123456"
                   required
                   error={!!fieldState.error}
-                  helperText={fieldState.error?.message}
+                  helperText={
+                    fieldState.error?.message ??
+                    (matriculaSugerida && field.value === matriculaSugerida
+                      ? 'Sugerida a partir do seu e-mail. Confira antes de continuar.'
+                      : undefined)
+                  }
                   fullWidth
                   slotProps={{ inputLabel: { shrink: true } }}
                 />
