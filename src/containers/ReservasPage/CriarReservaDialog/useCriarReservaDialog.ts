@@ -1,47 +1,28 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import dayjs from 'dayjs';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import dayjs, { type Dayjs } from 'dayjs';
 import { useCriarReservasMutation } from 'queries/reserva/useCriarReservasMutation';
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
-import { useMemo } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
-import { PERFIS_POR_ORIGEM } from 'shared/perfisPorOrigem';
-import {
-  type CriarReservaFormValues,
-  criarReservaFormSchema,
-} from './CriarReservaDialog.schema';
+import { useMemo, useState } from 'react';
+import type { Refeicao } from 'types/refeicao';
+import type { ReservaDiaInput } from 'types/reserva';
 
 interface UseCriarReservaDialogParams {
   onClose: () => void;
 }
 
+function ordenarPorData(dias: ReservaDiaInput[]) {
+  return [...dias].sort((a, b) => a.data.localeCompare(b.data));
+}
+
 export function useCriarReservaDialog({
   onClose,
 }: UseCriarReservaDialogParams) {
-  const { data: usuario } = useUsuarioAtualQuery();
+  const [dias, setDias] = useState<ReservaDiaInput[]>([]);
   const criarReservasMutation = useCriarReservasMutation();
   const reservasQuery = useReservasQuery({
     pageSize: 100,
     sort: 'dataReserva',
     order: 'desc',
   });
-
-  const perfisDisponiveis = usuario ? PERFIS_POR_ORIGEM[usuario.origem] : [];
-
-  const valoresPadrao: Partial<CriarReservaFormValues> = {
-    nome: usuario?.nome ?? '',
-    perfil: usuario?.perfil ?? undefined,
-    matricula: usuario?.matricula ?? '',
-    dias: [],
-  };
-
-  const { control, handleSubmit, reset } = useForm<CriarReservaFormValues>({
-    resolver: zodResolver(criarReservaFormSchema),
-    defaultValues: valoresPadrao,
-  });
-
-  const perfil = useWatch({ control, name: 'perfil' });
-  const exigeMatricula = perfil === 'AlunoGraduacaoUPF';
 
   // datas que já têm reserva (qualquer status): o servidor ignora essas datas
   const diasBloqueados = useMemo(() => {
@@ -51,42 +32,58 @@ export function useCriarReservaDialog({
       .filter((data) => data >= hoje);
   }, [reservasQuery.data]);
 
-  function handleLimpar() {
-    reset(valoresPadrao);
+  const diasSelecionados = useMemo(() => dias.map((dia) => dia.data), [dias]);
+
+  function desabilitarData(data: Dayjs): boolean {
+    const diaSemana = data.day();
+    return (
+      diaSemana === 0 ||
+      diaSemana === 6 ||
+      diasBloqueados.includes(data.format('YYYY-MM-DD'))
+    );
+  }
+
+  function handleToggleData(data: Dayjs | null) {
+    if (!data) return;
+    const dataISO = data.format('YYYY-MM-DD');
+
+    if (dias.some((dia) => dia.data === dataISO)) {
+      setDias(dias.filter((dia) => dia.data !== dataISO));
+    } else {
+      setDias(ordenarPorData([...dias, { data: dataISO, refeicao: 'Almoco' }]));
+    }
+  }
+
+  function handleTrocarRefeicao(data: string, refeicao: Refeicao) {
+    setDias(
+      dias.map((dia) => (dia.data === data ? { ...dia, refeicao } : dia)),
+    );
+  }
+
+  function handleRemover(data: string) {
+    setDias(dias.filter((dia) => dia.data !== data));
+  }
+
+  function handleReservar() {
+    criarReservasMutation.mutate({ dias }, { onSuccess: onClose });
   }
 
   // só limpa depois da animação de saída, para o conteúdo não "piscar"
   function handleExited() {
-    reset(valoresPadrao);
+    setDias([]);
     criarReservasMutation.reset();
   }
 
-  function onSubmit(valores: CriarReservaFormValues) {
-    const matricula =
-      valores.perfil === 'AlunoGraduacaoUPF'
-        ? valores.matricula.trim() || undefined
-        : undefined;
-
-    criarReservasMutation.mutate(
-      {
-        nome: valores.nome,
-        perfil: valores.perfil,
-        matricula,
-        dias: valores.dias,
-      },
-      { onSuccess: onClose },
-    );
-  }
-
   return {
-    control,
-    email: usuario?.email ?? '',
-    perfisDisponiveis,
-    exigeMatricula,
+    dias,
+    diasSelecionados,
     diasBloqueados,
     criarReservasMutation,
-    handleLimpar,
+    desabilitarData,
+    handleToggleData,
+    handleTrocarRefeicao,
+    handleRemover,
+    handleReservar,
     handleExited,
-    handleSubmit: handleSubmit(onSubmit),
   };
 }

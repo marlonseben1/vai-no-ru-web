@@ -15,10 +15,14 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { CampoDatas } from 'components/CampoDatas/CampoDatas';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import type { PickerDayProps } from '@mui/x-date-pickers/PickerDay';
+import { MultiDatePickerDay } from 'components/MultiDatePickerDay/MultiDatePickerDay';
+import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
-import { Controller } from 'react-hook-form';
-import { LABEL_PERFIL } from 'shared/labels';
+import { useCallback } from 'react';
+import { LABEL_REFEICAO } from 'shared/labels';
+import { REFEICAO_VALUES } from 'types/refeicao';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
 
 interface CriarReservaDialogProps {
@@ -29,16 +33,35 @@ interface CriarReservaDialogProps {
 export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
   const isResponsivo = useIsResponsivo();
   const {
-    control,
-    email,
-    perfisDisponiveis,
-    exigeMatricula,
+    dias,
+    diasSelecionados,
     diasBloqueados,
     criarReservasMutation,
-    handleLimpar,
+    desabilitarData,
+    handleToggleData,
+    handleTrocarRefeicao,
+    handleRemover,
+    handleReservar,
     handleExited,
-    handleSubmit,
   } = useCriarReservaDialog({ onClose });
+
+  const DiaCalendario = useCallback(
+    (props: PickerDayProps) => (
+      <MultiDatePickerDay
+        {...props}
+        diasSelecionados={diasSelecionados}
+        diasBloqueados={diasBloqueados}
+      />
+    ),
+    [diasSelecionados, diasBloqueados],
+  );
+
+  // o modal só cresce (abre a lista ao lado) quando há ao menos um dia selecionado
+  const larguraModal = isResponsivo
+    ? 'calc(100% - 16px)'
+    : dias.length > 0
+      ? 900
+      : 480;
 
   return (
     <Dialog
@@ -47,190 +70,170 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
         if (reason === 'backdropClick' || reason === 'escapeKeyDown') return;
         onClose();
       }}
-      fullScreen={isResponsivo}
-      fullWidth
-      maxWidth="md"
-      slotProps={{ transition: { onExited: handleExited } }}
+      maxWidth={false}
+      slotProps={{
+        transition: { onExited: handleExited },
+        paper: {
+          sx: {
+            borderRadius: 3,
+            overflow: 'hidden',
+            m: isResponsivo ? 1 : 4,
+            width: larguraModal,
+            maxWidth: isResponsivo ? 'calc(100% - 16px)' : 'calc(100% - 64px)',
+            transition: 'width 0.25s ease',
+          },
+        },
+      }}
     >
-      <Box
-        component="form"
-        noValidate
-        onSubmit={handleSubmit}
-        sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}
+      <DialogTitle
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          pb: 0,
+        }}
       >
-        <DialogTitle
+        Nova reserva
+        <IconButton size="small" onClick={onClose} aria-label="Fechar">
+          <CloseIcon fontSize="small" />
+        </IconButton>
+      </DialogTitle>
+
+      <DialogContent
+        sx={{
+          display: 'flex',
+          flexDirection: isResponsivo ? 'column' : 'row',
+          alignItems: isResponsivo ? 'center' : 'flex-start',
+          p: isResponsivo ? 1 : 2,
+          overflowX: 'hidden',
+        }}
+      >
+        <Box
           sx={{
+            width: '100%',
+            maxWidth: isResponsivo ? '100%' : 440,
+            flexShrink: 0,
             display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
+            justifyContent: 'center',
           }}
         >
-          <Box>
-            <Typography variant="h5" component="span" color="primary">
-              Agendar reserva
-            </Typography>
-          </Box>
-          <IconButton size="small" onClick={onClose} aria-label="Fechar">
-            <CloseIcon fontSize="small" />
-          </IconButton>
-        </DialogTitle>
-
-        <DialogContent sx={{ pt: 3 }}>
-          <Stack spacing={4}>
-            <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-                Perfil e identificação
-              </Typography>
-
-              <Box
-                sx={{
-                  display: 'grid',
-                  gap: 2,
-                  gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
-                }}
-              >
-                <TextField
-                  label="E-mail"
-                  value={email}
-                  disabled
-                  fullWidth
-                  slotProps={{ inputLabel: { shrink: true } }}
-                />
-
-                <Controller
-                  control={control}
-                  name="nome"
-                  render={({ field, fieldState }) => (
-                    <TextField
-                      {...field}
-                      label="Nome completo"
-                      placeholder="Seu nome"
-                      required
-                      error={!!fieldState.error}
-                      helperText={fieldState.error?.message}
-                      fullWidth
-                      slotProps={{ inputLabel: { shrink: true } }}
-                    />
-                  )}
-                />
-
-                <Box
-                  sx={{
-                    display: 'grid',
-                    gap: 2,
-                    gridColumn: { md: '1 / -1' },
-                    gridTemplateColumns: {
-                      xs: '1fr',
-                      md: exigeMatricula ? '2fr 1fr' : '1fr',
-                    },
-                  }}
-                >
-                  <Controller
-                    control={control}
-                    name="perfil"
-                    render={({ field, fieldState }) => (
-                      <TextField
-                        {...field}
-                        value={field.value ?? ''}
-                        select
-                        label="Seu perfil"
-                        error={!!fieldState.error}
-                        helperText={fieldState.error?.message}
-                        fullWidth
-                      >
-                        {perfisDisponiveis.map((perfil) => (
-                          <MenuItem key={perfil} value={perfil}>
-                            {LABEL_PERFIL[perfil]}
-                          </MenuItem>
-                        ))}
-                      </TextField>
-                    )}
-                  />
-
-                  {exigeMatricula && (
-                    <Controller
-                      control={control}
-                      name="matricula"
-                      render={({ field, fieldState }) => (
-                        <TextField
-                          {...field}
-                          label="Matrícula"
-                          placeholder="Ex: 123456"
-                          required
-                          error={!!fieldState.error}
-                          helperText={fieldState.error?.message}
-                          fullWidth
-                          slotProps={{ inputLabel: { shrink: true } }}
-                        />
-                      )}
-                    />
-                  )}
-                </Box>
-              </Box>
-            </Box>
-
-            <Divider />
-
-            <Box>
-              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
-                Sua reserva
-              </Typography>
-
-              <Controller
-                control={control}
-                name="dias"
-                render={({ field, fieldState }) => (
-                  <CampoDatas
-                    label="Datas e refeições"
-                    value={field.value}
-                    onChange={field.onChange}
-                    diasBloqueados={diasBloqueados}
-                    erro={fieldState.error?.message}
-                  />
-                )}
-              />
-            </Box>
-
-            {criarReservasMutation.isError && (
-              <Alert severity="error">
-                {criarReservasMutation.error.message}
-              </Alert>
-            )}
-          </Stack>
-        </DialogContent>
-
-        <DialogActions
-          sx={{
-            p: 2,
-            flexDirection: { xs: 'column-reverse', sm: 'row' },
-            gap: 1,
-            '& > :not(style) ~ :not(style)': { ml: { xs: 0, sm: 1 } },
-          }}
-        >
-          <Button
-            variant="outlined"
-            color="inherit"
-            startIcon={<DeleteOutlined />}
-            onClick={handleLimpar}
-            sx={{ width: { xs: '100%', sm: 'auto' } }}
-          >
-            Limpar
-          </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            disabled={criarReservasMutation.isPending}
+          <DateCalendar
+            value={null}
+            disablePast
+            onChange={handleToggleData}
+            shouldDisableDate={desabilitarData}
+            slots={{ day: DiaCalendario }}
             sx={{
-              px: 4,
-              fontWeight: 'bold',
-              width: { xs: '100%', sm: 'auto' },
+              '--tamanho-dia': isResponsivo
+                ? 'min(44px, calc((100vw - 40px) / 7 - 4px))'
+                : '52px',
+              width: '100%',
+              maxWidth: isResponsivo ? '100%' : 440,
+              height: 'auto',
+              maxHeight: 'none',
+              '& .MuiDayCalendar-weekDayLabel': {
+                width: 'var(--tamanho-dia)',
+                height: 'var(--tamanho-dia)',
+              },
+              '& .MuiDayCalendar-slideTransition': {
+                minHeight: 'calc(6 * (var(--tamanho-dia) + 4px))',
+              },
             }}
-          >
-            Registrar
-          </Button>
-        </DialogActions>
-      </Box>
+          />
+        </Box>
+
+        {dias.length > 0 && (
+          <>
+            <Divider
+              orientation={isResponsivo ? 'horizontal' : 'vertical'}
+              flexItem
+              sx={isResponsivo ? { my: 1, width: '100%' } : { mx: 2, my: 2 }}
+            />
+
+            <Stack
+              spacing={1.5}
+              sx={{
+                width: '100%',
+                minWidth: { md: 360 },
+                maxHeight: isResponsivo ? 300 : 420,
+                overflowY: 'auto',
+                overflowX: 'hidden',
+                py: 1,
+                px: isResponsivo ? 1 : 0,
+              }}
+            >
+              {dias.map((dia) => (
+                <Stack
+                  key={dia.data}
+                  direction="row"
+                  spacing={1}
+                  sx={{ alignItems: 'center' }}
+                >
+                  <Typography
+                    variant="body2"
+                    sx={{ fontWeight: 600, minWidth: 84, whiteSpace: 'nowrap' }}
+                  >
+                    {dayjs(dia.data).format('DD/MM/YYYY')}
+                  </Typography>
+
+                  <TextField
+                    select
+                    size="small"
+                    label="Refeição"
+                    value={dia.refeicao}
+                    onChange={(event) =>
+                      handleTrocarRefeicao(
+                        dia.data,
+                        event.target.value as typeof dia.refeicao,
+                      )
+                    }
+                    sx={{ flex: 1, minWidth: 0 }}
+                  >
+                    {REFEICAO_VALUES.map((valor) => (
+                      <MenuItem key={valor} value={valor}>
+                        {LABEL_REFEICAO[valor]}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+
+                  <IconButton
+                    size="small"
+                    onClick={() => handleRemover(dia.data)}
+                    aria-label="Remover data"
+                  >
+                    <DeleteOutlined fontSize="small" />
+                  </IconButton>
+                </Stack>
+              ))}
+            </Stack>
+          </>
+        )}
+      </DialogContent>
+
+      <DialogActions
+        sx={{
+          px: 2,
+          pb: 2,
+          flexDirection: 'column',
+          gap: 1,
+          '& > :not(style) ~ :not(style)': { ml: 0 },
+        }}
+      >
+        {criarReservasMutation.isError && (
+          <Alert severity="error" sx={{ width: '100%' }}>
+            {criarReservasMutation.error.message}
+          </Alert>
+        )}
+        <Button
+          variant="contained"
+          fullWidth
+          disabled={dias.length === 0 || criarReservasMutation.isPending}
+          onClick={handleReservar}
+          sx={{ borderRadius: 2, py: 1.2, fontWeight: 'bold' }}
+        >
+          Reservar ({dias.length})
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }

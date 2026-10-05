@@ -1,4 +1,3 @@
-import type { Perfil } from './perfil';
 import type { Refeicao } from './refeicao';
 import type { StatusReserva } from './statusReserva';
 
@@ -35,9 +34,6 @@ export interface ReservaDiaInput {
 }
 
 export interface CriarReservasInput {
-  nome: string;
-  matricula?: string;
-  perfil: Perfil;
   dias: ReservaDiaInput[];
 }
 

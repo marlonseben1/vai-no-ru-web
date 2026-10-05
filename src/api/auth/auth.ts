@@ -1,6 +1,7 @@
 import { ApiError } from 'api/ApiError';
 import { httpClient } from 'api/httpClient';
 import type { ApiSuccessResponse } from 'types/api';
+import type { Perfil } from 'types/perfil';
 import type { Usuario } from 'types/usuario';
 
 interface LoginInput {
@@ -12,6 +13,19 @@ async function loginComGoogle(input: LoginInput): Promise<Usuario> {
   const { data } = await httpClient.post<
     ApiSuccessResponse<{ usuario: Usuario }>
   >('/v1/auth/google', input);
+  return data.data.usuario;
+}
+
+interface OnboardingInput {
+  nome: string;
+  perfil: Perfil;
+  matricula?: string;
+}
+
+async function concluirOnboarding(input: OnboardingInput): Promise<Usuario> {
+  const { data } = await httpClient.post<
+    ApiSuccessResponse<{ usuario: Usuario }>
+  >('/v1/auth/onboarding', input);
   return data.data.usuario;
 }
 
@@ -36,6 +50,7 @@ async function logout(): Promise<void> {
 
 export const AuthApi = {
   loginComGoogle,
+  concluirOnboarding,
   buscarUsuarioAtual,
   logout,
 };

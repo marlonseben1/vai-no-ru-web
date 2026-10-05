@@ -9,4 +9,5 @@ export interface Usuario {
   perfil: Perfil | null;
   matricula: string | null;
   origem: OrigemConta;
+  onboardingConcluidoEm: string | null;
 }

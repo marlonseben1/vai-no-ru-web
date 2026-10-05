@@ -3,7 +3,7 @@ import { queryClient } from 'queries/queryClient';
 import { queryKeys } from 'queries/queryKeys';
 import { type LoaderFunction, redirect } from 'react-router';
 
-export const requireAuthLoader: LoaderFunction = async () => {
+export const requireOnboardingPendenteLoader: LoaderFunction = async () => {
   const usuario = await queryClient.query({
     queryKey: queryKeys.usuarioAtual,
     queryFn: AuthApi.buscarUsuarioAtual,
@@ -14,8 +14,8 @@ export const requireAuthLoader: LoaderFunction = async () => {
     return redirect('/');
   }
 
-  if (!usuario.onboardingConcluidoEm) {
-    return redirect('/onboarding');
+  if (usuario.onboardingConcluidoEm) {
+    return redirect('/cardapio');
   }
 
   return null;
