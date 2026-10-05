@@ -12,9 +12,6 @@ export function PublicLayout() {
           <Typography variant="h6" sx={{ flexGrow: 1 }}>
             vai-no-ru
           </Typography>
-          <Button color="inherit" component={Link} to="/cardapio">
-            Cardápio
-          </Button>
           {usuario && (
             <Button color="inherit" component={Link} to="/reservas">
               Reservas

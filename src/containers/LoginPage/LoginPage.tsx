@@ -12,6 +12,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useLoginMutation } from 'queries/auth/useLoginMutation';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { colorPalette } from 'theme/colorPalette';
 
 export function LoginPage() {
   const loginMutation = useLoginMutation();
@@ -52,8 +53,8 @@ export function LoginPage() {
       <Box
         sx={{
           flex: { xs: '0 0 auto', md: 1 },
-          bgcolor: 'secondary.main',
-          color: '#F0E9BF',
+          bgcolor: colorPalette.primary[800],
+          color: colorPalette.primary[50],
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
@@ -150,10 +151,6 @@ export function LoginPage() {
                 fullWidth
                 disabled={!aceitarPolitica || loginMutation.isPending}
                 onClick={handleAceitarEContinuar}
-                sx={{
-                  bgcolor: 'secondary.main',
-                  '&:hover': { bgcolor: 'secondary.dark' },
-                }}
               >
                 Aceitar e continuar
               </Button>

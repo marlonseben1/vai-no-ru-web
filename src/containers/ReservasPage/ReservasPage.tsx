@@ -108,20 +108,30 @@ export function ReservasPage() {
     >
       <Box sx={{ mb: 3 }}>
         <Stack
-          direction="row"
+          direction={{ xs: 'column', sm: 'row' }}
+          spacing={{ xs: 2, sm: 0 }}
           sx={{
             justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: { xs: 'stretch', sm: 'center' },
           }}
         >
           <Typography variant="h4" component="h1">
             Minhas reservas
           </Typography>
-          <Button variant="contained" onClick={handleAbrirCriar}>
+          <Button
+            variant="contained"
+            fullWidth
+            onClick={handleAbrirCriar}
+            sx={{ width: { sm: 'auto' } }}
+          >
             Nova reserva
           </Button>
         </Stack>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ display: { xs: 'none', sm: 'block' } }}
+        >
           Acompanhe o status e histórico dos seus agendamentos no RU
         </Typography>
       </Box>
@@ -144,6 +154,7 @@ export function ReservasPage() {
               flex: { xs: 1, sm: 'none' },
               minWidth: 0,
               px: { xs: 1, sm: 2 },
+              py: { xs: 0.5, sm: undefined },
             },
           }}
           onChange={(_event, valor) => handleMudarDataFiltro(valor ?? '')}

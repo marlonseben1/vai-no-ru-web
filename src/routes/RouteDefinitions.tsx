@@ -8,17 +8,17 @@ import { ReservasPage } from '../containers/ReservasPage/ReservasPage';
 const publicRoutes = [
   {
     Component: PublicLayout,
-    children: [
-      { path: 'cardapio', Component: CardapioPage },
-      { path: '*', Component: Erro404Page },
-    ],
+    children: [{ path: '*', Component: Erro404Page }],
   },
 ] as const satisfies RouteObject[];
 
 const privateRoutes = [
   {
     lazy: () => import('layouts/PrivateLayout/PrivateLayout'),
-    children: [{ path: 'reservas', Component: ReservasPage }],
+    children: [
+      { path: 'cardapio', Component: CardapioPage },
+      { path: 'reservas', Component: ReservasPage },
+    ],
   },
 ] as const satisfies RouteObject[];
 

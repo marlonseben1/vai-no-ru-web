@@ -1,67 +1,55 @@
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
-import { useLogoutMutation } from 'queries/auth/useLogoutMutation';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
-import { Link, Outlet, useNavigate } from 'react-router';
+import { Box } from '@mui/material';
+import { AppBar } from 'components/AppBar/AppBar';
+import { BottomMenu } from 'components/BottomMenu/BottomMenu';
+import { Drawer } from 'components/Drawer/Drawer';
+import useIsResponsivo from 'hooks/useIsResponsivo';
+import { Outlet } from 'react-router';
 import { requireAuthLoader } from 'routes/guards/requireAuthLoader';
+import { COR_FUNDO_LAYOUT } from 'theme/colorPalette';
 
 export const loader = requireAuthLoader;
 
 export const Component = () => {
-  const { data: usuario } = useUsuarioAtualQuery();
-  const logoutMutation = useLogoutMutation();
-  const navigate = useNavigate();
-
-  function handleLogout() {
-    logoutMutation.mutate(undefined, { onSuccess: () => navigate('/') });
-  }
+  const isResponsivo = useIsResponsivo();
 
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: 'column',
         height: '100dvh',
         width: '100%',
         overflowX: 'hidden',
+        bgcolor: COR_FUNDO_LAYOUT,
       }}
     >
-      <AppBar position="static">
-        <Toolbar sx={{ overflowX: 'auto', scrollbarWidth: 'none' }}>
-          <Typography variant="h6" sx={{ flexGrow: 1 }}>
-            vai-no-ru
-          </Typography>
-          <Button color="inherit" component={Link} to="/cardapio">
-            Cardápio
-          </Button>
-          <Button color="inherit" component={Link} to="/reservas">
-            Reservas
-          </Button>
-          {usuario && (
-            <Typography variant="body2" sx={{ mx: 2 }}>
-              {usuario.nome}
-            </Typography>
-          )}
-          <Button
-            color="inherit"
-            onClick={handleLogout}
-            disabled={logoutMutation.isPending}
-          >
-            Sair
-          </Button>
-        </Toolbar>
-      </AppBar>
-
+      {!isResponsivo && (
+        <Box component="nav">
+          <Drawer />
+        </Box>
+      )}
       <Box
-        component="main"
         sx={{
           flex: 1,
-          p: { xs: 0, sm: 3 },
-          minHeight: 0,
+          minWidth: 0,
           display: 'flex',
           flexDirection: 'column',
         }}
       >
-        <Outlet />
+        <AppBar showAccountMenu={!isResponsivo} />
+        <Box
+          component="main"
+          sx={{
+            flex: 1,
+            p: { xs: 0, sm: 3 },
+            minHeight: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            overflowY: 'auto',
+          }}
+        >
+          <Outlet />
+        </Box>
+        {isResponsivo && <BottomMenu />}
       </Box>
     </Box>
   );
