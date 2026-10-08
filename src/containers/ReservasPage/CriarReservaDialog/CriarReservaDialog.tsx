@@ -60,11 +60,7 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
   );
 
   // o modal só cresce (abre a lista ao lado) quando há ao menos um dia selecionado
-  const larguraModal = isResponsivo
-    ? 'calc(100% - 16px)'
-    : dias.length > 0
-      ? 900
-      : 480;
+  const larguraModal = dias.length > 0 ? 900 : 480;
 
   return (
     <Dialog
@@ -74,17 +70,20 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
         onClose();
       }}
       maxWidth={false}
+      fullScreen={isResponsivo}
       slotProps={{
         transition: { onExited: handleExited },
         paper: {
-          sx: {
-            borderRadius: 3,
-            overflow: 'hidden',
-            m: isResponsivo ? 1 : 4,
-            width: larguraModal,
-            maxWidth: isResponsivo ? 'calc(100% - 16px)' : 'calc(100% - 64px)',
-            transition: 'width 0.25s ease',
-          },
+          sx: isResponsivo
+            ? { overflow: 'hidden' }
+            : {
+                borderRadius: 3,
+                overflow: 'hidden',
+                m: 4,
+                width: larguraModal,
+                maxWidth: 'calc(100% - 64px)',
+                transition: 'width 0.25s ease',
+              },
         },
       }}
     >
@@ -173,9 +172,10 @@ export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
                 spacing={2.5}
                 sx={{
                   width: '100%',
-                  maxHeight: isResponsivo ? 300 : 420,
-                  overflowY: 'auto',
-                  overflowX: 'hidden',
+                  // no mobile (fullscreen) quem rola é o conteúdo da modal
+                  maxHeight: isResponsivo ? 'none' : 420,
+                  overflowY: isResponsivo ? 'visible' : 'auto',
+                  overflowX: isResponsivo ? 'visible' : 'hidden',
                   py: 1.5,
                   px: isResponsivo ? 1 : 0,
                 }}
