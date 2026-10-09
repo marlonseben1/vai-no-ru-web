@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm ci
+      - run: pnpm typecheck
+      - run: pnpm build
+
+      - run: |
+          if find dist -name '*.map' | grep -q .; then
+            echo "::error::Arquivos .map encontrados em dist/"
+            exit 1
+          fi
+          if grep -rl 'sourceMappingURL' dist; then
+            echo "::error::Referência a sourceMappingURL encontrada em dist/"
+            exit 1
+          fi
+
+      - run: |
+          docker build -t vai-no-ru-web:ci .
