@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode=staging",
+    "dev:production": "vite --mode=production",
     "build": "tsc -b && vite build",
+    "build:staging": "tsc -b && vite build --mode=staging",
     "preview": "vite preview",
     "lint": "biome lint .",
     "format": "biome format --write .",
