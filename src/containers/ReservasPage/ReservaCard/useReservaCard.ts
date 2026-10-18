@@ -22,7 +22,7 @@ export function useReservaCard({
   const podeReativar = reserva.status === 'CANCELADA';
   const temAcoes = podeCancelar || podeReativar;
 
-  const data = dayjs(reserva.dataReserva);
+  const data = dayjs(reserva.dataReserva.slice(0, 10));
   const diaSemana = isResponsivo
     ? data.format('dddd').replace('-feira', '')
     : data.format('dddd');

@@ -46,6 +46,7 @@ export type SortColumnReserva =
 export type DataFiltroReserva =
   | 'essa_semana'
   | 'semana_passada'
+  | 'proxima_semana'
   | 'personalizado';
 
 export interface ListarReservasParams {

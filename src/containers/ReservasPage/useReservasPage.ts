@@ -10,14 +10,16 @@ import { PAGE_SIZE_RESERVAS } from './ReservasPage.static';
 export function useReservasPage() {
   const [page, setPage] = useState(1);
   const [situacao, setSituacao] = useState<StatusReserva | ''>('');
-  const [dataFiltro, setDataFiltro] = useState<DataFiltroReserva | ''>('');
+  const [dataFiltro, setDataFiltro] = useState<DataFiltroReserva | ''>(
+    'essa_semana',
+  );
   const [criarAberto, setCriarAberto] = useState(false);
 
   const reservasQuery = useReservasQuery({
     page,
     pageSize: PAGE_SIZE_RESERVAS,
     sort: 'dataReserva',
-    order: 'desc',
+    order: 'asc',
     ...(situacao ? { situacao } : {}),
     ...(dataFiltro ? { dataFiltro } : {}),
   });

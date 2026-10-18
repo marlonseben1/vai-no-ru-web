@@ -8,5 +8,5 @@ export const OPCOES_DATA_FILTRO: {
 }[] = [
   { valor: '', label: 'Todas' },
   { valor: 'essa_semana', label: 'Esta semana' },
-  { valor: 'semana_passada', label: 'Semana passada' },
+  { valor: 'proxima_semana', label: 'Próxima semana' },
 ];
