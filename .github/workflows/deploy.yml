@@ -51,18 +51,44 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      # Só roda quando SSH_HOST estiver configurado no Environment.
+      - name: Conectar à tailnet
+        if: ${{ vars.SSH_HOST != '' }}
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+          tags: tag:ci
+
+      - name: Preparar docker-compose.prod.yml
+        id: compose
+        run: echo "b64=$(base64 -w0 docker-compose.prod.yml)" >> "$GITHUB_OUTPUT"
+
       - name: Deploy via SSH
         if: ${{ vars.SSH_HOST != '' }}
         uses: appleboy/ssh-action@v1
+        env:
+          GHCR_TOKEN: ${{ secrets.GHCR_TOKEN }}
+          GHCR_USER: ${{ github.repository_owner }}
+          IMAGE: ${{ env.IMAGE }}
+          ENV_NAME: ${{ env.ENV_NAME }}
+          DEPLOY_DIR: ${{ vars.DEPLOY_DIR || '/volume1/docker/vai-no-ru-web' }}
+          COMPOSE_B64: ${{ steps.compose.outputs.b64 }}
+          TAG: ${{ env.ENV_NAME }}-${{ github.sha }}
         with:
           host: ${{ vars.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
+          envs: GHCR_TOKEN,GHCR_USER,IMAGE,ENV_NAME,DEPLOY_DIR,COMPOSE_B64,TAG
           script: |
-            echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
-            docker pull ${{ env.IMAGE }}:${{ env.ENV_NAME }}
-            docker rm -f vai-no-ru-web || true
-            docker run -d --name vai-no-ru-web --restart unless-stopped \
-              -p ${{ vars.HOST_PORT || '8080' }}:80 \
-              ${{ env.IMAGE }}:${{ env.ENV_NAME }}
+            set -euo pipefail
+            cd "$DEPLOY_DIR"
+            printf '%s' "$COMPOSE_B64" | base64 -d > docker-compose.prod.yml
+            # O usuário do NAS não tem home gravável: o login do docker fica na pasta do deploy.
+            export DOCKER_CONFIG="$DEPLOY_DIR/.docker"
+            mkdir -p "$DOCKER_CONFIG"
+            export IMAGE TAG ENV_FILE="$DEPLOY_DIR/$ENV_NAME.env"
+            DC="docker compose -p vai-no-ru-web-$ENV_NAME --env-file $ENV_FILE -f docker-compose.prod.yml"
+            printf '%s' "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+            $DC pull web
+            $DC --profile tunnel up -d web cloudflared
+            docker image prune -f
