@@ -1,0 +1,58 @@
+# PostHog
+
+Integração do sistema com o PostHog: inicialização, identificação, eventos e gravação de sessão.
+
+## Estrutura
+
+```
+lib/posthog/
+├── index.ts             # API pública
+├── posthog.ts           # PostHogAnalytics: iniciar, identificar, capturar, forcarGravacao, limpar
+├── posthog.eventos.ts   # catálogo de eventos (nome → propriedades), agrupado por domínio
+└── posthog.config.ts    # opções do init + privacidade da gravação
+```
+
+## Uso
+
+O evento é identificado pelo próprio nome, que é o mesmo que aparece no PostHog:
+
+```ts
+import { PostHogAnalytics } from 'lib/posthog';
+
+PostHogAnalytics.capturar('reserva_cancelada');
+PostHogAnalytics.capturar('cardapio_semana_navegada', { direcao: 'hoje' });
+```
+
+O TypeScript autocompleta o nome, recusa nomes inexistentes e exige (ou recusa) as propriedades
+conforme o catálogo. Funciona dentro e fora de componentes React.
+
+## Ativação
+
+Ativo apenas quando `VITE_POSTHOG_KEY` está definida (em build time). Sem ela, tudo é ignorado.
+
+- `iniciar` roda em `App.tsx`, no boot.
+- `identificar` roda em `usePostHogIdentify`, quando o usuário atual é carregado.
+- `limpar` roda em `useLogoutMutation`.
+- `$pageview` é enviado manualmente por `usePageview` (autocapture e pageview automático ficam desligados).
+
+## Adicionando um evento
+
+Adicione uma linha na seção do domínio em `EventosPostHog` (`posthog.eventos.ts`):
+
+```ts
+dominio_novo_evento: SemPropriedades;
+dominio_com_props: { quantidade: number };
+```
+
+- O nome deve ser `snake_case` minúsculo.
+- **Nunca renomeie um evento existente**, porque isso quebra o histórico no PostHog.
+
+## Gravação de sessão e LGPD
+
+A gravação começa em `identificar` (respeitando sampling e gatilhos do projeto no PostHog).
+`forcarGravacao()` ignora essa configuração; é usada na primeira reserva.
+
+- Inputs sempre mascarados (`maskAllInputs`).
+- Corpo e headers das requisições **não** são gravados (a resposta de `/auth/me` e do login traz nome e e-mail).
+- **Todo texto com dado pessoal deve levar o atributo `data-ph-mask`** (hoje: nome e inicial no `AccountMenu`). Ao criar uma tela que mostre nome, e-mail ou matrícula, adicione o atributo.
+- A política de privacidade precisa informar o uso de analytics e gravação de sessão.

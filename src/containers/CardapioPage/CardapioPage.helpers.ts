@@ -1,4 +1,5 @@
 import type { Dayjs } from 'dayjs';
+import { type EventosPostHog, PostHogAnalytics } from 'lib/posthog';
 import {
   type Cardapio,
   CategoriaItemCardapio,
@@ -38,4 +39,10 @@ export function formatarPeriodo(inicio: Dayjs, fim: Dayjs) {
     return `${inicio.format('DD')} – ${fim.format('DD')} de ${fim.format('MMMM [de] YYYY')}`;
   }
   return `${inicio.format('DD [de] MMMM')} – ${fim.format('DD [de] MMMM [de] YYYY')}`;
+}
+
+export function registrarNavegacao(
+  direcao: EventosPostHog['cardapio_semana_navegada']['direcao'],
+) {
+  PostHogAnalytics.capturar('cardapio_semana_navegada', { direcao });
 }

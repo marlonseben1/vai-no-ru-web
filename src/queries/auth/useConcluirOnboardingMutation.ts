@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from 'api/ApiError';
 import { AuthApi } from 'api/auth/auth';
+import { PostHogAnalytics } from 'lib/posthog';
 import { queryKeys } from 'queries/queryKeys';
 import type { Perfil } from 'types/perfil';
 import type { Usuario } from 'types/usuario';
@@ -17,6 +18,7 @@ export function useConcluirOnboardingMutation() {
     mutationFn: AuthApi.concluirOnboarding,
     onSuccess: (usuario) => {
       queryClient.setQueryData(queryKeys.usuarioAtual, usuario);
+      PostHogAnalytics.capturar('onboarding_concluido');
     },
   });
 }

@@ -9,13 +9,22 @@ import { ScreenLoading } from 'components/ScreenLoading/ScreenLoading';
 import { env } from 'config/env';
 import { ConfirmacaoProvider } from 'contexts/ConfirmacaoContext';
 import { useAuthBootstrap } from 'hooks/useAuthBootstrap';
+import { usePageview } from 'hooks/usePageview';
+import { usePostHogIdentify } from 'hooks/usePostHogIdentify';
+import { PostHogAnalytics } from 'lib/posthog';
+import posthog from 'posthog-js';
+import { PostHogProvider } from 'posthog-js/react';
 import { queryClient } from 'queries/queryClient';
 import { RouterProvider } from 'react-router';
 import { router } from 'routes/Router';
 import { theme } from 'theme/theme';
 
+PostHogAnalytics.iniciar();
+
 function AppContent() {
   useAuthBootstrap();
+  usePostHogIdentify();
+  usePageview();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
@@ -31,14 +40,16 @@ function AppContent() {
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={env.googleClientId}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <AppContent />
-        </ThemeProvider>
-      </QueryClientProvider>
-    </GoogleOAuthProvider>
+    <PostHogProvider client={posthog}>
+      <GoogleOAuthProvider clientId={env.googleClientId}>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <AppContent />
+          </ThemeProvider>
+        </QueryClientProvider>
+      </GoogleOAuthProvider>
+    </PostHogProvider>
   );
 }
 

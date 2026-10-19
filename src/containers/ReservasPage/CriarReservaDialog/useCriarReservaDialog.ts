@@ -1,4 +1,5 @@
 import dayjs, { type Dayjs } from 'dayjs';
+import { PostHogAnalytics } from 'lib/posthog';
 import { useCriarReservasMutation } from 'queries/reserva/useCriarReservasMutation';
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
 import { useMemo, useState } from 'react';
@@ -105,7 +106,11 @@ export function useCriarReservaDialog({
       {
         onSuccess: () => {
           onClose();
-          if (ehPrimeiraReserva) abrirAvisoPendente();
+          if (ehPrimeiraReserva) {
+            PostHogAnalytics.capturar('reserva_primeira_reserva');
+            PostHogAnalytics.forcarGravacao();
+            abrirAvisoPendente();
+          }
         },
       },
     );

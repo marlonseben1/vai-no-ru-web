@@ -74,6 +74,7 @@ export function AccountMenuFullscreen({
               bgcolor: '#FFF',
               color: colorPalette.primary[800],
             }}
+            data-ph-mask
           >
             {inicial}
           </Avatar>
@@ -81,6 +82,7 @@ export function AccountMenuFullscreen({
             variant="subtitle1"
             noWrap
             sx={{ fontFamily: 'inherit', fontWeight: 'bold' }}
+            data-ph-mask
           >
             {nome}
           </Typography>

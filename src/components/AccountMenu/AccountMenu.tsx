@@ -33,7 +33,9 @@ export function AccountMenu() {
           aria-expanded={aberto ? 'true' : undefined}
           onClick={handleAbrir}
         >
-          <Avatar sx={{ width: 32, height: 32 }}>{inicial}</Avatar>
+          <Avatar sx={{ width: 32, height: 32 }} data-ph-mask>
+            {inicial}
+          </Avatar>
         </IconButton>
       </Tooltip>
       <Menu
