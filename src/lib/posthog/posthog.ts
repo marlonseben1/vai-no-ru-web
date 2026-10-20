@@ -25,8 +25,9 @@ export const PostHogAnalytics = {
   },
 
   /**
-   * Identifica o usuário logado. Sem e-mail, nome ou matrícula: só o necessário para segmentar.
-   * Chame sempre que o usuário atual mudar.
+   * Identifica o usuário logado. A identidade é o `id` (estável); `email` (matrícula@upf.br) e
+   * `name` são person properties que o PostHog usa para exibir a pessoa nas gravações:
+   * mostra o `email` e, sem ele, o `name`. Chame sempre que o usuário atual mudar.
    */
   identificar(usuario: Usuario) {
     if (!posthog.__loaded) return;
@@ -34,6 +35,8 @@ export const PostHogAnalytics = {
     posthog.identify(usuario.id, {
       perfil: usuario.perfil,
       origem: usuario.origem,
+      name: usuario.nome,
+      ...(usuario.matricula && { email: `${usuario.matricula}@upf.br` }),
     });
     // respeita sampling e gatilhos configurados no PostHog
     posthog.startSessionRecording();
