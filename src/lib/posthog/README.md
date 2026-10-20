@@ -55,4 +55,8 @@ A gravação começa em `identificar` (respeitando sampling e gatilhos do projet
 - Inputs sempre mascarados (`maskAllInputs`).
 - Corpo e headers das requisições **não** são gravados (a resposta de `/auth/me` e do login traz nome e e-mail).
 - **Todo texto com dado pessoal deve levar o atributo `data-ph-mask`** (hoje: nome e inicial no `AccountMenu`). Ao criar uma tela que mostre nome, e-mail ou matrícula, adicione o atributo.
-- A política de privacidade precisa informar o uso de analytics e gravação de sessão.
+- **Identificação:** o `distinct_id` é o `id` do usuário. `email` (`<matrícula>@upf.br`, só para quem tem
+  matrícula) e `name` vão como person properties, e é por elas que o PostHog mostra a pessoa nas
+  gravações (exibe o `email` e, sem ele, o `name`). São dados pessoais: restrinja o acesso ao projeto.
+- A política de privacidade precisa informar o uso de analytics, gravação de sessão e o envio de
+  matrícula e nome ao PostHog.
