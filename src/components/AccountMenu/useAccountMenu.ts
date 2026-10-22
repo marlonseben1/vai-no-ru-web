@@ -17,6 +17,11 @@ export function useAccountMenu() {
     setAnchorEl(null);
   }
 
+  function handleConfiguracoes() {
+    handleFechar();
+    navigate('/configuracoes');
+  }
+
   function handleSair() {
     logoutMutation.mutate(undefined, { onSuccess: () => navigate('/') });
   }
@@ -30,5 +35,6 @@ export function useAccountMenu() {
     handleAbrir,
     handleFechar,
     handleSair,
+    handleConfiguracoes,
   };
 }

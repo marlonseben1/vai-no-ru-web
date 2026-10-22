@@ -14,27 +14,31 @@ import {
 } from '@mui/material';
 import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
 
-interface AccountMenuFullscreenProps {
+interface AccountMenuMobileProps {
   open: boolean;
   nome?: string;
   inicial?: string;
   saindo: boolean;
   offsetInferior: number;
-  onClose: () => void;
+  onConfiguracoes: () => void;
   onSair: () => void;
 }
 
-export function AccountMenuFullscreen({
+export function AccountMenuMobile({
   open,
   nome,
   inicial,
   saindo,
   offsetInferior,
-  onClose,
+  onConfiguracoes,
   onSair,
-}: AccountMenuFullscreenProps) {
+}: AccountMenuMobileProps) {
   const itens = [
-    { texto: 'Configurações', icone: <Settings />, onClick: onClose },
+    {
+      texto: 'Configurações',
+      icone: <Settings />,
+      onClick: onConfiguracoes,
+    },
     { texto: 'Sair', icone: <Logout />, onClick: onSair, desabilitado: saindo },
   ];
 

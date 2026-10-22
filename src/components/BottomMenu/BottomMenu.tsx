@@ -4,7 +4,7 @@ import {
   BottomNavigationAction,
   Paper,
 } from '@mui/material';
-import { AccountMenuFullscreen } from 'components/AccountMenu/AccountMenuFullscreen';
+import { AccountMenuMobile } from 'components/AccountMenu/AccountMenuMobile';
 import { ITENS_MENU } from 'layouts/PrivateLayout/PrivateLayout.static';
 import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
 import { useBottomMenu, VALOR_CONTA } from './useBottomMenu';
@@ -22,22 +22,22 @@ export function BottomMenu() {
     nome,
     inicial,
     saindo,
-    contaAberta,
-    valorSelecionado,
-    handleMudar,
-    handleFecharConta,
     handleSair,
+    contaAberta,
+    handleMudar,
+    valorSelecionado,
+    handleConfiguracoes,
   } = useBottomMenu();
 
   return (
     <>
-      <AccountMenuFullscreen
+      <AccountMenuMobile
         open={contaAberta}
         nome={nome}
         inicial={inicial}
         saindo={saindo}
         offsetInferior={ALTURA_BOTTOM_MENU}
-        onClose={handleFecharConta}
+        onConfiguracoes={handleConfiguracoes}
         onSair={handleSair}
       />
       <Paper

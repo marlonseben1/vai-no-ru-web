@@ -6,6 +6,7 @@ export const ATRIBUTO_MASCARA_PH = 'data-ph-mask';
 
 export const POSTHOG_CONFIG: Partial<PostHogConfig> = {
   api_host: env.posthogHost,
+  opt_out_capturing_by_default: true,
   disable_session_recording: true,
   autocapture: false,
   capture_pageview: false,
