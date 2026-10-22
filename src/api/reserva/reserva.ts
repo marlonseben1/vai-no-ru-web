@@ -33,6 +33,10 @@ async function reativarReserva(reservaId: string): Promise<void> {
   await httpClient.put(`/v1/reservas/${reservaId}`);
 }
 
+async function forcarAgendamento(reservaId: string): Promise<void> {
+  await httpClient.post(`/v1/reservas/${reservaId}/forcar-agendamento`);
+}
+
 async function buscarHistoricoReserva(
   reservaId: string,
 ): Promise<ReservaHistoricoItem[]> {
@@ -47,5 +51,6 @@ export const ReservaApi = {
   listarReservas,
   cancelarReserva,
   reativarReserva,
+  forcarAgendamento,
   buscarHistoricoReserva,
 };
