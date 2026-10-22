@@ -1,5 +1,6 @@
 import { useConfirmacao } from 'hooks/useConfirmacao';
 import { useCancelarReservaMutation } from 'queries/reserva/useCancelarReservaMutation';
+import { useForcarAgendamentoMutation } from 'queries/reserva/useForcarAgendamentoMutation';
 import { useReativarReservaMutation } from 'queries/reserva/useReativarReservaMutation';
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
 import { useState } from 'react';
@@ -27,6 +28,7 @@ export function useReservasPage() {
   const confirmar = useConfirmacao();
   const cancelarMutation = useCancelarReservaMutation();
   const reativarMutation = useReativarReservaMutation();
+  const forcarAgendamentoMutation = useForcarAgendamentoMutation();
 
   const totalPaginas = reservasQuery.data
     ? Math.ceil(reservasQuery.data.total / PAGE_SIZE_RESERVAS)
@@ -77,12 +79,27 @@ export function useReservasPage() {
     } catch {}
   }
 
+  async function handleForcarAgendamento(reservaId: string) {
+    try {
+      await confirmar({
+        title: 'Forçar agendamento',
+        description:
+          'Isso envia esta reserva ao formulário do RU agora, sem esperar o horário automático. Deseja continuar?',
+        confirmLabel: 'Forçar agendamento',
+      });
+      forcarAgendamentoMutation.mutate(reservaId);
+    } catch {}
+  }
+
   function isProcessando(reservaId: string) {
     const cancelando =
       cancelarMutation.isPending && cancelarMutation.variables === reservaId;
     const reativando =
       reativarMutation.isPending && reativarMutation.variables === reservaId;
-    return cancelando || reativando;
+    const forcando =
+      forcarAgendamentoMutation.isPending &&
+      forcarAgendamentoMutation.variables === reservaId;
+    return cancelando || reativando || forcando;
   }
 
   return {
@@ -99,6 +116,7 @@ export function useReservasPage() {
     handleMudarDataFiltro,
     handleCancelar,
     handleReativar,
+    handleForcarAgendamento,
     isProcessando,
   };
 }
