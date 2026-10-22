@@ -4,13 +4,14 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { CookieBanner } from 'components/CookieBanner/CookieBanner';
 import { DialogGeral } from 'components/DialogGeral/DialogGeral';
 import { ScreenLoading } from 'components/ScreenLoading/ScreenLoading';
 import { env } from 'config/env';
 import { ConfirmacaoProvider } from 'contexts/ConfirmacaoContext';
 import { useAuthBootstrap } from 'hooks/useAuthBootstrap';
 import { usePageview } from 'hooks/usePageview';
-import { usePostHogIdentify } from 'hooks/usePostHogIdentify';
+import { usePostHogSync } from 'hooks/usePostHogSync';
 import { PostHogAnalytics } from 'lib/posthog';
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
@@ -23,7 +24,7 @@ PostHogAnalytics.iniciar();
 
 function AppContent() {
   useAuthBootstrap();
-  usePostHogIdentify();
+  usePostHogSync();
   usePageview();
 
   return (
@@ -32,6 +33,7 @@ function AppContent() {
         <RouterProvider router={router} />
         <ScreenLoading />
         <DialogGeral />
+        <CookieBanner />
         {import.meta.env.DEV && <ReactQueryDevtools />}
       </ConfirmacaoProvider>
     </LocalizationProvider>

@@ -29,6 +29,7 @@
       "api/*": ["./src/api/*"],
       "components/*": ["./src/components/*"],
       "config/*": ["./src/config/*"],
+      "constants/*": ["./src/constants/*"],
       "hooks/*": ["./src/hooks/*"],
       "layouts/*": ["./src/layouts/*"],
       "lib/*": ["./src/lib/*"],

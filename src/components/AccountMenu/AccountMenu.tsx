@@ -20,6 +20,7 @@ export function AccountMenu() {
     handleAbrir,
     handleFechar,
     handleSair,
+    handleConfiguracoes,
   } = useAccountMenu();
 
   return (
@@ -70,7 +71,7 @@ export function AccountMenu() {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleFechar} sx={{ fontFamily: 'inherit' }}>
+        <MenuItem onClick={handleConfiguracoes} sx={{ fontFamily: 'inherit' }}>
           <ListItemIcon>
             <Settings fontSize="small" />
           </ListItemIcon>

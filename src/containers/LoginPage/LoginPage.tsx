@@ -121,8 +121,8 @@ export function LoginPage() {
                   Só mais uma etapa
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Antes de continuar, você precisa aceitar nossa política de
-                  privacidade.
+                  Antes de continuar, você precisa aceitar nossos termos de uso
+                  e a política de privacidade.
                 </Typography>
               </Stack>
 
@@ -137,7 +137,11 @@ export function LoginPage() {
                 }
                 label={
                   <>
-                    Li e aceito a{' '}
+                    Li e aceito os{' '}
+                    <Link href="/termos" target="_blank" rel="noopener">
+                      termos de uso
+                    </Link>{' '}
+                    e a{' '}
                     <Link href="/privacidade" target="_blank" rel="noopener">
                       política de privacidade
                     </Link>
@@ -156,6 +160,16 @@ export function LoginPage() {
               </Button>
             </>
           )}
+
+          <Typography variant="caption" color="text.secondary">
+            <Link href="/termos" target="_blank" rel="noopener">
+              Termos de uso
+            </Link>
+            {' · '}
+            <Link href="/privacidade" target="_blank" rel="noopener">
+              Política de privacidade
+            </Link>
+          </Typography>
 
           {loginMutation.isError && !precisaAceitarPolitica && (
             <Alert severity="warning">{loginMutation.error.message}</Alert>

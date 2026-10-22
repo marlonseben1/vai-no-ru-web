@@ -25,12 +25,28 @@ export const PostHogAnalytics = {
   },
 
   /**
+   * Aplica a escolha de cookies do usuário. Sem aceite nada é capturado nem gravado;
+   * ao recusar ou revogar, a identidade guardada é descartada.
+   */
+  definirConsentimento(aceito: boolean) {
+    if (!posthog.__loaded) return;
+
+    if (aceito) {
+      posthog.opt_in_capturing();
+      return;
+    }
+
+    posthog.opt_out_capturing();
+    posthog.reset();
+  },
+
+  /**
    * Identifica o usuário logado. A identidade é o `id` (estável); `email` (matrícula@upf.br) e
    * `name` são person properties que o PostHog usa para exibir a pessoa nas gravações:
    * mostra o `email` e, sem ele, o `name`. Chame sempre que o usuário atual mudar.
    */
   identificar(usuario: Usuario) {
-    if (!posthog.__loaded) return;
+    if (!posthog.__loaded || posthog.has_opted_out_capturing()) return;
 
     posthog.identify(usuario.id, {
       perfil: usuario.perfil,
@@ -53,7 +69,7 @@ export const PostHogAnalytics = {
 
   /** Inicia a gravação ignorando sampling/gatilhos configurados no PostHog */
   forcarGravacao() {
-    if (!posthog.__loaded) return;
+    if (!posthog.__loaded || posthog.has_opted_out_capturing()) return;
 
     posthog.startSessionRecording({ event_trigger: true, sampling: true });
   },

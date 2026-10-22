@@ -19,8 +19,9 @@ export function useBottomMenu() {
     navigate(valor);
   }
 
-  function handleFecharConta() {
+  function handleConfiguracoes() {
     setContaAberta(false);
+    navigate('/configuracoes');
   }
 
   return {
@@ -30,7 +31,7 @@ export function useBottomMenu() {
     contaAberta,
     valorSelecionado: contaAberta ? VALOR_CONTA : pathname,
     handleMudar,
-    handleFecharConta,
+    handleConfiguracoes,
     handleSair,
   };
 }
