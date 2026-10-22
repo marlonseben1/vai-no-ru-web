@@ -1,4 +1,6 @@
 import CancelOutlined from '@mui/icons-material/CancelOutlined';
+import EditOutlined from '@mui/icons-material/EditOutlined';
+import EventAvailableOutlined from '@mui/icons-material/EventAvailableOutlined';
 import MoreVert from '@mui/icons-material/MoreVert';
 import ReplayOutlined from '@mui/icons-material/ReplayOutlined';
 import {
@@ -19,29 +21,43 @@ import { useReservaCard } from './useReservaCard';
 interface ReservaCardProps {
   reserva: ReservaResumo;
   isProcessando: boolean;
+  onEditar: (reserva: ReservaResumo) => void;
   onCancelar: (reservaId: string) => void;
   onReativar: (reservaId: string) => void;
+  onForcarAgendamento: (reservaId: string) => void;
 }
 
 export function ReservaCard({
   reserva,
   isProcessando,
+  onEditar,
   onCancelar,
   onReativar,
+  onForcarAgendamento,
 }: ReservaCardProps) {
   const {
     anchorEl,
     menuAberto,
     diaSemana,
     dataFormatada,
+    podeEditar,
     podeCancelar,
     podeReativar,
+    podeForcarAgendamento,
     temAcoes,
     abrirMenu,
     fecharMenu,
+    handleEditar,
     handleCancelar,
     handleReativar,
-  } = useReservaCard({ reserva, onCancelar, onReativar });
+    handleForcarAgendamento,
+  } = useReservaCard({
+    reserva,
+    onEditar,
+    onCancelar,
+    onReativar,
+    onForcarAgendamento,
+  });
 
   return (
     <Paper
@@ -102,6 +118,22 @@ export function ReservaCard({
           paper: { elevation: 3, sx: { borderRadius: 1, minWidth: 160 } },
         }}
       >
+        {podeEditar && (
+          <MenuItem onClick={handleEditar}>
+            <ListItemIcon>
+              <EditOutlined fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="body2">Editar</Typography>
+          </MenuItem>
+        )}
+        {podeForcarAgendamento && (
+          <MenuItem onClick={handleForcarAgendamento}>
+            <ListItemIcon>
+              <EventAvailableOutlined fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="body2">Forçar agendamento</Typography>
+          </MenuItem>
+        )}
         {podeCancelar && (
           <MenuItem onClick={handleCancelar}>
             <ListItemIcon>

@@ -16,6 +16,7 @@ import {
 import { LABEL_STATUS_RESERVA } from 'shared/labels';
 import type { StatusReserva } from 'types/statusReserva';
 import { CriarReservaDialog } from './CriarReservaDialog/CriarReservaDialog';
+import { EditarReservaDialog } from './EditarReservaDialog/EditarReservaDialog';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { OPCOES_DATA_FILTRO } from './ReservasPage.static';
 import { useReservasPage } from './useReservasPage';
@@ -30,11 +31,15 @@ export function ReservasPage() {
     criarAberto,
     handleAbrirCriar,
     handleFecharCriar,
+    reservaEditando,
+    handleAbrirEditar,
+    handleFecharEditar,
     handleMudarPagina,
     handleMudarSituacao,
     handleMudarDataFiltro,
     handleCancelar,
     handleReativar,
+    handleForcarAgendamento,
     isProcessando,
   } = useReservasPage();
 
@@ -69,8 +74,10 @@ export function ReservasPage() {
               key={reserva.id}
               reserva={reserva}
               isProcessando={isProcessando(reserva.id)}
+              onEditar={handleAbrirEditar}
               onCancelar={handleCancelar}
               onReativar={handleReativar}
+              onForcarAgendamento={handleForcarAgendamento}
             />
           ))}
         </Stack>
@@ -187,6 +194,10 @@ export function ReservasPage() {
       {renderLista()}
 
       <CriarReservaDialog open={criarAberto} onClose={handleFecharCriar} />
+      <EditarReservaDialog
+        reserva={reservaEditando}
+        onClose={handleFecharEditar}
+      />
     </Paper>
   );
 }

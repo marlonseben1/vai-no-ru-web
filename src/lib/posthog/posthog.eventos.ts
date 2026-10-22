@@ -18,6 +18,8 @@ export type EventosPostHog = {
   reserva_primeira_reserva: SemPropriedades;
   reserva_cancelada: SemPropriedades;
   reserva_reativada: SemPropriedades;
+  reserva_editada: { refeicao: string };
+  reserva_agendamento_forcado: SemPropriedades;
 };
 
 export type NomeEvento = keyof EventosPostHog;

@@ -31,10 +31,11 @@ export function useCriarReservaDialog({
     order: 'desc',
   });
 
-  // datas que já têm reserva (qualquer status): o servidor ignora essas datas
+  // datas com reserva não cancelada: o servidor ignora essas datas (canceladas são reativadas)
   const diasBloqueados = useMemo(() => {
     const hoje = dayjs().format('YYYY-MM-DD');
     return (reservasQuery.data?.data ?? [])
+      .filter((reserva) => reserva.status !== 'CANCELADA')
       .map((reserva) => reserva.dataReserva.slice(0, 10))
       .filter((data) => data >= hoje);
   }, [reservasQuery.data]);
