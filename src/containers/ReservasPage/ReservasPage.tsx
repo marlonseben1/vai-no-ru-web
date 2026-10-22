@@ -39,6 +39,7 @@ export function ReservasPage() {
     handleMudarDataFiltro,
     handleCancelar,
     handleReativar,
+    handleForcarAgendamento,
     isProcessando,
   } = useReservasPage();
 
@@ -76,6 +77,7 @@ export function ReservasPage() {
               onEditar={handleAbrirEditar}
               onCancelar={handleCancelar}
               onReativar={handleReativar}
+              onForcarAgendamento={handleForcarAgendamento}
             />
           ))}
         </Stack>

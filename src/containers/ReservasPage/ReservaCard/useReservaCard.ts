@@ -9,6 +9,7 @@ interface UseReservaCardParams {
   onEditar: (reserva: ReservaResumo) => void;
   onCancelar: (reservaId: string) => void;
   onReativar: (reservaId: string) => void;
+  onForcarAgendamento: (reservaId: string) => void;
 }
 
 export function useReservaCard({
@@ -16,6 +17,7 @@ export function useReservaCard({
   onEditar,
   onCancelar,
   onReativar,
+  onForcarAgendamento,
 }: UseReservaCardParams) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const isResponsivo = useIsResponsivo();
@@ -28,9 +30,13 @@ export function useReservaCard({
   const podeCancelar =
     reserva.status === 'PENDENTE' || reserva.status === 'NAO_AGENDADA';
   const podeReativar = reserva.status === 'CANCELADA';
+
+  const dataIso = reserva.dataReserva.slice(0, 10);
+  const podeForcarAgendamento =
+    podeCancelar && refeicoesDisponiveis(dataIso).includes(reserva.refeicao);
   const temAcoes = podeEditar || podeCancelar || podeReativar;
 
-  const data = dayjs(reserva.dataReserva.slice(0, 10));
+  const data = dayjs(dataIso);
   const diaSemana = isResponsivo
     ? data.format('dddd').replace('-feira', '')
     : data.format('dddd');
@@ -59,6 +65,11 @@ export function useReservaCard({
     onReativar(reserva.id);
   }
 
+  function handleForcarAgendamento() {
+    fecharMenu();
+    onForcarAgendamento(reserva.id);
+  }
+
   return {
     anchorEl,
     menuAberto: Boolean(anchorEl),
@@ -67,11 +78,13 @@ export function useReservaCard({
     podeEditar,
     podeCancelar,
     podeReativar,
+    podeForcarAgendamento,
     temAcoes,
     abrirMenu,
     fecharMenu,
     handleEditar,
     handleCancelar,
     handleReativar,
+    handleForcarAgendamento,
   };
 }

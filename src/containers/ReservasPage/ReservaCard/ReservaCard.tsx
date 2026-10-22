@@ -1,5 +1,6 @@
 import CancelOutlined from '@mui/icons-material/CancelOutlined';
 import EditOutlined from '@mui/icons-material/EditOutlined';
+import EventAvailableOutlined from '@mui/icons-material/EventAvailableOutlined';
 import MoreVert from '@mui/icons-material/MoreVert';
 import ReplayOutlined from '@mui/icons-material/ReplayOutlined';
 import {
@@ -23,6 +24,7 @@ interface ReservaCardProps {
   onEditar: (reserva: ReservaResumo) => void;
   onCancelar: (reservaId: string) => void;
   onReativar: (reservaId: string) => void;
+  onForcarAgendamento: (reservaId: string) => void;
 }
 
 export function ReservaCard({
@@ -31,6 +33,7 @@ export function ReservaCard({
   onEditar,
   onCancelar,
   onReativar,
+  onForcarAgendamento,
 }: ReservaCardProps) {
   const {
     anchorEl,
@@ -40,13 +43,21 @@ export function ReservaCard({
     podeEditar,
     podeCancelar,
     podeReativar,
+    podeForcarAgendamento,
     temAcoes,
     abrirMenu,
     fecharMenu,
     handleEditar,
     handleCancelar,
     handleReativar,
-  } = useReservaCard({ reserva, onEditar, onCancelar, onReativar });
+    handleForcarAgendamento,
+  } = useReservaCard({
+    reserva,
+    onEditar,
+    onCancelar,
+    onReativar,
+    onForcarAgendamento,
+  });
 
   return (
     <Paper
@@ -113,6 +124,14 @@ export function ReservaCard({
               <EditOutlined fontSize="small" />
             </ListItemIcon>
             <Typography variant="body2">Editar</Typography>
+          </MenuItem>
+        )}
+        {podeForcarAgendamento && (
+          <MenuItem onClick={handleForcarAgendamento}>
+            <ListItemIcon>
+              <EventAvailableOutlined fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="body2">Forçar agendamento</Typography>
           </MenuItem>
         )}
         {podeCancelar && (
