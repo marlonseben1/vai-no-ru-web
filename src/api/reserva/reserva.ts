@@ -1,5 +1,6 @@
 import { httpClient } from 'api/httpClient';
 import type { ApiSuccessResponse } from 'types/api';
+import type { Refeicao } from 'types/refeicao';
 import type {
   CriarReservasInput,
   ListarReservasParams,
@@ -29,6 +30,17 @@ async function cancelarReserva(reservaId: string): Promise<void> {
   await httpClient.delete(`/v1/reservas/${reservaId}`);
 }
 
+async function editarReserva(
+  reservaId: string,
+  refeicao: Refeicao,
+): Promise<Reserva> {
+  const { data } = await httpClient.patch<ApiSuccessResponse<Reserva>>(
+    `/v1/reservas/${reservaId}`,
+    { refeicao },
+  );
+  return data.data;
+}
+
 async function reativarReserva(reservaId: string): Promise<void> {
   await httpClient.put(`/v1/reservas/${reservaId}`);
 }
@@ -50,6 +62,7 @@ export const ReservaApi = {
   criarReservas,
   listarReservas,
   cancelarReserva,
+  editarReserva,
   reativarReserva,
   forcarAgendamento,
   buscarHistoricoReserva,

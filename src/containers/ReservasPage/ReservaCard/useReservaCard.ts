@@ -6,6 +6,7 @@ import type { ReservaResumo } from 'types/reserva';
 
 interface UseReservaCardParams {
   reserva: ReservaResumo;
+  onEditar: (reserva: ReservaResumo) => void;
   onCancelar: (reservaId: string) => void;
   onReativar: (reservaId: string) => void;
   onForcarAgendamento: (reservaId: string) => void;
@@ -13,6 +14,7 @@ interface UseReservaCardParams {
 
 export function useReservaCard({
   reserva,
+  onEditar,
   onCancelar,
   onReativar,
   onForcarAgendamento,
@@ -20,6 +22,11 @@ export function useReservaCard({
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const isResponsivo = useIsResponsivo();
 
+  const podeEditar =
+    reserva.status === 'PENDENTE' &&
+    refeicoesDisponiveis(reserva.dataReserva.slice(0, 10)).some(
+      (refeicao) => refeicao !== reserva.refeicao,
+    );
   const podeCancelar =
     reserva.status === 'PENDENTE' || reserva.status === 'NAO_AGENDADA';
   const podeReativar = reserva.status === 'CANCELADA';
@@ -27,7 +34,7 @@ export function useReservaCard({
   const dataIso = reserva.dataReserva.slice(0, 10);
   const podeForcarAgendamento =
     podeCancelar && refeicoesDisponiveis(dataIso).includes(reserva.refeicao);
-  const temAcoes = podeCancelar || podeReativar;
+  const temAcoes = podeEditar || podeCancelar || podeReativar;
 
   const data = dayjs(dataIso);
   const diaSemana = isResponsivo
@@ -41,6 +48,11 @@ export function useReservaCard({
 
   function fecharMenu() {
     setAnchorEl(null);
+  }
+
+  function handleEditar() {
+    fecharMenu();
+    onEditar(reserva);
   }
 
   function handleCancelar() {
@@ -63,12 +75,14 @@ export function useReservaCard({
     menuAberto: Boolean(anchorEl),
     diaSemana,
     dataFormatada,
+    podeEditar,
     podeCancelar,
     podeReativar,
     podeForcarAgendamento,
     temAcoes,
     abrirMenu,
     fecharMenu,
+    handleEditar,
     handleCancelar,
     handleReativar,
     handleForcarAgendamento,

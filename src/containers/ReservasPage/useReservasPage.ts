@@ -4,7 +4,7 @@ import { useForcarAgendamentoMutation } from 'queries/reserva/useForcarAgendamen
 import { useReativarReservaMutation } from 'queries/reserva/useReativarReservaMutation';
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
 import { useState } from 'react';
-import type { DataFiltroReserva } from 'types/reserva';
+import type { DataFiltroReserva, ReservaResumo } from 'types/reserva';
 import type { StatusReserva } from 'types/statusReserva';
 import { PAGE_SIZE_RESERVAS } from './ReservasPage.static';
 
@@ -15,6 +15,9 @@ export function useReservasPage() {
     'essa_semana',
   );
   const [criarAberto, setCriarAberto] = useState(false);
+  const [reservaEditando, setReservaEditando] = useState<ReservaResumo | null>(
+    null,
+  );
 
   const reservasQuery = useReservasQuery({
     page,
@@ -40,6 +43,14 @@ export function useReservasPage() {
 
   function handleFecharCriar() {
     setCriarAberto(false);
+  }
+
+  function handleAbrirEditar(reserva: ReservaResumo) {
+    setReservaEditando(reserva);
+  }
+
+  function handleFecharEditar() {
+    setReservaEditando(null);
   }
 
   function handleMudarPagina(novaPagina: number) {
@@ -111,6 +122,9 @@ export function useReservasPage() {
     criarAberto,
     handleAbrirCriar,
     handleFecharCriar,
+    reservaEditando,
+    handleAbrirEditar,
+    handleFecharEditar,
     handleMudarPagina,
     handleMudarSituacao,
     handleMudarDataFiltro,
