@@ -1,4 +1,5 @@
 import CancelOutlined from '@mui/icons-material/CancelOutlined';
+import EditOutlined from '@mui/icons-material/EditOutlined';
 import MoreVert from '@mui/icons-material/MoreVert';
 import ReplayOutlined from '@mui/icons-material/ReplayOutlined';
 import {
@@ -19,6 +20,7 @@ import { useReservaCard } from './useReservaCard';
 interface ReservaCardProps {
   reserva: ReservaResumo;
   isProcessando: boolean;
+  onEditar: (reserva: ReservaResumo) => void;
   onCancelar: (reservaId: string) => void;
   onReativar: (reservaId: string) => void;
 }
@@ -26,6 +28,7 @@ interface ReservaCardProps {
 export function ReservaCard({
   reserva,
   isProcessando,
+  onEditar,
   onCancelar,
   onReativar,
 }: ReservaCardProps) {
@@ -34,14 +37,16 @@ export function ReservaCard({
     menuAberto,
     diaSemana,
     dataFormatada,
+    podeEditar,
     podeCancelar,
     podeReativar,
     temAcoes,
     abrirMenu,
     fecharMenu,
+    handleEditar,
     handleCancelar,
     handleReativar,
-  } = useReservaCard({ reserva, onCancelar, onReativar });
+  } = useReservaCard({ reserva, onEditar, onCancelar, onReativar });
 
   return (
     <Paper
@@ -102,6 +107,14 @@ export function ReservaCard({
           paper: { elevation: 3, sx: { borderRadius: 1, minWidth: 160 } },
         }}
       >
+        {podeEditar && (
+          <MenuItem onClick={handleEditar}>
+            <ListItemIcon>
+              <EditOutlined fontSize="small" />
+            </ListItemIcon>
+            <Typography variant="body2">Editar</Typography>
+          </MenuItem>
+        )}
         {podeCancelar && (
           <MenuItem onClick={handleCancelar}>
             <ListItemIcon>
