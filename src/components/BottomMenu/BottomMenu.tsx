@@ -14,7 +14,10 @@ const ALTURA_BOTTOM_MENU = 56;
 const estiloAcao = {
   fontFamily: FONT_FAMILY_LAYOUT,
   '&.Mui-selected': { color: colorPalette.primary[800] },
-  '& .MuiBottomNavigationAction-label': { fontFamily: 'inherit' },
+  '& .MuiBottomNavigationAction-label': {
+    fontFamily: 'inherit',
+    '&.Mui-selected': { fontSize: '0.75rem' },
+  },
 };
 
 export function BottomMenu() {
