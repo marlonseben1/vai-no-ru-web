@@ -6,6 +6,7 @@ import useIsResponsivo from 'hooks/useIsResponsivo';
 import { Outlet } from 'react-router';
 import { requireAuthLoader } from 'routes/guards/requireAuthLoader';
 import { COR_FUNDO_LAYOUT } from 'theme/colorPalette';
+import { CadastroReservaDialog } from './PrivateLayout.comps';
 
 export const loader = requireAuthLoader;
 
@@ -51,6 +52,7 @@ export const Component = () => {
         </Box>
         {isResponsivo && <BottomMenu />}
       </Box>
+      <CadastroReservaDialog />
     </Box>
   );
 };
