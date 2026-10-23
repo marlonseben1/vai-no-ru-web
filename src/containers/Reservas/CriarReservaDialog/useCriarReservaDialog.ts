@@ -4,21 +4,29 @@ import { useCriarReservasMutation } from 'queries/reserva/useCriarReservasMutati
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
 import { useMemo, useState } from 'react';
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
+import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
 import type { Refeicao } from 'types/refeicao';
 import type { ReservaDiaInput } from 'types/reserva';
 import { abrirAvisoPendente } from '../AvisoPendente/avisoPendente';
-
-interface UseCriarReservaDialogParams {
-  onClose: () => void;
-}
+import {
+  deveMostrarAplicarParaTodos,
+  isDataDesabilitada,
+} from './CriarReservaDialog.rules';
 
 function ordenarPorData(dias: ReservaDiaInput[]) {
   return [...dias].sort((a, b) => a.data.localeCompare(b.data));
 }
 
-export function useCriarReservaDialog({
-  onClose,
-}: UseCriarReservaDialogParams) {
+export function useCriarReservaDialog() {
+  const open = useReservasStore(
+    ({ cadastroReservaDialog }) =>
+      cadastroReservaDialog.open && cadastroReservaDialog.mode === 'criar',
+  );
+
+  function onClose() {
+    ReservasStore.setCadastroReservaDialog(null);
+  }
+
   const [dias, setDias] = useState<ReservaDiaInput[]>([]);
   // oferece aplicar última refeição escolhida manualmente para todos os dias
   const [refeicaoParaTodos, setRefeicaoParaTodos] = useState<Refeicao | null>(
@@ -42,24 +50,13 @@ export function useCriarReservaDialog({
 
   const diasSelecionados = useMemo(() => dias.map((dia) => dia.data), [dias]);
 
-  const mostrarAplicarParaTodos =
-    refeicaoParaTodos !== null &&
-    dias.length > 1 &&
-    dias.some(
-      (dia) =>
-        dia.refeicao !== refeicaoParaTodos &&
-        refeicoesDisponiveis(dia.data).includes(refeicaoParaTodos),
-    );
+  const mostrarAplicarParaTodos = deveMostrarAplicarParaTodos(
+    dias,
+    refeicaoParaTodos,
+  );
 
   function desabilitarData(data: Dayjs): boolean {
-    const diaSemana = data.day();
-    const dataISO = data.format('YYYY-MM-DD');
-    return (
-      diaSemana === 0 ||
-      diaSemana === 6 ||
-      diasBloqueados.includes(dataISO) ||
-      refeicoesDisponiveis(dataISO).length === 0
-    );
+    return isDataDesabilitada(data, diasBloqueados);
   }
 
   function handleToggleData(data: Dayjs | null) {
@@ -125,18 +122,20 @@ export function useCriarReservaDialog({
   }
 
   return {
+    open,
     dias,
-    diasSelecionados,
+    onClose,
+    handleExited,
+    handleRemover,
     diasBloqueados,
-    criarReservasMutation,
+    handleReservar,
     desabilitarData,
+    diasSelecionados,
     handleToggleData,
     refeicaoParaTodos,
-    mostrarAplicarParaTodos,
     handleTrocarRefeicao,
+    criarReservasMutation,
+    mostrarAplicarParaTodos,
     handleAplicarRefeicaoParaTodos,
-    handleRemover,
-    handleReservar,
-    handleExited,
   };
 }

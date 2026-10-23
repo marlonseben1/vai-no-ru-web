@@ -2,18 +2,16 @@ import dayjs from 'dayjs';
 import { useEditarReservaMutation } from 'queries/reserva/useEditarReservaMutation';
 import { useState } from 'react';
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
+import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
 import type { Refeicao } from 'types/refeicao';
-import type { ReservaResumo } from 'types/reserva';
 
-interface UseEditarReservaDialogParams {
-  reserva: ReservaResumo | null;
-  onClose: () => void;
-}
-
-export function useEditarReservaDialog({
-  reserva,
-  onClose,
-}: UseEditarReservaDialogParams) {
+export function useEditarReservaDialog() {
+  const {
+    open: aberto,
+    mode,
+    reserva,
+  } = useReservasStore((state) => state.cadastroReservaDialog);
+  const open = aberto && mode === 'editar';
   const [refeicaoEscolhida, setRefeicaoEscolhida] = useState<Refeicao | null>(
     null,
   );
@@ -23,7 +21,11 @@ export function useEditarReservaDialog({
   const dataISO = reserva?.dataReserva.slice(0, 10) ?? '';
   const dataFormatada = dataISO ? dayjs(dataISO).format('DD/MM/YYYY') : '';
   const opcoes = dataISO ? refeicoesDisponiveis(dataISO) : [];
-  const alterou = reserva !== null && refeicao !== reserva.refeicao;
+  const alterou = reserva !== undefined && refeicao !== reserva.refeicao;
+
+  function onClose() {
+    ReservasStore.setCadastroReservaDialog(null);
+  }
 
   function handleSalvar() {
     if (!reserva || !alterou) return;
@@ -39,13 +41,15 @@ export function useEditarReservaDialog({
   }
 
   return {
-    refeicao,
-    dataFormatada,
+    open,
     opcoes,
+    onClose,
     alterou,
-    editarMutation,
-    setRefeicaoEscolhida,
+    refeicao,
     handleSalvar,
     handleExited,
+    dataFormatada,
+    editarMutation,
+    setRefeicaoEscolhida,
   };
 }

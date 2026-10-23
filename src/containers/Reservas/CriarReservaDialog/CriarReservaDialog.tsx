@@ -25,28 +25,25 @@ import { LABEL_REFEICAO } from 'shared/labels';
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
 
-interface CriarReservaDialogProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-export function CriarReservaDialog({ open, onClose }: CriarReservaDialogProps) {
+export function CriarReservaDialog() {
   const isResponsivo = useIsResponsivo();
   const {
+    open,
     dias,
-    diasSelecionados,
+    onClose,
+    handleExited,
+    handleRemover,
     diasBloqueados,
-    criarReservasMutation,
+    handleReservar,
     desabilitarData,
+    diasSelecionados,
     handleToggleData,
     refeicaoParaTodos,
-    mostrarAplicarParaTodos,
     handleTrocarRefeicao,
+    criarReservasMutation,
+    mostrarAplicarParaTodos,
     handleAplicarRefeicaoParaTodos,
-    handleRemover,
-    handleReservar,
-    handleExited,
-  } = useCriarReservaDialog({ onClose });
+  } = useCriarReservaDialog();
 
   const DiaCalendario = useCallback(
     (props: PickerDayProps) => (

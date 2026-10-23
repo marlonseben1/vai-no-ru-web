@@ -15,8 +15,6 @@ import {
 } from '@mui/material';
 import { LABEL_STATUS_RESERVA } from 'shared/labels';
 import type { StatusReserva } from 'types/statusReserva';
-import { CriarReservaDialog } from './CriarReservaDialog/CriarReservaDialog';
-import { EditarReservaDialog } from './EditarReservaDialog/EditarReservaDialog';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { OPCOES_DATA_FILTRO } from './Reservas.static';
 import { useReservas } from './useReservas';
@@ -24,23 +22,14 @@ import { useReservas } from './useReservas';
 export function Reservas() {
   const {
     page,
-    totalPaginas,
     situacao,
     dataFiltro,
+    totalPaginas,
     reservasQuery,
-    criarAberto,
     handleAbrirCriar,
-    handleFecharCriar,
-    reservaEditando,
-    handleAbrirEditar,
-    handleFecharEditar,
     handleMudarPagina,
     handleMudarSituacao,
     handleMudarDataFiltro,
-    handleCancelar,
-    handleReativar,
-    handleForcarAgendamento,
-    isProcessando,
   } = useReservas();
 
   const { data, isPending, isError, error } = reservasQuery;
@@ -70,15 +59,7 @@ export function Reservas() {
       <>
         <Stack spacing={1.5}>
           {data.data.map((reserva) => (
-            <ReservaCard
-              key={reserva.id}
-              reserva={reserva}
-              isProcessando={isProcessando(reserva.id)}
-              onEditar={handleAbrirEditar}
-              onCancelar={handleCancelar}
-              onReativar={handleReativar}
-              onForcarAgendamento={handleForcarAgendamento}
-            />
+            <ReservaCard key={reserva.id} reserva={reserva} />
           ))}
         </Stack>
 
@@ -192,12 +173,6 @@ export function Reservas() {
       </Stack>
 
       {renderLista()}
-
-      <CriarReservaDialog open={criarAberto} onClose={handleFecharCriar} />
-      <EditarReservaDialog
-        reserva={reservaEditando}
-        onClose={handleFecharEditar}
-      />
     </Paper>
   );
 }

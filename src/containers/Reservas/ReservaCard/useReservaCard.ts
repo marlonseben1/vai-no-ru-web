@@ -1,41 +1,31 @@
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { type MouseEvent, useState } from 'react';
-import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import type { ReservaResumo } from 'types/reserva';
+import {
+  podeCancelarReserva,
+  podeEditarReserva,
+  podeForcarAgendamentoReserva,
+  podeReativarReserva,
+} from './ReservaCard.rules';
+import { useReservaAcoes } from './useReservaAcoes';
 
 interface UseReservaCardParams {
   reserva: ReservaResumo;
-  onEditar: (reserva: ReservaResumo) => void;
-  onCancelar: (reservaId: string) => void;
-  onReativar: (reservaId: string) => void;
-  onForcarAgendamento: (reservaId: string) => void;
 }
 
-export function useReservaCard({
-  reserva,
-  onEditar,
-  onCancelar,
-  onReativar,
-  onForcarAgendamento,
-}: UseReservaCardParams) {
+export function useReservaCard({ reserva }: UseReservaCardParams) {
+  const acoes = useReservaAcoes(reserva);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const isResponsivo = useIsResponsivo();
 
-  const podeEditar =
-    reserva.status === 'PENDENTE' &&
-    refeicoesDisponiveis(reserva.dataReserva.slice(0, 10)).some(
-      (refeicao) => refeicao !== reserva.refeicao,
-    );
-  const podeCancelar =
-    reserva.status === 'PENDENTE' || reserva.status === 'NAO_AGENDADA';
-  const podeReativar = reserva.status === 'CANCELADA';
-
-  const dataIso = reserva.dataReserva.slice(0, 10);
-  const podeForcarAgendamento =
-    podeCancelar && refeicoesDisponiveis(dataIso).includes(reserva.refeicao);
+  const podeEditar = podeEditarReserva(reserva);
+  const podeCancelar = podeCancelarReserva(reserva);
+  const podeReativar = podeReativarReserva(reserva);
+  const podeForcarAgendamento = podeForcarAgendamentoReserva(reserva);
   const temAcoes = podeEditar || podeCancelar || podeReativar;
 
+  const dataIso = reserva.dataReserva.slice(0, 10);
   const data = dayjs(dataIso);
   const diaSemana = isResponsivo
     ? data.format('dddd').replace('-feira', '')
@@ -52,39 +42,40 @@ export function useReservaCard({
 
   function handleEditar() {
     fecharMenu();
-    onEditar(reserva);
+    acoes.handleEditar();
   }
 
   function handleCancelar() {
     fecharMenu();
-    onCancelar(reserva.id);
+    acoes.handleCancelar();
   }
 
   function handleReativar() {
     fecharMenu();
-    onReativar(reserva.id);
+    acoes.handleReativar();
   }
 
   function handleForcarAgendamento() {
     fecharMenu();
-    onForcarAgendamento(reserva.id);
+    acoes.handleForcarAgendamento();
   }
 
   return {
     anchorEl,
-    menuAberto: Boolean(anchorEl),
+    temAcoes,
     diaSemana,
-    dataFormatada,
+    abrirMenu,
     podeEditar,
+    fecharMenu,
     podeCancelar,
     podeReativar,
-    podeForcarAgendamento,
-    temAcoes,
-    abrirMenu,
-    fecharMenu,
     handleEditar,
+    dataFormatada,
     handleCancelar,
     handleReativar,
+    podeForcarAgendamento,
     handleForcarAgendamento,
+    menuAberto: Boolean(anchorEl),
+    isProcessando: acoes.isProcessando,
   };
 }

@@ -10,32 +10,25 @@ import {
 } from '@mui/material';
 import { LABEL_REFEICAO } from 'shared/labels';
 import type { Refeicao } from 'types/refeicao';
-import type { ReservaResumo } from 'types/reserva';
 import { useEditarReservaDialog } from './useEditarReservaDialog';
 
-interface EditarReservaDialogProps {
-  reserva: ReservaResumo | null;
-  onClose: () => void;
-}
-
-export function EditarReservaDialog({
-  reserva,
-  onClose,
-}: EditarReservaDialogProps) {
+export function EditarReservaDialog() {
   const {
-    refeicao,
-    dataFormatada,
+    open,
     opcoes,
+    onClose,
     alterou,
-    editarMutation,
-    setRefeicaoEscolhida,
+    refeicao,
     handleSalvar,
     handleExited,
-  } = useEditarReservaDialog({ reserva, onClose });
+    dataFormatada,
+    editarMutation,
+    setRefeicaoEscolhida,
+  } = useEditarReservaDialog();
 
   return (
     <Dialog
-      open={reserva !== null}
+      open={open}
       onClose={onClose}
       fullWidth
       maxWidth="xs"

@@ -1,23 +1,15 @@
-import { useConfirmacao } from 'hooks/useConfirmacao';
-import { useCancelarReservaMutation } from 'queries/reserva/useCancelarReservaMutation';
-import { useForcarAgendamentoMutation } from 'queries/reserva/useForcarAgendamentoMutation';
-import { useReativarReservaMutation } from 'queries/reserva/useReativarReservaMutation';
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
-import { useState } from 'react';
-import type { DataFiltroReserva, ReservaResumo } from 'types/reserva';
-import type { StatusReserva } from 'types/statusReserva';
+import { useEffect } from 'react';
+import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
 import { PAGE_SIZE_RESERVAS } from './Reservas.static';
 
 export function useReservas() {
-  const [page, setPage] = useState(1);
-  const [situacao, setSituacao] = useState<StatusReserva | ''>('');
-  const [dataFiltro, setDataFiltro] = useState<DataFiltroReserva | ''>(
-    'essa_semana',
+  const { page, situacao, dataFiltro } = useReservasStore(
+    (state) => state.filtros,
   );
-  const [criarAberto, setCriarAberto] = useState(false);
-  const [reservaEditando, setReservaEditando] = useState<ReservaResumo | null>(
-    null,
-  );
+
+  // filtros e dialogs não sobrevivem à saída da tela
+  useEffect(() => ReservasStore.resetState, []);
 
   const reservasQuery = useReservasQuery({
     page,
@@ -28,109 +20,35 @@ export function useReservas() {
     ...(dataFiltro ? { dataFiltro } : {}),
   });
 
-  const confirmar = useConfirmacao();
-  const cancelarMutation = useCancelarReservaMutation();
-  const reativarMutation = useReativarReservaMutation();
-  const forcarAgendamentoMutation = useForcarAgendamentoMutation();
-
   const totalPaginas = reservasQuery.data
     ? Math.ceil(reservasQuery.data.total / PAGE_SIZE_RESERVAS)
     : 0;
 
   function handleAbrirCriar() {
-    setCriarAberto(true);
-  }
-
-  function handleFecharCriar() {
-    setCriarAberto(false);
-  }
-
-  function handleAbrirEditar(reserva: ReservaResumo) {
-    setReservaEditando(reserva);
-  }
-
-  function handleFecharEditar() {
-    setReservaEditando(null);
+    ReservasStore.setCadastroReservaDialog({ mode: 'criar' });
   }
 
   function handleMudarPagina(novaPagina: number) {
-    setPage(novaPagina);
+    ReservasStore.setFiltros({ page: novaPagina });
   }
 
-  function handleMudarSituacao(novaSituacao: StatusReserva | '') {
-    setSituacao(novaSituacao);
-    setPage(1);
+  function handleMudarSituacao(novaSituacao: typeof situacao) {
+    ReservasStore.setFiltros({ situacao: novaSituacao });
   }
 
-  function handleMudarDataFiltro(novoDataFiltro: DataFiltroReserva | '') {
-    setDataFiltro(novoDataFiltro);
-    setPage(1);
-  }
-
-  async function handleCancelar(reservaId: string) {
-    try {
-      await confirmar({
-        title: 'Cancelar reserva',
-        description: 'Tem certeza que deseja cancelar esta reserva?',
-        confirmLabel: 'Cancelar reserva',
-        destructive: true,
-      });
-      cancelarMutation.mutate(reservaId);
-    } catch {}
-  }
-
-  async function handleReativar(reservaId: string) {
-    try {
-      await confirmar({
-        title: 'Reativar reserva',
-        description: 'Tem certeza que deseja reativar esta reserva?',
-        confirmLabel: 'Reativar',
-      });
-      reativarMutation.mutate(reservaId);
-    } catch {}
-  }
-
-  async function handleForcarAgendamento(reservaId: string) {
-    try {
-      await confirmar({
-        title: 'Forçar agendamento',
-        description:
-          'Isso envia esta reserva ao formulário do RU agora, sem esperar o horário automático. Deseja continuar?',
-        confirmLabel: 'Forçar agendamento',
-      });
-      forcarAgendamentoMutation.mutate(reservaId);
-    } catch {}
-  }
-
-  function isProcessando(reservaId: string) {
-    const cancelando =
-      cancelarMutation.isPending && cancelarMutation.variables === reservaId;
-    const reativando =
-      reativarMutation.isPending && reativarMutation.variables === reservaId;
-    const forcando =
-      forcarAgendamentoMutation.isPending &&
-      forcarAgendamentoMutation.variables === reservaId;
-    return cancelando || reativando || forcando;
+  function handleMudarDataFiltro(novoDataFiltro: typeof dataFiltro) {
+    ReservasStore.setFiltros({ dataFiltro: novoDataFiltro });
   }
 
   return {
     page,
-    totalPaginas,
     situacao,
     dataFiltro,
+    totalPaginas,
     reservasQuery,
-    criarAberto,
     handleAbrirCriar,
-    handleFecharCriar,
-    reservaEditando,
-    handleAbrirEditar,
-    handleFecharEditar,
     handleMudarPagina,
     handleMudarSituacao,
     handleMudarDataFiltro,
-    handleCancelar,
-    handleReativar,
-    handleForcarAgendamento,
-    isProcessando,
   };
 }

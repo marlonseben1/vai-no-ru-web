@@ -20,44 +20,27 @@ import { useReservaCard } from './useReservaCard';
 
 interface ReservaCardProps {
   reserva: ReservaResumo;
-  isProcessando: boolean;
-  onEditar: (reserva: ReservaResumo) => void;
-  onCancelar: (reservaId: string) => void;
-  onReativar: (reservaId: string) => void;
-  onForcarAgendamento: (reservaId: string) => void;
 }
 
-export function ReservaCard({
-  reserva,
-  isProcessando,
-  onEditar,
-  onCancelar,
-  onReativar,
-  onForcarAgendamento,
-}: ReservaCardProps) {
+export function ReservaCard({ reserva }: ReservaCardProps) {
   const {
     anchorEl,
-    menuAberto,
+    temAcoes,
     diaSemana,
-    dataFormatada,
+    abrirMenu,
+    menuAberto,
     podeEditar,
+    fecharMenu,
     podeCancelar,
     podeReativar,
-    podeForcarAgendamento,
-    temAcoes,
-    abrirMenu,
-    fecharMenu,
     handleEditar,
+    isProcessando,
+    dataFormatada,
     handleCancelar,
     handleReativar,
+    podeForcarAgendamento,
     handleForcarAgendamento,
-  } = useReservaCard({
-    reserva,
-    onEditar,
-    onCancelar,
-    onReativar,
-    onForcarAgendamento,
-  });
+  } = useReservaCard({ reserva });
 
   return (
     <Paper
