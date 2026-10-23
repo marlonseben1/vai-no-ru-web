@@ -14,12 +14,14 @@ export type EventosPostHog = {
   cardapio_semana_navegada: { direcao: 'anterior' | 'proxima' | 'hoje' };
 
   // Reservas
-  reserva_criada: { quantidadeDias: number; refeicoes: string[] };
+  reserva_criada: PropriedadesReservaCriada;
   reserva_primeira_reserva: SemPropriedades;
   reserva_cancelada: SemPropriedades;
   reserva_reativada: SemPropriedades;
   reserva_editada: { refeicao: string };
   reserva_agendamento_forcado: SemPropriedades;
+  reserva_ces_exibida: SemPropriedades;
+  reserva_ces_voto: PropriedadesReservaCesVoto;
 };
 
 export type NomeEvento = keyof EventosPostHog;
@@ -40,3 +42,15 @@ export type ArgsPropriedades<E extends NomeEvento> = [
 
 /** Evento enviado sem propriedades */
 type SemPropriedades = undefined;
+
+// Propriedades de cada evento
+
+interface PropriedadesReservaCriada {
+  quantidadeDias: number;
+  refeicoes: string[];
+}
+
+interface PropriedadesReservaCesVoto {
+  notaCes: number;
+  feedback: string | null;
+}

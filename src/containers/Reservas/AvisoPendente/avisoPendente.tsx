@@ -39,14 +39,26 @@ function AvisoPendenteConteudo() {
   );
 }
 
-export function abrirAvisoPendente() {
+interface AvisoPendenteOptions {
+  /** Executa quando o usuário fecha o aviso, por qualquer meio */
+  onClose?: () => void;
+}
+
+export function abrirAvisoPendente({ onClose }: AvisoPendenteOptions = {}) {
   const { setDialogGeral } = useAppStore.getState();
+
+  const handleFecharAviso = () => {
+    setDialogGeral(null);
+    onClose?.();
+  };
 
   setDialogGeral({
     title: 'Reserva registrada!',
     content: <AvisoPendenteConteudo />,
+    // o botão fecha direto pelo store e não passa por esse onClose (que cobre Esc e clique fora)
+    onClose: onClose,
     footer: (
-      <Button variant="contained" onClick={() => setDialogGeral(null)}>
+      <Button variant="contained" onClick={handleFecharAviso}>
         Entendi
       </Button>
     ),
