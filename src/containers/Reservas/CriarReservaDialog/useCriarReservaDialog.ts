@@ -4,6 +4,7 @@ import { useCriarReservasMutation } from 'queries/reserva/useCriarReservasMutati
 import { useReservasQuery } from 'queries/reserva/useReservasQuery';
 import { useMemo, useState } from 'react';
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
+import { CesStore } from 'store/ces/ces.store';
 import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
 import type { Refeicao } from 'types/refeicao';
 import type { ReservaDiaInput } from 'types/reserva';
@@ -107,7 +108,10 @@ export function useCriarReservaDialog() {
           if (ehPrimeiraReserva) {
             PostHogAnalytics.capturar('reserva_primeira_reserva');
             PostHogAnalytics.forcarGravacao();
-            abrirAvisoPendente();
+            // CES aparece só depois do aviso, para não empilhar as dialogs
+            abrirAvisoPendente({
+              onClose: () => CesStore.abrir('primeira_reserva'),
+            });
           }
         },
       },
