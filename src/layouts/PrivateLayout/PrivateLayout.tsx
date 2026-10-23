@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import { AppBar } from 'components/AppBar/AppBar';
 import { BottomMenu } from 'components/BottomMenu/BottomMenu';
+import { CesDialog } from 'components/CesDialog/CesDialog';
 import { Drawer } from 'components/Drawer/Drawer';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { Outlet } from 'react-router';
@@ -53,6 +54,7 @@ export const Component = () => {
         {isResponsivo && <BottomMenu />}
       </Box>
       <CadastroReservaDialog />
+      <CesDialog />
     </Box>
   );
 };
