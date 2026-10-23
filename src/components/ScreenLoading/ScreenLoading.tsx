@@ -7,9 +7,10 @@ export function ScreenLoading() {
   return (
     <Backdrop
       open={loading}
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+      sx={{ zIndex: 10000, bgcolor: 'rgba(0, 0, 0, 0.7)' }}
+      unmountOnExit
     >
-      <CircularProgress sx={{ color: '#fff' }} />
+      <CircularProgress size={72} thickness={6} />
     </Backdrop>
   );
 }

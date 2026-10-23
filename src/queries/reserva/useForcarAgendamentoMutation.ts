@@ -8,12 +8,15 @@ export function useForcarAgendamentoMutation() {
 
   return useMutation({
     mutationFn: ReservaApi.forcarAgendamento,
-    onSuccess: (_data, reservaId) => {
+    onSuccess: async (_data, reservaId) => {
       PostHogAnalytics.capturar('reserva_agendamento_forcado');
-      queryClient.invalidateQueries({ queryKey: queryKeys.reservas.all });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.reservaHistorico(reservaId),
-      });
+      // mantém o loading global até a lista atualizada chegar
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.reservas.all }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.reservaHistorico(reservaId),
+        }),
+      ]);
     },
   });
 }

@@ -1,4 +1,5 @@
-import { lazy, memo, Suspense } from 'react';
+import { SuspenseWithLoading } from 'components/SuspenseWithLoading/SuspenseWithLoading';
+import { lazy, memo } from 'react';
 import { useReservasStore } from 'store/reservas/reservas.store';
 
 const CriarReservaDialogComp = lazy(() =>
@@ -20,12 +21,12 @@ export const CadastroReservaDialog = memo(() => {
   if (!open) return null;
 
   return (
-    <Suspense fallback={null}>
+    <SuspenseWithLoading>
       {mode === 'criar' ? (
         <CriarReservaDialogComp />
       ) : (
         <EditarReservaDialogComp />
       )}
-    </Suspense>
+    </SuspenseWithLoading>
   );
 });

@@ -8,12 +8,15 @@ export function useReativarReservaMutation() {
 
   return useMutation({
     mutationFn: ReservaApi.reativarReserva,
-    onSuccess: (_data, reservaId) => {
+    onSuccess: async (_data, reservaId) => {
       PostHogAnalytics.capturar('reserva_reativada');
-      queryClient.invalidateQueries({ queryKey: queryKeys.reservas.all });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.reservaHistorico(reservaId),
-      });
+      // mantém o loading global até a lista atualizada chegar
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: queryKeys.reservas.all }),
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.reservaHistorico(reservaId),
+        }),
+      ]);
     },
   });
 }
