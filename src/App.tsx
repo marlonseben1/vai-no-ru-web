@@ -4,11 +4,11 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ConfirmacaoDialog } from 'components/ConfirmacaoDialog/ConfirmacaoDialog';
 import { CookieBanner } from 'components/CookieBanner/CookieBanner';
 import { DialogGeral } from 'components/DialogGeral/DialogGeral';
 import { ScreenLoading } from 'components/ScreenLoading/ScreenLoading';
 import { env } from 'config/env';
-import { ConfirmacaoProvider } from 'contexts/ConfirmacaoContext';
 import { useAuthBootstrap } from 'hooks/useAuthBootstrap';
 import { usePageview } from 'hooks/usePageview';
 import { usePostHogSync } from 'hooks/usePostHogSync';
@@ -29,13 +29,12 @@ function AppContent() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-      <ConfirmacaoProvider>
-        <RouterProvider router={router} />
-        <ScreenLoading />
-        <DialogGeral />
-        <CookieBanner />
-        {import.meta.env.DEV && <ReactQueryDevtools />}
-      </ConfirmacaoProvider>
+      <RouterProvider router={router} />
+      <ScreenLoading />
+      <DialogGeral />
+      <ConfirmacaoDialog />
+      <CookieBanner />
+      {import.meta.env.DEV && <ReactQueryDevtools />}
     </LocalizationProvider>
   );
 }
