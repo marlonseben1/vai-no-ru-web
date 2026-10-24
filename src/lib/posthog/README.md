@@ -9,6 +9,7 @@ lib/posthog/
 ├── index.ts             # API pública
 ├── posthog.ts           # PostHogAnalytics: iniciar, identificar, capturar, forcarGravacao, limpar
 ├── posthog.eventos.ts   # catálogo de eventos (nome → propriedades), agrupado por domínio
+├── posthog.flags.ts     # chaves das feature flags
 └── posthog.config.ts    # opções do init + privacidade da gravação
 ```
 
@@ -48,6 +49,38 @@ dominio_com_props: {
 
 - O nome deve ser `snake_case` minúsculo.
 - **Nunca renomeie um evento existente**, porque isso quebra o histórico no PostHog.
+
+## Eventos de reserva
+
+| Evento                        | Quando                                   | Propriedades                    |
+| ----------------------------- | ---------------------------------------- | ------------------------------- |
+| `reserva_criada`              | reservas criadas com sucesso             | `quantidadeDias`, `refeicoes`   |
+| `reserva_primeira_reserva`    | primeira reserva do usuário              | —                               |
+| `reserva_editada`             | refeição da reserva alterada             | `refeicao`                      |
+| `reserva_cancelada`           | reserva cancelada                        | —                               |
+| `reserva_reativada`           | reserva reativada                        | —                               |
+| `reserva_agendamento_forcado` | agendamento forçado                      | —                               |
+| `reserva_erro`                | falha em qualquer ação acima da reserva  | `acao`, `status`, `codigo`      |
+
+`reserva_erro` é enviado no `onError` das mutations de `queries/reserva`, junto com o toast de erro
+(`lib/sonner`):
+
+- `acao`: `criar`, `editar`, `cancelar`, `reativar` ou `forcar_agendamento`.
+- `status`: status HTTP do `ApiError`, ou `0` quando a API não respondeu.
+- `codigo`: `code` do `ApiError`, ou `null`.
+- A mensagem de erro **não** é enviada, para não levar texto livre do backend ao PostHog.
+
+O `error` das mutations é tipado como `ApiError` por `types/react-query.d.ts`.
+
+## Feature flags
+
+As chaves ficam em `posthog.flags.ts` (`FLAGS_POSTHOG`) e são lidas em componentes com
+`useFeatureFlagVariantKey(FLAGS_POSTHOG.<flag>)` (de `posthog-js/react`). Sem consentimento de cookies
+o usuário não é identificado, então o valor vem `undefined`: **sempre defina o comportamento padrão
+(controle) para esse caso**. O PostHog anexa `$feature/<flag>` aos eventos, o que permite segmentar métricas por variante.
+
+- `ces-posicao`: `centro` (controle) ou `canto` — posição da pesquisa CES (`components/CesDialog`).
+  No mobile é sempre `canto`, fora da flag e do experimento (a flag nem é lida). Em desenvolvimento, `?cesPosicao=canto` força a variante.
 
 ## Consentimento de cookies
 

@@ -1,11 +1,13 @@
 import { Box } from '@mui/material';
 import { AppBar } from 'components/AppBar/AppBar';
 import { BottomMenu } from 'components/BottomMenu/BottomMenu';
+import { CesDialog } from 'components/CesDialog/CesDialog';
 import { Drawer } from 'components/Drawer/Drawer';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { Outlet } from 'react-router';
 import { requireAuthLoader } from 'routes/guards/requireAuthLoader';
 import { COR_FUNDO_LAYOUT } from 'theme/colorPalette';
+import { CadastroReservaDialog } from './PrivateLayout.comps';
 
 export const loader = requireAuthLoader;
 
@@ -51,6 +53,8 @@ export const Component = () => {
         </Box>
         {isResponsivo && <BottomMenu />}
       </Box>
+      <CadastroReservaDialog />
+      <CesDialog />
     </Box>
   );
 };
