@@ -1,7 +1,6 @@
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteOutlined from '@mui/icons-material/DeleteOutlined';
 import {
-  Alert,
   Box,
   Button,
   Dialog,
@@ -239,11 +238,6 @@ export function CriarReservaDialog() {
           '& > :not(style) ~ :not(style)': { ml: 0 },
         }}
       >
-        {criarReservasMutation.isError && (
-          <Alert severity="error" sx={{ width: '100%' }}>
-            {criarReservasMutation.error.message}
-          </Alert>
-        )}
         <Button
           variant="contained"
           fullWidth

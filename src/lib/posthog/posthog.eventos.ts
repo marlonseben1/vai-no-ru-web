@@ -20,6 +20,7 @@ export type EventosPostHog = {
   reserva_reativada: SemPropriedades;
   reserva_editada: { refeicao: string };
   reserva_agendamento_forcado: SemPropriedades;
+  reserva_erro: PropriedadesReservaErro;
   reserva_ces_exibida: SemPropriedades;
   reserva_ces_voto: PropriedadesReservaCesVoto;
 };
@@ -53,4 +54,11 @@ interface PropriedadesReservaCriada {
 interface PropriedadesReservaCesVoto {
   notaCes: number;
   feedback: string | null;
+}
+
+interface PropriedadesReservaErro {
+  acao: 'criar' | 'editar' | 'cancelar' | 'reativar' | 'forcar_agendamento';
+  /** 0 quando a API não respondeu */
+  status: number;
+  codigo: string | null;
 }

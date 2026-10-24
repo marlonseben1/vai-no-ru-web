@@ -18,6 +18,7 @@ import { PostHogProvider } from 'posthog-js/react';
 import { queryClient } from 'queries/queryClient';
 import { RouterProvider } from 'react-router';
 import { router } from 'routes/Router';
+import { Toaster } from 'sonner';
 import { theme } from 'theme/theme';
 
 PostHogAnalytics.iniciar();
@@ -34,6 +35,7 @@ function AppContent() {
       <DialogGeral />
       <ConfirmacaoDialog />
       <CookieBanner />
+      <Toaster position="bottom-right" richColors />
       {import.meta.env.DEV && <ReactQueryDevtools />}
     </LocalizationProvider>
   );
