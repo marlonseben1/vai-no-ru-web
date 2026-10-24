@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Dialog,
   DialogActions,
@@ -57,12 +56,6 @@ export function EditarReservaDialog() {
             </MenuItem>
           ))}
         </TextField>
-
-        {editarMutation.isError && (
-          <Alert severity="error" sx={{ mt: 2 }}>
-            {editarMutation.error.message}
-          </Alert>
-        )}
       </DialogContent>
 
       <DialogActions sx={{ px: 3, pb: 2 }}>

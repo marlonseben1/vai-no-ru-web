@@ -50,6 +50,28 @@ dominio_com_props: {
 - O nome deve ser `snake_case` minúsculo.
 - **Nunca renomeie um evento existente**, porque isso quebra o histórico no PostHog.
 
+## Eventos de reserva
+
+| Evento                        | Quando                                   | Propriedades                    |
+| ----------------------------- | ---------------------------------------- | ------------------------------- |
+| `reserva_criada`              | reservas criadas com sucesso             | `quantidadeDias`, `refeicoes`   |
+| `reserva_primeira_reserva`    | primeira reserva do usuário              | —                               |
+| `reserva_editada`             | refeição da reserva alterada             | `refeicao`                      |
+| `reserva_cancelada`           | reserva cancelada                        | —                               |
+| `reserva_reativada`           | reserva reativada                        | —                               |
+| `reserva_agendamento_forcado` | agendamento forçado                      | —                               |
+| `reserva_erro`                | falha em qualquer ação acima da reserva  | `acao`, `status`, `codigo`      |
+
+`reserva_erro` é enviado no `onError` das mutations de `queries/reserva`, junto com o toast de erro
+(`lib/sonner`):
+
+- `acao`: `criar`, `editar`, `cancelar`, `reativar` ou `forcar_agendamento`.
+- `status`: status HTTP do `ApiError`, ou `0` quando a API não respondeu.
+- `codigo`: `code` do `ApiError`, ou `null`.
+- A mensagem de erro **não** é enviada, para não levar texto livre do backend ao PostHog.
+
+O `error` das mutations é tipado como `ApiError` por `types/react-query.d.ts`.
+
 ## Feature flags
 
 As chaves ficam em `posthog.flags.ts` (`FLAGS_POSTHOG`) e são lidas em componentes com
