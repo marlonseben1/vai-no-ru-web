@@ -1,4 +1,5 @@
 import type { DialogProps } from '@mui/material';
+import { Notificacao } from 'lib/sonner';
 import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
 import { useState } from 'react';
 import { CesStore, useCesStore } from 'store/ces/ces.store';
@@ -26,6 +27,10 @@ export function useCesDialog() {
   function handleEnviar() {
     CesStore.registrar({ nota, comentario: comentario.trim() || null });
     CesStore.fechar();
+    Notificacao.sucesso({
+      titulo: 'Sua nota foi registrada com sucesso',
+      mensagem: 'Agradecemos pelo feedback!',
+    });
   }
 
   function handleConfirmarNota() {
