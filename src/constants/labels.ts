@@ -1,7 +1,4 @@
-import type { Perfil } from 'types/perfil';
-import type { Refeicao } from 'types/refeicao';
-import type { StatusReserva } from 'types/statusReserva';
-import type { OrigemConta } from 'types/usuario';
+import type { OrigemConta, Perfil, Refeicao, StatusReserva } from 'types';
 
 export const LABEL_REFEICAO: Record<Refeicao, string> = {
   Almoco: 'Almoço',

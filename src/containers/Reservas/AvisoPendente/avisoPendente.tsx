@@ -1,9 +1,9 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { LABEL_STATUS_RESERVA } from 'shared/labels';
+import { LABEL_STATUS_RESERVA } from 'constants/labels';
 import {
   HORARIO_LIMITE_MANHA,
   HORARIO_LIMITE_TARDE,
-} from 'shared/prazosReserva';
+} from 'constants/prazosReserva';
 import { useAppStore } from 'store/app/appStore';
 
 function AvisoPendenteConteudo() {

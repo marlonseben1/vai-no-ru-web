@@ -1,5 +1,5 @@
-import type { Refeicao } from './refeicao';
-import type { StatusReserva } from './statusReserva';
+import type { Refeicao } from '../refeicao/refeicao';
+import type { StatusReserva } from '../statusReserva/statusReserva';
 
 export interface Reserva {
   id: string;

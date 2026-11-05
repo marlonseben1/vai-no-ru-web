@@ -1,4 +1,4 @@
-import { useReservasQuery } from 'queries/reserva/useReservasQuery';
+import { useReservasQuery } from 'queries/reserva';
 import { useEffect } from 'react';
 import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
 import { PAGE_SIZE_RESERVAS } from './Reservas.static';

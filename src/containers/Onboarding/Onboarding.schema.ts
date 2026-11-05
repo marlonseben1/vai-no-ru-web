@@ -1,4 +1,4 @@
-import { PERFIL_VALUES } from 'types/perfil';
+import { PERFIL_VALUES } from 'types';
 import { z } from 'zod';
 
 export const onboardingFormSchema = z.object({

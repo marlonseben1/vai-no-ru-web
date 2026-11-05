@@ -1,4 +1,4 @@
-import type { Refeicao } from './refeicao';
+import type { Refeicao } from '../refeicao/refeicao';
 
 export type TipoCardapio = Refeicao;
 

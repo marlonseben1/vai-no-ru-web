@@ -1,6 +1,6 @@
 import { env } from 'config/env';
 import posthog, { type Properties } from 'posthog-js';
-import type { Usuario } from 'types/usuario';
+import type { Usuario } from 'types';
 import { POSTHOG_CONFIG } from './posthog.config';
 import type { ArgsPropriedades, NomeEvento } from './posthog.eventos';
 

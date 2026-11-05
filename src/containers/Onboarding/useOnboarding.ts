@@ -1,10 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useConcluirOnboardingMutation } from 'queries/auth/useConcluirOnboardingMutation';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { PERFIS_POR_ORIGEM } from 'constants/perfisPorOrigem';
+import {
+  useConcluirOnboardingMutation,
+  useUsuarioAtualQuery,
+} from 'queries/auth';
 import { useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
-import { PERFIS_POR_ORIGEM } from 'shared/perfisPorOrigem';
-import type { Perfil } from 'types/perfil';
+import type { Perfil } from 'types';
 import {
   type OnboardingFormValues,
   onboardingFormSchema,

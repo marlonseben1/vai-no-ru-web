@@ -1,4 +1,4 @@
-import { CesApi } from 'api/ces/ces';
+import { CesApi } from 'api/ces';
 import { PostHogAnalytics } from 'lib/posthog';
 import { create } from 'zustand';
 import type { CesStoreState, CesStoreType } from './ces.types';

@@ -1,4 +1,4 @@
-import type { ContextoCes, NotaCes } from 'types/ces';
+import type { ContextoCes, NotaCes } from 'types';
 import type { IStore } from '../types';
 
 export type CesStoreType = IStore<CesStoreState, CesStoreActions>;
