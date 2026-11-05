@@ -17,11 +17,11 @@ import {
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import type { PickerDayProps } from '@mui/x-date-pickers/PickerDay';
 import { MultiDatePickerDay } from 'components/MultiDatePickerDay/MultiDatePickerDay';
+import { LABEL_REFEICAO } from 'constants/labels';
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { useCallback } from 'react';
-import { LABEL_REFEICAO } from 'shared/labels';
-import { refeicoesDisponiveis } from 'shared/prazosReserva';
+import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
 
 export function CriarReservaDialog() {

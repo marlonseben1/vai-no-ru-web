@@ -1,5 +1,4 @@
-import type { ListarCardapioParams } from 'types/cardapio';
-import type { ListarReservasParams } from 'types/reserva';
+import type { ListarCardapioParams, ListarReservasParams } from 'types';
 
 export const queryKeys = {
   usuarioAtual: ['usuario-atual'] as const,

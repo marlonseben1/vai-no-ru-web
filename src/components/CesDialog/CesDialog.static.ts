@@ -5,7 +5,7 @@ import SentimentSatisfied from '@mui/icons-material/SentimentSatisfied';
 import SentimentVeryDissatisfied from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentVerySatisfied from '@mui/icons-material/SentimentVerySatisfied';
 import type { DialogProps, StackProps, SxProps, Theme } from '@mui/material';
-import type { NotaCes } from 'types/ces';
+import type { NotaCes } from 'types';
 
 export const ID_TITULO_CES = 'ces-dialog-titulo';
 

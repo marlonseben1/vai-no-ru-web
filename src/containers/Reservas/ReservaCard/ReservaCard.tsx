@@ -13,8 +13,8 @@ import {
   Paper,
   Typography,
 } from '@mui/material';
-import { LABEL_REFEICAO, LABEL_STATUS_RESERVA } from 'shared/labels';
-import type { ReservaResumo } from 'types/reserva';
+import { LABEL_REFEICAO, LABEL_STATUS_RESERVA } from 'constants/labels';
+import type { ReservaResumo } from 'types';
 import { COR_STATUS_RESERVA } from './ReservaCard.static';
 import { useReservaCard } from './useReservaCard';
 

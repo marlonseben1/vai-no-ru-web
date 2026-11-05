@@ -1,5 +1,4 @@
-import type { Perfil } from 'types/perfil';
-import type { OrigemConta } from 'types/usuario';
+import type { OrigemConta, Perfil } from 'types';
 
 export const PERFIS_POR_ORIGEM: Record<OrigemConta, Perfil[]> = {
   UPF: [

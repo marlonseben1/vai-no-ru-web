@@ -1,6 +1,9 @@
 import { httpClient } from 'api/httpClient';
-import type { ApiSuccessResponse } from 'types/api';
-import type { CesElegibilidade, RegistrarCesInput } from 'types/ces';
+import type {
+  ApiSuccessResponse,
+  CesElegibilidade,
+  RegistrarCesInput,
+} from 'types';
 
 async function getPodeMostrarCes(): Promise<CesElegibilidade> {
   const { data } =

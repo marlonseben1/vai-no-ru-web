@@ -1,13 +1,13 @@
 import { httpClient } from 'api/httpClient';
-import type { ApiSuccessResponse } from 'types/api';
-import type { Refeicao } from 'types/refeicao';
 import type {
+  ApiSuccessResponse,
   CriarReservasInput,
   ListarReservasParams,
   ListarReservasResponse,
+  Refeicao,
   Reserva,
   ReservaHistoricoItem,
-} from 'types/reserva';
+} from 'types';
 
 async function criarReservas(input: CriarReservasInput): Promise<Reserva[]> {
   const { data } = await httpClient.post<ApiSuccessResponse<Reserva[]>>(

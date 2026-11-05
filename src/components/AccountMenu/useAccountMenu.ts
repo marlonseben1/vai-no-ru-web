@@ -1,5 +1,4 @@
-import { useLogoutMutation } from 'queries/auth/useLogoutMutation';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { useLogoutMutation, useUsuarioAtualQuery } from 'queries/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 

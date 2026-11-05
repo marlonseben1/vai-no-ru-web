@@ -1,6 +1,6 @@
 import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material';
 import { Footer } from 'components/Footer/Footer';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { useUsuarioAtualQuery } from 'queries/auth';
 import { Link, Outlet } from 'react-router';
 
 export function PublicLayout() {
