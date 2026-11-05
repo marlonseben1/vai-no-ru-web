@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { useEditarReservaMutation } from 'queries/reserva/useEditarReservaMutation';
+import { useEditarReservaMutation } from 'queries/reserva';
 import { useState } from 'react';
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';

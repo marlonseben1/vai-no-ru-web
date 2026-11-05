@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { GoogleLogin } from '@react-oauth/google';
-import { useLoginMutation } from 'queries/auth/useLoginMutation';
+import { useLoginMutation } from 'queries/auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { colorPalette } from 'theme/colorPalette';

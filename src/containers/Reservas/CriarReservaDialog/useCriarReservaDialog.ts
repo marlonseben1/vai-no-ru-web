@@ -1,7 +1,6 @@
 import dayjs, { type Dayjs } from 'dayjs';
 import { PostHogAnalytics } from 'lib/posthog';
-import { useCriarReservasMutation } from 'queries/reserva/useCriarReservasMutation';
-import { useReservasQuery } from 'queries/reserva/useReservasQuery';
+import { useCriarReservasMutation, useReservasQuery } from 'queries/reserva';
 import { useMemo, useState } from 'react';
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import { CesStore } from 'store/ces/ces.store';

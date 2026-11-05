@@ -1,5 +1,5 @@
 import { PostHogAnalytics } from 'lib/posthog';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { useUsuarioAtualQuery } from 'queries/auth';
 import { useEffect } from 'react';
 import { useCookiesStore } from 'store/cookies/cookiesStore';
 

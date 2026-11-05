@@ -1,6 +1,6 @@
 import type { DialogProps } from '@mui/material';
 import { Notificacao } from 'lib/sonner';
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { useUsuarioAtualQuery } from 'queries/auth';
 import { useState } from 'react';
 import { CesStore, useCesStore } from 'store/ces/ces.store';
 import type { NotaCes } from 'types';
