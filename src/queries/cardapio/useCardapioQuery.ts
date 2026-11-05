@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { CardapioApi } from 'api/cardapio/cardapio';
+import { CardapioApi } from 'api/cardapio';
 import { queryKeys } from 'queries/queryKeys';
 import type { ListarCardapioParams } from 'types';
 

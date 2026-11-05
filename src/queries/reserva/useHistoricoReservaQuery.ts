@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ReservaApi } from 'api/reserva/reserva';
+import { ReservaApi } from 'api/reserva';
 import { queryKeys } from 'queries/queryKeys';
 
 export function useHistoricoReservaQuery(reservaId: string) {

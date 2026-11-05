@@ -1,4 +1,4 @@
-import { AuthApi } from 'api/auth/auth';
+import { AuthApi } from 'api/auth';
 import { queryClient } from 'queries/queryClient';
 import { queryKeys } from 'queries/queryKeys';
 import { type LoaderFunction, redirect } from 'react-router';
