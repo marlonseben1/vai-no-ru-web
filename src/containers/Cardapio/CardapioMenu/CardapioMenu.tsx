@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { colorPalette } from 'theme/colorPalette';
-import { type Cardapio, CategoriaItemCardapio } from 'types/cardapio';
+import { type Cardapio, CategoriaItemCardapio } from 'types';
 import {
   itensDaCategoria,
   type LinhaItem,

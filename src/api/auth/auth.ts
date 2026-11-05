@@ -1,8 +1,6 @@
 import { ApiError } from 'api/ApiError';
 import { httpClient } from 'api/httpClient';
-import type { ApiSuccessResponse } from 'types/api';
-import type { Perfil } from 'types/perfil';
-import type { Usuario } from 'types/usuario';
+import type { ApiSuccessResponse, Perfil, Usuario } from 'types';
 
 interface LoginInput {
   token: string;

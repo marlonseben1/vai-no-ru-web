@@ -1,4 +1,4 @@
-import type { DataFiltroReserva } from 'types/reserva';
+import type { DataFiltroReserva } from 'types';
 
 export const PAGE_SIZE_RESERVAS = 5;
 

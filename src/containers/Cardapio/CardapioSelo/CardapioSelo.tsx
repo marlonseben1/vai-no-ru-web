@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { colorPalette } from 'theme/colorPalette';
-import { SeloCardapio } from 'types/cardapio';
+import { SeloCardapio } from 'types';
 import { SELOS_CARDAPIO } from '../Cardapio.static';
 
 interface CardapioSeloProps {

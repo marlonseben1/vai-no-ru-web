@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import type { Cardapio } from 'types/cardapio';
+import type { Cardapio } from 'types';
 import { capitalizar } from 'utils/capitalizar';
 import { dataDoDia } from '../Cardapio.helpers';
 

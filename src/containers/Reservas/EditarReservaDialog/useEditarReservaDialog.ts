@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { useEditarReservaMutation } from 'queries/reserva/useEditarReservaMutation';
+import { useEditarReservaMutation } from 'queries/reserva';
 import { useState } from 'react';
-import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
-import type { Refeicao } from 'types/refeicao';
+import type { Refeicao } from 'types';
+import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
 
 export function useEditarReservaDialog() {
   const {

@@ -1,5 +1,5 @@
 import { colorPalette } from 'theme/colorPalette';
-import { SeloCardapio } from 'types/cardapio';
+import { SeloCardapio } from 'types';
 
 interface SeloInfo {
   letra: string;

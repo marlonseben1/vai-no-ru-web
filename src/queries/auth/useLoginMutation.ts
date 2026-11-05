@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import type { ApiError } from 'api/ApiError';
-import { AuthApi } from 'api/auth/auth';
+import { AuthApi } from 'api/auth';
 import { queryKeys } from 'queries/queryKeys';
-import type { Usuario } from 'types/usuario';
+import type { Usuario } from 'types';
 
 interface LoginInput {
   token: string;

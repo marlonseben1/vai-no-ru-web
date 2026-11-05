@@ -8,8 +8,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { LABEL_PERFIL } from 'constants/labels';
 import { Controller } from 'react-hook-form';
-import { LABEL_PERFIL } from 'shared/labels';
 import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
 import { useOnboarding } from './useOnboarding';
 

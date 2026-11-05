@@ -5,7 +5,7 @@ import {
   type Theme,
   Typography,
 } from '@mui/material';
-import type { NotaCes } from 'types/ces';
+import type { NotaCes } from 'types';
 import {
   COR_NOTA,
   COR_NOTA_SELECIONADA,

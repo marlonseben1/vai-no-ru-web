@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { ReservaApi } from 'api/reserva/reserva';
+import { ReservaApi } from 'api/reserva';
 import { queryKeys } from 'queries/queryKeys';
-import type { ListarReservasParams } from 'types/reserva';
+import type { ListarReservasParams } from 'types';
 
 export function useReservasQuery(params: ListarReservasParams = {}) {
   return useQuery({

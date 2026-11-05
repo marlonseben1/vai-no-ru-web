@@ -1,9 +1,11 @@
-import { useCancelarReservaMutation } from 'queries/reserva/useCancelarReservaMutation';
-import { useForcarAgendamentoMutation } from 'queries/reserva/useForcarAgendamentoMutation';
-import { useReativarReservaMutation } from 'queries/reserva/useReativarReservaMutation';
+import {
+  useCancelarReservaMutation,
+  useForcarAgendamentoMutation,
+  useReativarReservaMutation,
+} from 'queries/reserva';
 import { ConfirmacaoStore } from 'store/confirmacao/confirmacao.store';
 import { ReservasStore } from 'store/reservas/reservas.store';
-import type { ReservaResumo } from 'types/reserva';
+import type { ReservaResumo } from 'types';
 
 export function useReservaAcoes(reserva: ReservaResumo) {
   const cancelarMutation = useCancelarReservaMutation();

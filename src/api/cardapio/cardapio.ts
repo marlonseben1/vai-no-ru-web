@@ -1,6 +1,5 @@
 import { httpClient } from 'api/httpClient';
-import type { ApiSuccessResponse } from 'types/api';
-import type { Cardapio, ListarCardapioParams } from 'types/cardapio';
+import type { ApiSuccessResponse, Cardapio, ListarCardapioParams } from 'types';
 
 async function buscarCardapio(
   params: ListarCardapioParams,

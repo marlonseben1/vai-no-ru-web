@@ -1,4 +1,4 @@
-import type { Perfil } from './perfil';
+import type { Perfil } from '../perfil/perfil';
 
 export type OrigemConta = 'UPF' | 'CONVIDADO';
 

@@ -1,5 +1,5 @@
 import type { ChipProps } from '@mui/material';
-import type { StatusReserva } from 'types/statusReserva';
+import type { StatusReserva } from 'types';
 
 export const COR_STATUS_RESERVA: Record<
   StatusReserva,

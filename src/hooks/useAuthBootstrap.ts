@@ -1,4 +1,4 @@
-import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
+import { useUsuarioAtualQuery } from 'queries/auth';
 import { useEffect } from 'react';
 import { useAppStore } from 'store/app/appStore';
 

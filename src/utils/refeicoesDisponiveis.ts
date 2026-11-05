@@ -1,9 +1,9 @@
+import {
+  HORARIO_LIMITE_MANHA,
+  HORARIO_LIMITE_TARDE,
+} from 'constants/prazosReserva';
 import dayjs, { type Dayjs } from 'dayjs';
-import { REFEICAO_VALUES, type Refeicao } from 'types/refeicao';
-
-// horário em que o servidor envia as reservas do dia ao RU
-export const HORARIO_LIMITE_MANHA = '09:30';
-export const HORARIO_LIMITE_TARDE = '15:30';
+import { REFEICAO_VALUES, type Refeicao } from 'types';
 
 function emMinutos(horario: string) {
   const [hora = 0, minuto = 0] = horario.split(':').map(Number);

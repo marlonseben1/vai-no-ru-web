@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ReservaApi } from 'api/reserva/reserva';
+import { ReservaApi } from 'api/reserva';
 import { PostHogAnalytics } from 'lib/posthog';
 import { Notificacao } from 'lib/sonner';
 import { queryKeys } from 'queries/queryKeys';
