@@ -8,7 +8,7 @@ import {
   TextField,
 } from '@mui/material';
 import { LABEL_REFEICAO } from 'shared/labels';
-import type { Refeicao } from 'types/refeicao';
+import type { Refeicao } from 'types';
 import { useEditarReservaDialog } from './useEditarReservaDialog';
 
 export function EditarReservaDialog() {

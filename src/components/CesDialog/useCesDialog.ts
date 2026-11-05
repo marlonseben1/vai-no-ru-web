@@ -3,7 +3,7 @@ import { Notificacao } from 'lib/sonner';
 import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
 import { useState } from 'react';
 import { CesStore, useCesStore } from 'store/ces/ces.store';
-import type { NotaCes } from 'types/ces';
+import type { NotaCes } from 'types';
 import { getPrimeiroNome } from 'utils/getPrimeiroNome';
 import { NOTA_SEM_COMENTARIO } from './CesDialog.static';
 import { usePosicaoCes } from './usePosicaoCes';

@@ -1,5 +1,5 @@
 import { refeicoesDisponiveis } from 'shared/prazosReserva';
-import type { ReservaResumo } from 'types/reserva';
+import type { ReservaResumo } from 'types';
 
 function getDataIso(reserva: ReservaResumo) {
   return reserva.dataReserva.slice(0, 10);

@@ -3,8 +3,7 @@ import type { ApiError } from 'api/ApiError';
 import { AuthApi } from 'api/auth/auth';
 import { PostHogAnalytics } from 'lib/posthog';
 import { queryKeys } from 'queries/queryKeys';
-import type { Perfil } from 'types/perfil';
-import type { Usuario } from 'types/usuario';
+import type { Perfil, Usuario } from 'types';
 
 interface OnboardingInput {
   nome: string;

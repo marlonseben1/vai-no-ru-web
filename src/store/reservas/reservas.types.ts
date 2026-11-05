@@ -1,5 +1,4 @@
-import type { DataFiltroReserva, ReservaResumo } from 'types/reserva';
-import type { StatusReserva } from 'types/statusReserva';
+import type { DataFiltroReserva, ReservaResumo, StatusReserva } from 'types';
 import type { IStore } from '../types';
 
 export type ReservasStoreType = IStore<

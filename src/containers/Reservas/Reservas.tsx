@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LABEL_STATUS_RESERVA } from 'shared/labels';
-import type { StatusReserva } from 'types/statusReserva';
+import type { StatusReserva } from 'types';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { OPCOES_DATA_FILTRO } from './Reservas.static';
 import { useReservas } from './useReservas';

@@ -3,7 +3,7 @@ import { ReservaApi } from 'api/reserva/reserva';
 import { PostHogAnalytics } from 'lib/posthog';
 import { Notificacao } from 'lib/sonner';
 import { queryKeys } from 'queries/queryKeys';
-import type { Refeicao } from 'types/refeicao';
+import type { Refeicao } from 'types';
 
 interface EditarReservaVariables {
   reservaId: string;

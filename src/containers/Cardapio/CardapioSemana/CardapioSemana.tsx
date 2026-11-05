@@ -2,11 +2,11 @@ import { Paper } from '@mui/material';
 import { CustomTabs, type TabItem } from 'components/CustomTabs/CustomTabs';
 import dayjs from 'dayjs';
 import { colorPalette } from 'theme/colorPalette';
-import type { Cardapio } from 'types/cardapio';
+import type { Cardapio } from 'types';
+import { dataDoDia } from '../Cardapio.helpers';
 import { CardapioDiaConteudo } from '../CardapioDiaConteudo/CardapioDiaConteudo';
 import { CardapioDiaLabel } from '../CardapioDiaLabel/CardapioDiaLabel';
 import { CardapioLegenda } from '../CardapioLegenda/CardapioLegenda';
-import { dataDoDia } from '../Cardapio.helpers';
 
 interface CardapioSemanaProps {
   dias: Cardapio[];

@@ -4,7 +4,7 @@ import { useUsuarioAtualQuery } from 'queries/auth/useUsuarioAtualQuery';
 import { useForm, useWatch } from 'react-hook-form';
 import { useNavigate } from 'react-router';
 import { PERFIS_POR_ORIGEM } from 'shared/perfisPorOrigem';
-import type { Perfil } from 'types/perfil';
+import type { Perfil } from 'types';
 import {
   type OnboardingFormValues,
   onboardingFormSchema,

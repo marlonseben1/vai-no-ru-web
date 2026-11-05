@@ -5,7 +5,7 @@ import {
   CategoriaItemCardapio,
   type ItemCardapio,
   type SeloCardapio,
-} from 'types/cardapio';
+} from 'types';
 
 export interface LinhaItem {
   nome: string;

@@ -1,5 +1,5 @@
 import dayjs, { type Dayjs } from 'dayjs';
-import { REFEICAO_VALUES, type Refeicao } from 'types/refeicao';
+import { REFEICAO_VALUES, type Refeicao } from 'types';
 
 // horário em que o servidor envia as reservas do dia ao RU
 export const HORARIO_LIMITE_MANHA = '09:30';

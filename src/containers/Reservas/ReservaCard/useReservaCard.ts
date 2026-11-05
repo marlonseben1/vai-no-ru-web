@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { type MouseEvent, useState } from 'react';
-import type { ReservaResumo } from 'types/reserva';
+import type { ReservaResumo } from 'types';
 import {
   podeCancelarReserva,
   podeEditarReserva,

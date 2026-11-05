@@ -1,6 +1,6 @@
 import { Alert, Box, CircularProgress, Typography } from '@mui/material';
 import type { UseQueryResult } from '@tanstack/react-query';
-import type { Cardapio } from 'types/cardapio';
+import type { Cardapio } from 'types';
 import { CardapioSemana } from '../CardapioSemana/CardapioSemana';
 
 interface CardapioConteudoProps {

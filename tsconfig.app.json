@@ -38,7 +38,7 @@
       "shared/*": ["./src/shared/*"],
       "store/*": ["./src/store/*"],
       "theme/*": ["./src/theme/*"],
-      "types/*": ["./src/types/*"],
+      "types": ["./src/types/index.ts"],
       "utils/*": ["./src/utils/*"],
       "contexts/*": ["./src/contexts/*"]
     }

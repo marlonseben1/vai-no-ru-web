@@ -1,6 +1,6 @@
 import { DialogContent, Stack } from '@mui/material';
 import type { KeyboardEvent } from 'react';
-import { NOTAS_CES, type NotaCes } from 'types/ces';
+import { NOTAS_CES, type NotaCes } from 'types';
 import {
   ESTILO_POR_POSICAO,
   ID_TITULO_CES,
