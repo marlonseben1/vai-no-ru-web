@@ -35,7 +35,6 @@
       "lib/*": ["./src/lib/*"],
       "queries/*": ["./src/queries/*"],
       "routes/*": ["./src/routes/*"],
-      "shared/*": ["./src/shared/*"],
       "store/*": ["./src/store/*"],
       "theme/*": ["./src/theme/*"],
       "types": ["./src/types/index.ts"],

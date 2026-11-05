@@ -1,6 +1,6 @@
 import type { Dayjs } from 'dayjs';
-import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import type { Refeicao, ReservaDiaInput } from 'types';
+import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
 
 export function isDataDesabilitada(data: Dayjs, diasBloqueados: string[]) {
   const diaSemana = data.day();

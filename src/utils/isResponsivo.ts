@@ -1,4 +1,4 @@
-import { MOBILE_BREAKPOINT } from 'shared/breakpoints';
+import { MOBILE_BREAKPOINT } from 'constants/breakpoints';
 
 export const responsiveMediaQuery = `(max-width: ${MOBILE_BREAKPOINT.width_px}) and (max-height: ${MOBILE_BREAKPOINT.height_px})`;
 

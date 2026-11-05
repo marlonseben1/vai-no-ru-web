@@ -2,10 +2,10 @@ import dayjs, { type Dayjs } from 'dayjs';
 import { PostHogAnalytics } from 'lib/posthog';
 import { useCriarReservasMutation, useReservasQuery } from 'queries/reserva';
 import { useMemo, useState } from 'react';
-import { refeicoesDisponiveis } from 'shared/prazosReserva';
 import { CesStore } from 'store/ces/ces.store';
 import { ReservasStore, useReservasStore } from 'store/reservas/reservas.store';
 import type { Refeicao, ReservaDiaInput } from 'types';
+import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
 import { abrirAvisoPendente } from '../AvisoPendente/avisoPendente';
 import {
   deveMostrarAplicarParaTodos,

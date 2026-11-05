@@ -13,7 +13,7 @@ import {
   ToggleButtonGroup,
   Typography,
 } from '@mui/material';
-import { LABEL_STATUS_RESERVA } from 'shared/labels';
+import { LABEL_STATUS_RESERVA } from 'constants/labels';
 import type { StatusReserva } from 'types';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { OPCOES_DATA_FILTRO } from './Reservas.static';

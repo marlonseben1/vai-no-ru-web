@@ -7,7 +7,7 @@ import {
   MenuItem,
   TextField,
 } from '@mui/material';
-import { LABEL_REFEICAO } from 'shared/labels';
+import { LABEL_REFEICAO } from 'constants/labels';
 import type { Refeicao } from 'types';
 import { useEditarReservaDialog } from './useEditarReservaDialog';
 
