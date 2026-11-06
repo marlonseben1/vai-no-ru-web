@@ -2,51 +2,42 @@ import { PickerDay, type PickerDayProps } from '@mui/x-date-pickers/PickerDay';
 
 interface MultiDatePickerDayProps extends PickerDayProps {
   diasSelecionados?: string[];
-  diasBloqueados?: string[];
+  corPrincipal?: string;
 }
 
 export function MultiDatePickerDay({
   diasSelecionados = [],
-  diasBloqueados = [],
+  corPrincipal,
   day,
   sx,
   ...outros
 }: MultiDatePickerDayProps) {
-  const dataISO = day.format('YYYY-MM-DD');
-  const selecionado = diasSelecionados.includes(dataISO);
-  const bloqueado = diasBloqueados.includes(dataISO);
-  const fimDeSemana = day.day() === 0 || day.day() === 6;
-  const corIndicador = bloqueado
-    ? 'success.main'
-    : fimDeSemana
-      ? 'grey.400'
-      : null;
+  const selecionado = diasSelecionados.includes(day.format('YYYY-MM-DD'));
 
   return (
     <PickerDay
       {...outros}
       day={day}
       selected={selecionado}
+      disableHighlightToday
+      aria-label={day.format('D [de] MMMM [de] YYYY')}
       sx={[
         {
-          position: 'relative',
           '--PickerDay-size': 'var(--tamanho-dia, 36px)',
+          fontSize: '0.9375rem',
+          ...(day.isSame(new Date(), 'day') && {
+            textDecoration: 'underline',
+            textUnderlineOffset: 4,
+          }),
+          '&:not(.Mui-selected):not(:focus-visible)': { outline: 'none' },
+          '&.Mui-disabled': { color: 'text.disabled' },
+          ...(corPrincipal && {
+            '&.Mui-selected, &.Mui-selected:hover, &.Mui-selected:focus': {
+              bgcolor: corPrincipal,
+              color: 'common.white',
+            },
+          }),
         },
-        corIndicador && !outros.outsideCurrentMonth
-          ? {
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                bottom: 2,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: 4,
-                height: 4,
-                borderRadius: '50%',
-                bgcolor: corIndicador,
-              },
-            }
-          : {},
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}
     />

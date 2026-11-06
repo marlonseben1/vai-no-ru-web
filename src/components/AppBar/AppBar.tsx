@@ -1,32 +1,35 @@
 import { AppBar as MuiAppBar, Toolbar, Typography } from '@mui/material';
-import { AccountMenu } from 'components/AccountMenu/AccountMenu';
-import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
+import { AccountButtonMobile } from 'components/AccountMenu/AccountButtonMobile';
+import { ALTURA_APPBAR_MOBILE } from 'layouts/PrivateLayout/PrivateLayout.static';
 
-interface AppBarProps {
-  showAccountMenu: boolean;
-}
-
-export function AppBar({ showAccountMenu }: AppBarProps) {
+// cabeçalho do mobile; no desktop quem faz esse papel é a NavBar
+export function AppBar() {
   return (
     <MuiAppBar
       position="static"
-      elevation={1}
+      elevation={0}
       sx={{
-        bgcolor: colorPalette.neutral[50],
-        color: colorPalette.primary[800],
-        fontFamily: FONT_FAMILY_LAYOUT,
+        bgcolor: '#F3F8F8',
+        color: '#1F3B38',
+        fontFamily: 'Roboto, sans-serif',
+        borderBottom: '1px solid #DDE3E2',
       }}
     >
-      <Toolbar>
+      <Toolbar sx={{ minHeight: ALTURA_APPBAR_MOBILE, pr: 0.5 }}>
         <Typography
           variant="h6"
           noWrap
           component="div"
-          sx={{ flexGrow: 1, fontFamily: 'inherit', fontWeight: 'bold' }}
+          sx={{
+            flexGrow: 1,
+            fontFamily: 'inherit',
+            fontWeight: 'bold',
+            fontSize: 20,
+          }}
         >
           E aí, vai no RU hoje?
         </Typography>
-        {showAccountMenu && <AccountMenu />}
+        <AccountButtonMobile />
       </Toolbar>
     </MuiAppBar>
   );

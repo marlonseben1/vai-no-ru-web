@@ -1,69 +1,30 @@
-import { Box, Typography } from '@mui/material';
-import { colorPalette } from 'theme/colorPalette';
 import { type Cardapio, CategoriaItemCardapio } from 'types';
-import {
-  itensDaCategoria,
-  type LinhaItem,
-  paraLinha,
-} from '../Cardapio.helpers';
-import { CardapioSelo } from '../CardapioSelo/CardapioSelo';
+import { itensDaCategoria, paraLinha } from '../Cardapio.helpers';
+import { CardapioSecao } from '../CardapioSecao/CardapioSecao';
 
 interface CardapioMenuProps {
   cardapio: Cardapio;
 }
 
-function Secao({ titulo, itens }: { titulo: string; itens: LinhaItem[] }) {
-  if (itens.length === 0) return null;
-
-  return (
-    <Box sx={{ mb: 3 }}>
-      <Typography
-        variant="subtitle2"
-        color={colorPalette.neutral[600]}
-        sx={{ mb: 0.5 }}
-      >
-        {titulo}
-      </Typography>
-      {itens.map((item) => (
-        <Box
-          key={item.nome}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 1,
-            py: 1.5,
-            borderBottom: `1px solid ${colorPalette.neutral[100]}`,
-          }}
-        >
-          <Typography variant="body1">{item.nome}</Typography>
-          <Box sx={{ display: 'flex', gap: 0.5 }}>
-            {item.selos.map((selo) => (
-              <CardapioSelo key={selo} selo={selo} />
-            ))}
-          </Box>
-        </Box>
-      ))}
-    </Box>
-  );
-}
-
 export function CardapioMenu({ cardapio }: CardapioMenuProps) {
   return (
     <>
-      <Secao
+      <CardapioSecao
         titulo="Prato principal"
         itens={itensDaCategoria(cardapio, CategoriaItemCardapio.PratoPrincipal)}
       />
-      <Secao
+      <CardapioSecao
         titulo="Acompanhamentos"
         itens={itensDaCategoria(cardapio, CategoriaItemCardapio.Acompanhamento)}
       />
-      <Secao
+      <CardapioSecao
         titulo="Saladas"
         itens={itensDaCategoria(cardapio, CategoriaItemCardapio.Salada)}
       />
-      <Secao titulo="Bebida" itens={(cardapio.suco ?? []).map(paraLinha)} />
+      <CardapioSecao
+        titulo="Bebida"
+        itens={(cardapio.suco ?? []).map(paraLinha)}
+      />
     </>
   );
 }

@@ -21,8 +21,12 @@ import { LABEL_REFEICAO } from 'constants/labels';
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { useCallback } from 'react';
+import { formatarDataComDiaSemana } from 'utils/formatarDataComDiaSemana';
 import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
+
+const COR_PRINCIPAL = '#3F706B';
+const COR_PRINCIPAL_HOVER = '#345B57';
 
 export function CriarReservaDialog() {
   const isResponsivo = useIsResponsivo();
@@ -32,7 +36,6 @@ export function CriarReservaDialog() {
     onClose,
     handleExited,
     handleRemover,
-    diasBloqueados,
     handleReservar,
     desabilitarData,
     diasSelecionados,
@@ -49,14 +52,14 @@ export function CriarReservaDialog() {
       <MultiDatePickerDay
         {...props}
         diasSelecionados={diasSelecionados}
-        diasBloqueados={diasBloqueados}
+        corPrincipal={COR_PRINCIPAL}
       />
     ),
-    [diasSelecionados, diasBloqueados],
+    [diasSelecionados],
   );
 
   // o modal só cresce (abre a lista ao lado) quando há ao menos um dia selecionado
-  const larguraModal = dias.length > 0 ? 900 : 480;
+  const larguraModal = dias.length > 0 ? 760 : 440;
 
   return (
     <Dialog
@@ -92,7 +95,11 @@ export function CriarReservaDialog() {
         }}
       >
         Nova reserva
-        <IconButton size="small" onClick={onClose} aria-label="Fechar">
+        <IconButton
+          onClick={onClose}
+          aria-label="Fechar"
+          sx={{ width: 44, height: 44 }}
+        >
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
@@ -109,7 +116,7 @@ export function CriarReservaDialog() {
         <Box
           sx={{
             width: '100%',
-            maxWidth: isResponsivo ? '100%' : 440,
+            maxWidth: isResponsivo ? '100%' : 360,
             flexShrink: 0,
             display: 'flex',
             justifyContent: 'center',
@@ -120,13 +127,32 @@ export function CriarReservaDialog() {
             disablePast
             onChange={handleToggleData}
             shouldDisableDate={desabilitarData}
+            dayOfWeekFormatter={(dia) =>
+              dia.format('dddd').charAt(0).toUpperCase()
+            }
             slots={{ day: DiaCalendario }}
             sx={{
               '--tamanho-dia': isResponsivo
                 ? 'min(44px, calc((100vw - 40px) / 7 - 4px))'
-                : '52px',
+                : '48px',
               width: '100%',
-              maxWidth: isResponsivo ? '100%' : 440,
+              maxWidth: isResponsivo ? '100%' : 360,
+              '& .MuiPickersCalendarHeader-root': { pl: 1, pr: 0 },
+              '& .MuiPickersCalendarHeader-label': {
+                fontSize: '1rem',
+                fontWeight: 500,
+              },
+              '& .MuiDayCalendar-weekContainer': {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(7, var(--tamanho-dia))',
+                justifyContent: 'center',
+                m: 0,
+              },
+              '& .MuiDayCalendar-header': {
+                display: 'grid',
+                gridTemplateColumns: 'repeat(7, var(--tamanho-dia))',
+                justifyContent: 'center',
+              },
               height: 'auto',
               maxHeight: 'none',
               '& .MuiDayCalendar-weekDayLabel': {
@@ -148,7 +174,7 @@ export function CriarReservaDialog() {
               sx={isResponsivo ? { my: 1, width: '100%' } : { mx: 2, my: 2 }}
             />
 
-            <Stack sx={{ width: '100%', minWidth: { md: 360 } }}>
+            <Stack sx={{ width: '100%', minWidth: { md: 300 } }}>
               {mostrarAplicarParaTodos && refeicaoParaTodos && (
                 <Button
                   size="small"
@@ -187,11 +213,11 @@ export function CriarReservaDialog() {
                       variant="body2"
                       sx={{
                         fontWeight: 600,
-                        minWidth: 84,
+                        minWidth: 120,
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {dayjs(dia.data).format('DD/MM/YYYY')}
+                      {formatarDataComDiaSemana(dia.data)}
                     </Typography>
 
                     <TextField
@@ -206,6 +232,11 @@ export function CriarReservaDialog() {
                         )
                       }
                       sx={{ flex: 1, minWidth: 0 }}
+                      slotProps={{
+                        htmlInput: {
+                          'aria-label': `Refeição de ${dayjs(dia.data).format('DD/MM/YYYY')}`,
+                        },
+                      }}
                     >
                       {refeicoesDisponiveis(dia.data).map((valor) => (
                         <MenuItem key={valor} value={valor}>
@@ -215,9 +246,16 @@ export function CriarReservaDialog() {
                     </TextField>
 
                     <IconButton
-                      size="small"
                       onClick={() => handleRemover(dia.data)}
-                      aria-label="Remover data"
+                      aria-label={`Remover ${dayjs(dia.data).format('DD/MM/YYYY')}`}
+                      sx={{
+                        width: 44,
+                        height: 44,
+                        '&:hover': {
+                          color: 'error.main',
+                          bgcolor: 'error.light',
+                        },
+                      }}
                     >
                       <DeleteOutlined fontSize="small" />
                     </IconButton>
@@ -243,9 +281,17 @@ export function CriarReservaDialog() {
           fullWidth
           disabled={dias.length === 0 || criarReservasMutation.isPending}
           onClick={handleReservar}
-          sx={{ borderRadius: 2, py: 1.2, fontWeight: 'bold' }}
+          sx={{
+            borderRadius: 2,
+            py: 1.2,
+            minHeight: 48,
+            fontWeight: 'bold',
+            bgcolor: COR_PRINCIPAL,
+            '&:hover': { bgcolor: COR_PRINCIPAL_HOVER },
+            '&.Mui-disabled': { bgcolor: 'action.disabledBackground' },
+          }}
         >
-          Reservar ({dias.length})
+          Reservar {dias.length} {dias.length === 1 ? 'dia' : 'dias'}
         </Button>
       </DialogActions>
     </Dialog>

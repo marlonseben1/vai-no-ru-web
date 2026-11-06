@@ -1,5 +1,5 @@
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
+import CalendarMonthOutlined from '@mui/icons-material/CalendarMonthOutlined';
+import MenuBookOutlined from '@mui/icons-material/MenuBookOutlined';
 import type { ReactNode } from 'react';
 
 export const ITENS_MENU: {
@@ -7,6 +7,13 @@ export const ITENS_MENU: {
   caminho: string;
   icone: ReactNode;
 }[] = [
-  { texto: 'Cardápio', caminho: '/cardapio', icone: <MenuBookIcon /> },
-  { texto: 'Minhas reservas', caminho: '/reservas', icone: <EventNoteIcon /> },
+  { texto: 'Cardápio', caminho: '/cardapio', icone: <MenuBookOutlined /> },
+  {
+    texto: 'Minhas reservas',
+    caminho: '/reservas',
+    icone: <CalendarMonthOutlined />,
+  },
 ];
+
+export const ALTURA_APPBAR_MOBILE = 56;
+export const ALTURA_BOTTOM_MENU = 64;
