@@ -1,37 +1,19 @@
-import { useAccountMenu } from 'components/AccountMenu/useAccountMenu';
-import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
+import { ReservasStore } from 'store/reservas/reservas.store';
 
-export const VALOR_CONTA = 'conta';
+export const VALOR_NOVA_RESERVA = 'nova-reserva';
 
 export function useBottomMenu() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { nome, inicial, saindo, handleSair } = useAccountMenu();
-  const [contaAberta, setContaAberta] = useState(false);
 
   function handleMudar(valor: string) {
-    if (valor === VALOR_CONTA) {
-      setContaAberta((aberta) => !aberta);
+    if (valor === VALOR_NOVA_RESERVA) {
+      ReservasStore.setCadastroReservaDialog({ mode: 'criar' });
       return;
     }
-    setContaAberta(false);
     navigate(valor);
   }
 
-  function handleConfiguracoes() {
-    setContaAberta(false);
-    navigate('/configuracoes');
-  }
-
-  return {
-    nome,
-    inicial,
-    saindo,
-    contaAberta,
-    valorSelecionado: contaAberta ? VALOR_CONTA : pathname,
-    handleMudar,
-    handleConfiguracoes,
-    handleSair,
-  };
+  return { pathname, handleMudar };
 }

@@ -15,7 +15,10 @@ import {
 } from '@mui/material';
 import { LABEL_REFEICAO, LABEL_STATUS_RESERVA } from 'constants/labels';
 import type { ReservaResumo } from 'types';
-import { COR_STATUS_RESERVA } from './ReservaCard.static';
+import {
+  COR_STATUS_RESERVA,
+  ESTILO_CHIP_STATUS_MOBILE,
+} from './ReservaCard.static';
 import { useReservaCard } from './useReservaCard';
 
 interface ReservaCardProps {
@@ -31,6 +34,7 @@ export function ReservaCard({ reserva }: ReservaCardProps) {
     menuAberto,
     podeEditar,
     fecharMenu,
+    isResponsivo,
     podeCancelar,
     podeReativar,
     handleEditar,
@@ -42,50 +46,68 @@ export function ReservaCard({ reserva }: ReservaCardProps) {
     handleForcarAgendamento,
   } = useReservaCard({ reserva });
 
+  const chipStatus = (
+    <Chip
+      label={LABEL_STATUS_RESERVA[reserva.status]}
+      size="small"
+      {...(isResponsivo
+        ? {
+            sx: {
+              height: 28,
+              borderRadius: '14px',
+              fontSize: 13,
+              fontWeight: 500,
+              ...ESTILO_CHIP_STATUS_MOBILE[reserva.status],
+            },
+          }
+        : {
+            color: COR_STATUS_RESERVA[reserva.status],
+            variant: 'outlined',
+            sx: { minWidth: 120 },
+          })}
+    />
+  );
+
   return (
     <Paper
       variant="outlined"
       sx={{
-        borderRadius: 2,
-        px: 2,
-        py: 1.5,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: isResponsivo ? 'flex-start' : 'center',
         justifyContent: 'space-between',
         gap: 2,
+        ...(isResponsivo
+          ? { borderRadius: '12px', borderColor: '#DDE3E2', p: '14px' }
+          : { borderRadius: 2, px: 2, py: 1.5 }),
       }}
     >
       <Box sx={{ minWidth: 0 }}>
         <Typography
           variant="body1"
-          sx={{
-            fontWeight: 600,
-            textTransform: 'capitalize',
-            fontSize: { xs: '0.9rem', sm: '1rem' },
-          }}
+          sx={{ fontWeight: isResponsivo ? 700 : 600 }}
         >
           {diaSemana}, {dataFormatada}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {LABEL_REFEICAO[reserva.refeicao]}
         </Typography>
+        {isResponsivo && <Box sx={{ mt: 1.25 }}>{chipStatus}</Box>}
       </Box>
 
       <Box
         sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}
       >
-        <Chip
-          label={LABEL_STATUS_RESERVA[reserva.status]}
-          color={COR_STATUS_RESERVA[reserva.status]}
-          size="small"
-          variant="outlined"
-          sx={{ minWidth: { xs: 90, sm: 120 } }}
-        />
+        {!isResponsivo && chipStatus}
         <IconButton
-          size="small"
-          aria-label="Ações da reserva"
+          size={isResponsivo ? 'medium' : 'small'}
+          aria-label={`Mais ações para a reserva de ${diaSemana}, ${dataFormatada}`}
           disabled={isProcessando}
           onClick={abrirMenu}
+          sx={
+            isResponsivo
+              ? { width: 44, height: 44, mt: -0.5, mr: -0.75 }
+              : undefined
+          }
         >
           <MoreVert fontSize="small" />
         </IconButton>

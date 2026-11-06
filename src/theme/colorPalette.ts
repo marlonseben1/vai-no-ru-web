@@ -78,6 +78,6 @@ export const colorPalette = {
   },
 };
 
-export const COR_FUNDO_LAYOUT = '#FAFAFA';
+export const COR_FUNDO_LAYOUT = '#F6F8F8';
 
 export const FONT_FAMILY_LAYOUT = '"Poppins", "Roboto", sans-serif';

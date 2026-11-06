@@ -10,3 +10,6 @@ export const ITENS_MENU: {
   { texto: 'Cardápio', caminho: '/cardapio', icone: <MenuBookIcon /> },
   { texto: 'Minhas reservas', caminho: '/reservas', icone: <EventNoteIcon /> },
 ];
+
+export const ALTURA_APPBAR_MOBILE = 56;
+export const ALTURA_BOTTOM_MENU = 64;

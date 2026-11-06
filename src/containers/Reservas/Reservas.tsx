@@ -14,12 +14,14 @@ import {
   Typography,
 } from '@mui/material';
 import { LABEL_STATUS_RESERVA } from 'constants/labels';
+import useIsResponsivo from 'hooks/useIsResponsivo';
 import type { StatusReserva } from 'types';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { OPCOES_DATA_FILTRO } from './Reservas.static';
 import { useReservas } from './useReservas';
 
 export function Reservas() {
+  const isResponsivo = useIsResponsivo();
   const {
     page,
     situacao,
@@ -84,11 +86,12 @@ export function Reservas() {
       sx={{
         borderRadius: { xs: 0, sm: 2 },
         boxShadow: { xs: 'none', sm: 3 },
+        bgcolor: { xs: 'transparent', sm: 'background.paper' },
         width: '100%',
         minWidth: 0,
         maxWidth: 800,
         mx: 'auto',
-        p: { xs: 2, sm: 4 },
+        p: { xs: '20px 16px', sm: 4 },
         overflowY: 'auto',
         overflowX: 'hidden',
         flex: { xs: 1, sm: '0 1 auto' },
@@ -103,17 +106,24 @@ export function Reservas() {
             alignItems: { xs: 'stretch', sm: 'center' },
           }}
         >
-          <Typography variant="h4" component="h1">
+          <Typography
+            variant="h4"
+            component="h1"
+            noWrap={isResponsivo}
+            sx={isResponsivo ? { fontSize: 26, fontWeight: 700 } : undefined}
+          >
             Minhas reservas
           </Typography>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleAbrirCriar}
-            sx={{ width: { sm: 'auto' } }}
-          >
-            Nova reserva
-          </Button>
+          {/* no mobile o "+" da barra inferior já abre a nova reserva */}
+          {!isResponsivo && (
+            <Button
+              variant="contained"
+              onClick={handleAbrirCriar}
+              sx={{ width: 'auto' }}
+            >
+              Nova reserva
+            </Button>
+          )}
         </Stack>
         <Typography
           variant="body2"
@@ -124,7 +134,7 @@ export function Reservas() {
         </Typography>
       </Box>
 
-      <Divider sx={{ mb: 3 }} />
+      {!isResponsivo && <Divider sx={{ mb: 3 }} />}
 
       <Stack
         direction={{ xs: 'column', sm: 'row' }}

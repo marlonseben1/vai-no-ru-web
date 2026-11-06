@@ -29,7 +29,7 @@ export function Cardapio() {
         maxWidth: LARGURA_MAXIMA_CARDAPIO,
         mx: 'auto',
         minWidth: 0,
-        p: { xs: 2, sm: 0 },
+        p: { xs: '20px 16px', sm: 0 },
       }}
     >
       <Box

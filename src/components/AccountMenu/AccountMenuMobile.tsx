@@ -19,6 +19,7 @@ interface AccountMenuMobileProps {
   nome?: string;
   inicial?: string;
   saindo: boolean;
+  offsetSuperior: number;
   offsetInferior: number;
   onConfiguracoes: () => void;
   onSair: () => void;
@@ -29,6 +30,7 @@ export function AccountMenuMobile({
   nome,
   inicial,
   saindo,
+  offsetSuperior,
   offsetInferior,
   onConfiguracoes,
   onSair,
@@ -48,7 +50,7 @@ export function AccountMenuMobile({
         id="account-menu"
         sx={{
           position: 'fixed',
-          top: 0,
+          top: offsetSuperior,
           left: 0,
           right: 0,
           bottom: offsetInferior,

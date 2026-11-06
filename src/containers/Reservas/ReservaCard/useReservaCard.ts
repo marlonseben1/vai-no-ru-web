@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { type MouseEvent, useState } from 'react';
 import type { ReservaResumo } from 'types';
+import { capitalizar } from 'utils/capitalizar';
 import {
   podeCancelarReserva,
   podeEditarReserva,
@@ -27,9 +28,7 @@ export function useReservaCard({ reserva }: UseReservaCardParams) {
 
   const dataIso = reserva.dataReserva.slice(0, 10);
   const data = dayjs(dataIso);
-  const diaSemana = isResponsivo
-    ? data.format('dddd').replace('-feira', '')
-    : data.format('dddd');
+  const diaSemana = capitalizar(data.format('dddd'));
   const dataFormatada = data.format('DD/MM/YYYY');
 
   function abrirMenu(event: MouseEvent<HTMLElement>) {
@@ -64,6 +63,7 @@ export function useReservaCard({ reserva }: UseReservaCardParams) {
     anchorEl,
     temAcoes,
     diaSemana,
+    isResponsivo,
     abrirMenu,
     podeEditar,
     fecharMenu,
