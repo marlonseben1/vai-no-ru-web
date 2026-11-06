@@ -25,16 +25,25 @@ export function AccountMenu() {
 
   return (
     <>
-      <Tooltip title="Configurações">
+      <Tooltip title="Conta">
         <IconButton
-          sx={{ ml: 2 }}
-          aria-label="Configurações da conta"
+          sx={{ width: 44, height: 44 }}
+          aria-label="Conta"
           aria-haspopup="true"
           aria-controls={aberto ? 'account-menu' : undefined}
           aria-expanded={aberto ? 'true' : undefined}
           onClick={handleAbrir}
         >
-          <Avatar sx={{ width: 32, height: 32 }} data-ph-mask>
+          <Avatar
+            sx={{
+              width: 32,
+              height: 32,
+              fontSize: 14,
+              bgcolor: '#C9D1D0',
+              color: '#1F2A2A',
+            }}
+            data-ph-mask
+          >
             {inicial}
           </Avatar>
         </IconButton>

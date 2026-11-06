@@ -16,6 +16,8 @@ export interface CadastroReservaDialog {
   open: boolean;
   mode: 'criar' | 'editar';
   reserva?: ReservaResumo;
+  /** data (YYYY-MM-DD) já selecionada ao abrir a criação */
+  dataInicial?: string;
 }
 
 export interface ReservasStoreState {

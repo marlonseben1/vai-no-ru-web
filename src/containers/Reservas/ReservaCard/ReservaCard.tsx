@@ -15,18 +15,21 @@ import {
 } from '@mui/material';
 import { LABEL_REFEICAO, LABEL_STATUS_RESERVA } from 'constants/labels';
 import type { ReservaResumo } from 'types';
-import { COR_STATUS_RESERVA } from './ReservaCard.static';
+import { ESTILO_CHIP_STATUS } from './ReservaCard.static';
 import { useReservaCard } from './useReservaCard';
 
 interface ReservaCardProps {
   reserva: ReservaResumo;
+  /** linha discreta para reservas passadas (só no desktop) */
+  compacto?: boolean;
 }
 
-export function ReservaCard({ reserva }: ReservaCardProps) {
+export function ReservaCard({ reserva, compacto = false }: ReservaCardProps) {
   const {
     anchorEl,
     temAcoes,
     diaSemana,
+    isResponsivo,
     abrirMenu,
     menuAberto,
     podeEditar,
@@ -42,50 +45,93 @@ export function ReservaCard({ reserva }: ReservaCardProps) {
     handleForcarAgendamento,
   } = useReservaCard({ reserva });
 
+  const statusTexto = LABEL_STATUS_RESERVA[reserva.status];
+  const chipStatus = (
+    <Chip
+      label={statusTexto}
+      size="small"
+      sx={{
+        height: 28,
+        borderRadius: '14px',
+        fontSize: 13,
+        fontWeight: 500,
+        ...ESTILO_CHIP_STATUS[reserva.status],
+      }}
+    />
+  );
+
+  function estiloPaper() {
+    if (compacto) {
+      return {
+        bgcolor: '#F6F8F8',
+        borderColor: '#E3E8E8',
+        borderRadius: '8px',
+        p: 1,
+      };
+    }
+    if (isResponsivo) {
+      return { borderRadius: '12px', borderColor: '#DDE3E2', p: '14px' };
+    }
+    return { borderRadius: '8px', borderColor: '#C5CECD', p: 1.5 };
+  }
+
   return (
     <Paper
       variant="outlined"
       sx={{
-        borderRadius: 2,
-        px: 2,
-        py: 1.5,
         display: 'flex',
-        alignItems: 'center',
+        alignItems: isResponsivo ? 'flex-start' : 'center',
         justifyContent: 'space-between',
         gap: 2,
+        ...estiloPaper(),
       }}
     >
-      <Box sx={{ minWidth: 0 }}>
+      <Box
+        sx={{
+          minWidth: 0,
+          ...(compacto && {
+            display: 'flex',
+            alignItems: 'baseline',
+            flexWrap: 'wrap',
+            columnGap: 1.5,
+          }),
+        }}
+      >
         <Typography
-          variant="body1"
-          sx={{
-            fontWeight: 600,
-            textTransform: 'capitalize',
-            fontSize: { xs: '0.9rem', sm: '1rem' },
-          }}
+          sx={
+            compacto
+              ? { fontSize: 15, fontWeight: 500 }
+              : { fontSize: 16, fontWeight: 700 }
+          }
         >
           {diaSemana}, {dataFormatada}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           {LABEL_REFEICAO[reserva.refeicao]}
         </Typography>
+        {isResponsivo && <Box sx={{ mt: 1.25 }}>{chipStatus}</Box>}
       </Box>
 
       <Box
         sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}
       >
-        <Chip
-          label={LABEL_STATUS_RESERVA[reserva.status]}
-          color={COR_STATUS_RESERVA[reserva.status]}
-          size="small"
-          variant="outlined"
-          sx={{ minWidth: { xs: 90, sm: 120 } }}
-        />
+        {!isResponsivo &&
+          (compacto ? (
+            <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>
+              {statusTexto}
+            </Typography>
+          ) : (
+            chipStatus
+          ))}
         <IconButton
-          size="small"
-          aria-label="Ações da reserva"
+          aria-label={`Mais ações para a reserva de ${diaSemana}, ${dataFormatada}`}
           disabled={isProcessando}
           onClick={abrirMenu}
+          sx={{
+            width: 44,
+            height: 44,
+            ...(isResponsivo && { mt: -0.5, mr: -0.75 }),
+          }}
         >
           <MoreVert fontSize="small" />
         </IconButton>

@@ -19,9 +19,9 @@ export const LABEL_PERFIL: Record<Perfil, string> = {
 
 export const LABEL_STATUS_RESERVA: Record<StatusReserva, string> = {
   PENDENTE: 'Pendente',
-  AGENDADA: 'Agendada',
+  AGENDADA: 'Confirmada',
   NAO_AGENDADA: 'Não agendada',
-  INATIVA: 'Inativa',
+  INATIVA: 'Expirada',
   CANCELADA: 'Cancelada',
 };
 

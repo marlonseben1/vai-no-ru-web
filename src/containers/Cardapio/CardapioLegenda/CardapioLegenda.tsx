@@ -1,25 +1,37 @@
 import { Box, Typography } from '@mui/material';
-import { colorPalette } from 'theme/colorPalette';
-import { ORDEM_SELOS, SELOS_CARDAPIO } from '../Cardapio.static';
+import {
+  COR_BORDA,
+  COR_FUNDO_LEGENDA,
+  COR_TEXTO_SECUNDARIO,
+  ORDEM_SELOS,
+  SELOS_CARDAPIO,
+} from '../Cardapio.static';
 import { CardapioSelo } from '../CardapioSelo/CardapioSelo';
 
 export function CardapioLegenda() {
   return (
     <Box
       sx={{
-        display: 'flex',
+        display: { xs: 'grid', sm: 'flex' },
+        gridTemplateColumns: 'repeat(2, 1fr)',
         flexWrap: 'wrap',
-        gap: { xs: 1.5, sm: 3 },
-        px: 4,
+        columnGap: { xs: 2, sm: 4 },
+        rowGap: { xs: 1.5, sm: 1.5 },
+        px: { xs: 2, sm: 4 },
         py: 2.5,
-        bgcolor: colorPalette.neutral[50],
-        borderTop: `1px solid ${colorPalette.neutral[200]}`,
+        bgcolor: COR_FUNDO_LEGENDA,
+        borderTop: `1px solid ${COR_BORDA}`,
       }}
     >
       {ORDEM_SELOS.map((selo) => (
         <Box key={selo} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <CardapioSelo selo={selo} />
-          <Typography variant="body2" color={colorPalette.neutral[700]}>
+          <Typography
+            sx={{
+              fontSize: { xs: 13, sm: 14 },
+              color: COR_TEXTO_SECUNDARIO,
+            }}
+          >
             {SELOS_CARDAPIO[selo].texto}
           </Typography>
         </Box>
