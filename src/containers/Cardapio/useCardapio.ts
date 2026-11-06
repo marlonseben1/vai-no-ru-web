@@ -1,7 +1,11 @@
 import dayjs from 'dayjs';
 import { useCardapioQuery } from 'queries/cardapio/useCardapioQuery';
 import { useState } from 'react';
-import { formatarPeriodo, registrarNavegacao } from './Cardapio.helpers';
+import {
+  formatarPeriodo,
+  formatarPeriodoCurto,
+  registrarNavegacao,
+} from './Cardapio.helpers';
 
 export function useCardapio() {
   const [semanaOffset, setSemanaOffset] = useState(0);
@@ -17,6 +21,7 @@ export function useCardapio() {
 
   return {
     periodo: formatarPeriodo(inicioDaSemana, fimDaSemana),
+    periodoCurto: formatarPeriodoCurto(inicioDaSemana, fimDaSemana),
     chaveSemana: inicioDaSemana.format('YYYY-MM-DD'),
     semanaAtual: semanaOffset === 0,
     cardapioQuery,
