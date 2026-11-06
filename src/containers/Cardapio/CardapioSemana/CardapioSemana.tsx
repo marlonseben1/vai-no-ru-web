@@ -1,11 +1,11 @@
-import { Paper } from '@mui/material';
-import { CustomTabs, type TabItem } from 'components/CustomTabs/CustomTabs';
+import { Box, Paper } from '@mui/material';
 import dayjs from 'dayjs';
-import { colorPalette } from 'theme/colorPalette';
+import { useState } from 'react';
 import type { Cardapio } from 'types';
 import { dataDoDia } from '../Cardapio.helpers';
+import { COR_BORDA } from '../Cardapio.static';
+import { CardapioAbas } from '../CardapioAbas/CardapioAbas';
 import { CardapioDiaConteudo } from '../CardapioDiaConteudo/CardapioDiaConteudo';
-import { CardapioDiaLabel } from '../CardapioDiaLabel/CardapioDiaLabel';
 import { CardapioLegenda } from '../CardapioLegenda/CardapioLegenda';
 
 interface CardapioSemanaProps {
@@ -15,12 +15,8 @@ interface CardapioSemanaProps {
 export function CardapioSemana({ dias }: CardapioSemanaProps) {
   const hoje = dayjs().format('YYYY-MM-DD');
   const indiceHoje = dias.findIndex((dia) => dataDoDia(dia) === hoje);
-
-  const tabs: TabItem[] = dias.map((dia) => ({
-    id: dia.id,
-    label: <CardapioDiaLabel dia={dia} hoje={hoje} />,
-    children: <CardapioDiaConteudo dia={dia} />,
-  }));
+  const [indice, setIndice] = useState(Math.max(indiceHoje, 0));
+  const diaSelecionado = dias[indice];
 
   return (
     <Paper
@@ -28,11 +24,22 @@ export function CardapioSemana({ dias }: CardapioSemanaProps) {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        border: `1px solid ${colorPalette.neutral[200]}`,
-        borderRadius: 4,
+        bgcolor: '#FFFFFF',
+        border: `1px solid ${COR_BORDA}`,
+        borderRadius: '20px',
       }}
     >
-      <CustomTabs tabs={tabs} indiceInicial={Math.max(indiceHoje, 0)} />
+      <CardapioAbas
+        dias={dias}
+        hoje={hoje}
+        indiceSelecionado={indice}
+        onSelecionar={setIndice}
+      />
+      {diaSelecionado && (
+        <Box sx={{ py: 3, px: { xs: 2, sm: 4 } }}>
+          <CardapioDiaConteudo dia={diaSelecionado} />
+        </Box>
+      )}
       <CardapioLegenda />
     </Paper>
   );

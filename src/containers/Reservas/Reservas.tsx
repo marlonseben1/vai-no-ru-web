@@ -1,25 +1,16 @@
-import {
-  Alert,
-  Box,
-  Button,
-  CircularProgress,
-  Divider,
-  MenuItem,
-  Pagination,
-  Paper,
-  Select,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from '@mui/material';
-import { LABEL_STATUS_RESERVA } from 'constants/labels';
-import type { StatusReserva } from 'types';
+import { Alert, Box, CircularProgress, Paper, Typography } from '@mui/material';
+import useIsResponsivo from 'hooks/useIsResponsivo';
+import type { ReservaResumo } from 'types';
 import { ReservaCard } from './ReservaCard/ReservaCard';
-import { OPCOES_DATA_FILTRO } from './Reservas.static';
+import { separarReservas } from './Reservas.helpers';
+import { ReservasFiltros } from './ReservasFiltros/ReservasFiltros';
+import { ReservasPaginacao } from './ReservasPaginacao/ReservasPaginacao';
+import { ReservasProximasVazio } from './ReservasProximasVazio/ReservasProximasVazio';
+import { ReservasSecao } from './ReservasSecao/ReservasSecao';
 import { useReservas } from './useReservas';
 
 export function Reservas() {
+  const isResponsivo = useIsResponsivo();
   const {
     page,
     situacao,
@@ -33,6 +24,38 @@ export function Reservas() {
   } = useReservas();
 
   const { data, isPending, isError, error } = reservasQuery;
+
+  function renderReservas(reservas: ReservaResumo[]) {
+    // só dá para afirmar que não há próximas quando tudo cabe numa página
+    const todasNaMesmaPagina = totalPaginas <= 1;
+    const { proximas, anteriores } = separarReservas(reservas);
+    return (
+      <>
+        {(proximas.length > 0 || todasNaMesmaPagina) && (
+          <ReservasSecao titulo="Próximas">
+            {proximas.length > 0 ? (
+              proximas.map((reserva) => (
+                <ReservaCard key={reserva.id} reserva={reserva} />
+              ))
+            ) : (
+              <ReservasProximasVazio onNovaReserva={handleAbrirCriar} />
+            )}
+          </ReservasSecao>
+        )}
+        {anteriores.length > 0 && (
+          <ReservasSecao titulo="Anteriores">
+            {anteriores.map((reserva) => (
+              <ReservaCard
+                key={reserva.id}
+                reserva={reserva}
+                compacto={!isResponsivo}
+              />
+            ))}
+          </ReservasSecao>
+        )}
+      </>
+    );
+  }
 
   function renderLista() {
     if (isPending) {
@@ -57,22 +80,15 @@ export function Reservas() {
 
     return (
       <>
-        <Stack spacing={1.5}>
-          {data.data.map((reserva) => (
-            <ReservaCard key={reserva.id} reserva={reserva} />
-          ))}
-        </Stack>
+        {renderReservas(data.data)}
 
         {totalPaginas > 1 && (
-          <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
-            <Pagination
-              count={totalPaginas}
-              page={page}
-              onChange={(_event, novaPagina) => handleMudarPagina(novaPagina)}
-              color="primary"
-              shape="rounded"
-            />
-          </Box>
+          <ReservasPaginacao
+            page={page}
+            total={data.total}
+            totalPaginas={totalPaginas}
+            onMudarPagina={handleMudarPagina}
+          />
         )}
       </>
     );
@@ -80,97 +96,62 @@ export function Reservas() {
 
   return (
     <Paper
-      elevation={3}
+      elevation={0}
       sx={{
-        borderRadius: { xs: 0, sm: 2 },
-        boxShadow: { xs: 'none', sm: 3 },
+        borderRadius: { xs: 0, sm: '12px' },
+        boxShadow: { xs: 'none', sm: '0 2px 8px rgba(31, 42, 42, 0.08)' },
+        bgcolor: { xs: 'transparent', sm: 'background.paper' },
         width: '100%',
         minWidth: 0,
-        maxWidth: 800,
+        maxWidth: 900,
         mx: 'auto',
-        p: { xs: 2, sm: 4 },
+        p: { xs: '20px 16px', sm: 4 },
         overflowY: 'auto',
         overflowX: 'hidden',
         flex: { xs: 1, sm: '0 1 auto' },
       }}
     >
-      <Box sx={{ mb: 3 }}>
-        <Stack
-          direction={{ xs: 'column', sm: 'row' }}
-          spacing={{ xs: 2, sm: 0 }}
-          sx={{
-            justifyContent: 'space-between',
-            alignItems: { xs: 'stretch', sm: 'center' },
-          }}
-        >
-          <Typography variant="h4" component="h1">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          flexWrap: 'wrap',
+          alignItems: { xs: 'stretch', sm: 'flex-start' },
+          justifyContent: 'space-between',
+          columnGap: 3,
+          rowGap: 3,
+          mb: 3,
+        }}
+      >
+        <Box>
+          <Typography
+            variant="h4"
+            component="h1"
+            noWrap={isResponsivo}
+            sx={{
+              fontSize: isResponsivo ? 26 : 36,
+              fontWeight: 700,
+              color: 'text.primary',
+            }}
+          >
             Minhas reservas
           </Typography>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={handleAbrirCriar}
-            sx={{ width: { sm: 'auto' } }}
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ display: { xs: 'none', sm: 'block' }, mt: '6px' }}
           >
-            Nova reserva
-          </Button>
-        </Stack>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ display: { xs: 'none', sm: 'block' } }}
-        >
-          Acompanhe o status e histórico dos seus agendamentos no RU
-        </Typography>
+            Acompanhe o status e histórico dos seus agendamentos no RU
+          </Typography>
+        </Box>
+
+        <ReservasFiltros
+          dataFiltro={dataFiltro}
+          situacao={situacao}
+          onMudarDataFiltro={handleMudarDataFiltro}
+          onMudarSituacao={handleMudarSituacao}
+        />
       </Box>
-
-      <Divider sx={{ mb: 3 }} />
-
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={2}
-        useFlexGap
-        sx={{ mb: 3, flexWrap: 'wrap' }}
-      >
-        <ToggleButtonGroup
-          value={dataFiltro}
-          exclusive
-          size="small"
-          sx={{
-            width: { xs: '100%', sm: 'auto' },
-            '& .MuiToggleButton-root': {
-              flex: { xs: 1, sm: 'none' },
-              minWidth: 0,
-              px: { xs: 1, sm: 2 },
-              py: { xs: 0.5, sm: undefined },
-            },
-          }}
-          onChange={(_event, valor) => handleMudarDataFiltro(valor ?? '')}
-        >
-          {OPCOES_DATA_FILTRO.map((opcao) => (
-            <ToggleButton key={opcao.valor} value={opcao.valor}>
-              {opcao.label}
-            </ToggleButton>
-          ))}
-        </ToggleButtonGroup>
-
-        <Select
-          size="small"
-          displayEmpty
-          value={situacao}
-          onChange={(event) =>
-            handleMudarSituacao(event.target.value as StatusReserva | '')
-          }
-          sx={{ minWidth: { sm: 200 } }}
-        >
-          <MenuItem value="">Todos os status</MenuItem>
-          {Object.entries(LABEL_STATUS_RESERVA).map(([valor, label]) => (
-            <MenuItem key={valor} value={valor}>
-              {label}
-            </MenuItem>
-          ))}
-        </Select>
-      </Stack>
 
       {renderLista()}
     </Paper>
