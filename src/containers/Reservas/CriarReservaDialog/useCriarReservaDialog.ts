@@ -26,7 +26,19 @@ export function useCriarReservaDialog() {
     ReservasStore.setCadastroReservaDialog(null);
   }
 
-  const [dias, setDias] = useState<ReservaDiaInput[]>([]);
+  const dataInicial = useReservasStore(
+    ({ cadastroReservaDialog }) => cadastroReservaDialog.dataInicial,
+  );
+  const [dias, setDias] = useState<ReservaDiaInput[]>(() =>
+    dataInicial && !isDataDesabilitada(dayjs(dataInicial), [])
+      ? [
+          {
+            data: dataInicial,
+            refeicao: refeicoesDisponiveis(dataInicial)[0] ?? 'Almoco',
+          },
+        ]
+      : [],
+  );
   // oferece aplicar última refeição escolhida manualmente para todos os dias
   const [refeicaoParaTodos, setRefeicaoParaTodos] = useState<Refeicao | null>(
     null,

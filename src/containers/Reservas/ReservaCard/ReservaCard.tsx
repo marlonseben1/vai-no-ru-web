@@ -15,26 +15,25 @@ import {
 } from '@mui/material';
 import { LABEL_REFEICAO, LABEL_STATUS_RESERVA } from 'constants/labels';
 import type { ReservaResumo } from 'types';
-import {
-  COR_STATUS_RESERVA,
-  ESTILO_CHIP_STATUS_MOBILE,
-} from './ReservaCard.static';
+import { ESTILO_CHIP_STATUS } from './ReservaCard.static';
 import { useReservaCard } from './useReservaCard';
 
 interface ReservaCardProps {
   reserva: ReservaResumo;
+  /** linha discreta para reservas passadas (só no desktop) */
+  compacto?: boolean;
 }
 
-export function ReservaCard({ reserva }: ReservaCardProps) {
+export function ReservaCard({ reserva, compacto = false }: ReservaCardProps) {
   const {
     anchorEl,
     temAcoes,
     diaSemana,
+    isResponsivo,
     abrirMenu,
     menuAberto,
     podeEditar,
     fecharMenu,
-    isResponsivo,
     podeCancelar,
     podeReativar,
     handleEditar,
@@ -46,27 +45,35 @@ export function ReservaCard({ reserva }: ReservaCardProps) {
     handleForcarAgendamento,
   } = useReservaCard({ reserva });
 
+  const statusTexto = LABEL_STATUS_RESERVA[reserva.status];
   const chipStatus = (
     <Chip
-      label={LABEL_STATUS_RESERVA[reserva.status]}
+      label={statusTexto}
       size="small"
-      {...(isResponsivo
-        ? {
-            sx: {
-              height: 28,
-              borderRadius: '14px',
-              fontSize: 13,
-              fontWeight: 500,
-              ...ESTILO_CHIP_STATUS_MOBILE[reserva.status],
-            },
-          }
-        : {
-            color: COR_STATUS_RESERVA[reserva.status],
-            variant: 'outlined',
-            sx: { minWidth: 120 },
-          })}
+      sx={{
+        height: 28,
+        borderRadius: '14px',
+        fontSize: 13,
+        fontWeight: 500,
+        ...ESTILO_CHIP_STATUS[reserva.status],
+      }}
     />
   );
+
+  function estiloPaper() {
+    if (compacto) {
+      return {
+        bgcolor: '#F6F8F8',
+        borderColor: '#E3E8E8',
+        borderRadius: '8px',
+        p: 1,
+      };
+    }
+    if (isResponsivo) {
+      return { borderRadius: '12px', borderColor: '#DDE3E2', p: '14px' };
+    }
+    return { borderRadius: '8px', borderColor: '#C5CECD', p: 1.5 };
+  }
 
   return (
     <Paper
@@ -76,15 +83,26 @@ export function ReservaCard({ reserva }: ReservaCardProps) {
         alignItems: isResponsivo ? 'flex-start' : 'center',
         justifyContent: 'space-between',
         gap: 2,
-        ...(isResponsivo
-          ? { borderRadius: '12px', borderColor: '#DDE3E2', p: '14px' }
-          : { borderRadius: 2, px: 2, py: 1.5 }),
+        ...estiloPaper(),
       }}
     >
-      <Box sx={{ minWidth: 0 }}>
+      <Box
+        sx={{
+          minWidth: 0,
+          ...(compacto && {
+            display: 'flex',
+            alignItems: 'baseline',
+            flexWrap: 'wrap',
+            columnGap: 1.5,
+          }),
+        }}
+      >
         <Typography
-          variant="body1"
-          sx={{ fontWeight: isResponsivo ? 700 : 600 }}
+          sx={
+            compacto
+              ? { fontSize: 15, fontWeight: 500 }
+              : { fontSize: 16, fontWeight: 700 }
+          }
         >
           {diaSemana}, {dataFormatada}
         </Typography>
@@ -97,17 +115,23 @@ export function ReservaCard({ reserva }: ReservaCardProps) {
       <Box
         sx={{ display: 'flex', alignItems: 'center', gap: 1, flexShrink: 0 }}
       >
-        {!isResponsivo && chipStatus}
+        {!isResponsivo &&
+          (compacto ? (
+            <Typography sx={{ fontSize: 13, color: 'text.secondary' }}>
+              {statusTexto}
+            </Typography>
+          ) : (
+            chipStatus
+          ))}
         <IconButton
-          size={isResponsivo ? 'medium' : 'small'}
           aria-label={`Mais ações para a reserva de ${diaSemana}, ${dataFormatada}`}
           disabled={isProcessando}
           onClick={abrirMenu}
-          sx={
-            isResponsivo
-              ? { width: 44, height: 44, mt: -0.5, mr: -0.75 }
-              : undefined
-          }
+          sx={{
+            width: 44,
+            height: 44,
+            ...(isResponsivo && { mt: -0.5, mr: -0.75 }),
+          }}
         >
           <MoreVert fontSize="small" />
         </IconButton>

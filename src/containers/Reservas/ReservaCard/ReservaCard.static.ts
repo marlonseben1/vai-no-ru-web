@@ -1,19 +1,6 @@
-import type { ChipProps } from '@mui/material';
 import type { StatusReserva } from 'types';
 
-export const COR_STATUS_RESERVA: Record<
-  StatusReserva,
-  NonNullable<ChipProps['color']>
-> = {
-  PENDENTE: 'primary',
-  AGENDADA: 'success',
-  NAO_AGENDADA: 'error',
-  INATIVA: 'default',
-  CANCELADA: 'warning',
-};
-
-// no mobile os chips usam cores próprias (fundo + texto), sem contorno
-export const ESTILO_CHIP_STATUS_MOBILE: Record<
+export const ESTILO_CHIP_STATUS: Record<
   StatusReserva,
   { bgcolor: string; color: string }
 > = {
