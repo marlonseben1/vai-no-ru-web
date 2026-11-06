@@ -108,6 +108,7 @@ export function useCriarReservaDialog() {
             PostHogAnalytics.forcarGravacao();
             // CES aparece só depois do aviso, para não empilhar as dialogs
             abrirAvisoPendente({
+              dias,
               onClose: () => CesStore.abrir('primeira_reserva'),
             });
           }

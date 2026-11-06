@@ -21,8 +21,8 @@ import { LABEL_REFEICAO } from 'constants/labels';
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { useCallback } from 'react';
+import { formatarDataComDiaSemana } from 'utils/formatarDataComDiaSemana';
 import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
-import { formatarDataLista } from './CriarReservaDialog.helpers';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
 
 const COR_PRINCIPAL = '#3F706B';
@@ -217,7 +217,7 @@ export function CriarReservaDialog() {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {formatarDataLista(dia.data)}
+                      {formatarDataComDiaSemana(dia.data)}
                     </Typography>
 
                     <TextField
