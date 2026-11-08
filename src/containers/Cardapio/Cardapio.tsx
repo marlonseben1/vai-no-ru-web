@@ -6,6 +6,7 @@ import {
   COR_TEXTO,
   LARGURA_MAXIMA_CARDAPIO,
 } from 'shared/Cardapio/Cardapio.static';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { CardapioConteudo } from './CardapioConteudo/CardapioConteudo';
 import { useCardapio } from './useCardapio';
 
@@ -81,7 +82,7 @@ export function Cardapio() {
               gap: 1,
               border: { xs: `1px solid ${COR_BORDA}`, sm: 'none' },
               borderRadius: { xs: '12px', sm: 0 },
-              bgcolor: { xs: '#FFFFFF', sm: 'transparent' },
+              bgcolor: { xs: paletaDeCores.neutra[0], sm: 'transparent' },
               px: { xs: 0.5, sm: 0 },
             }}
           >

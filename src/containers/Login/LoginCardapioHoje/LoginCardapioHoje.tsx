@@ -1,4 +1,5 @@
 import { Box, Skeleton, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import dayjs from 'dayjs';
 import {
   COR_BORDA,
@@ -7,6 +8,7 @@ import {
 } from 'shared/Cardapio/Cardapio.static';
 import { CardapioLegenda } from 'shared/Cardapio/CardapioLegenda/CardapioLegenda';
 import { CardapioMenu } from 'shared/Cardapio/CardapioMenu/CardapioMenu';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { Cardapio } from 'types';
 import { capitalizar } from 'utils/capitalizar';
 
@@ -22,10 +24,10 @@ export function LoginCardapioHoje({ cardapio }: LoginCardapioHojeProps) {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        bgcolor: '#FFFFFF',
+        bgcolor: paletaDeCores.neutra[0],
         border: `1px solid ${COR_BORDA}`,
         borderRadius: '20px',
-        boxShadow: '0 1px 2px rgba(31, 42, 42, 0.04)',
+        boxShadow: `0 1px 2px ${alpha(paletaDeCores.cinza[950], 0.04)}`,
       }}
     >
       <Box sx={{ p: 4, pb: 3 }}>

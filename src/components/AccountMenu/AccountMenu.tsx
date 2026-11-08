@@ -8,7 +8,7 @@ import {
   MenuItem,
   Tooltip,
 } from '@mui/material';
-import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
+import { FONT_FAMILY_LAYOUT, paletaDeCores } from 'theme/paletaDeCores';
 import { useAccountMenu } from './useAccountMenu';
 
 export function AccountMenu() {
@@ -39,8 +39,8 @@ export function AccountMenu() {
               width: 32,
               height: 32,
               fontSize: 14,
-              bgcolor: '#C9D1D0',
-              color: '#1F2A2A',
+              bgcolor: paletaDeCores.cinza[500],
+              color: paletaDeCores.cinza[950],
             }}
             data-ph-mask
           >
@@ -59,7 +59,7 @@ export function AccountMenu() {
             elevation: 0,
             sx: {
               overflow: 'visible',
-              filter: `drop-shadow(0px 2px 8px ${colorPalette.neutral[200]})`,
+              filter: `drop-shadow(0px 2px 8px ${paletaDeCores.neutra[200]})`,
               mt: 1.5,
               fontFamily: FONT_FAMILY_LAYOUT,
               '&::before': {

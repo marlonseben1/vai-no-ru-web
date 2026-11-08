@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { LABEL_PERFIL } from 'constants/labels';
 import { Controller } from 'react-hook-form';
-import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
+import { FONT_FAMILY_LAYOUT, paletaDeCores } from 'theme/paletaDeCores';
 import { useOnboarding } from './useOnboarding';
 
 export function Onboarding() {
@@ -55,7 +55,7 @@ export function Onboarding() {
               sx={{
                 fontFamily: 'inherit',
                 fontWeight: 'bold',
-                color: colorPalette.primary[800],
+                color: paletaDeCores.primaria[800],
               }}
             >
               Bem-vindo ao Vai no RU!

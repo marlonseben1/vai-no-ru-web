@@ -3,6 +3,7 @@ import {
   ALTURA_APPBAR_MOBILE,
   ALTURA_BOTTOM_MENU,
 } from 'layouts/PrivateLayout/PrivateLayout.static';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { AccountMenuMobile } from './AccountMenuMobile';
 import { useAccountButtonMobile } from './useAccountButtonMobile';
 
@@ -32,8 +33,8 @@ export function AccountButtonMobile() {
             width: 32,
             height: 32,
             fontSize: 14,
-            bgcolor: '#C9D1D0',
-            color: '#1F2A2A',
+            bgcolor: paletaDeCores.cinza[500],
+            color: paletaDeCores.cinza[950],
           }}
           data-ph-mask
         >

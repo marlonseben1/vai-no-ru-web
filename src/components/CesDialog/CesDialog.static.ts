@@ -5,6 +5,7 @@ import SentimentSatisfied from '@mui/icons-material/SentimentSatisfied';
 import SentimentVeryDissatisfied from '@mui/icons-material/SentimentVeryDissatisfied';
 import SentimentVerySatisfied from '@mui/icons-material/SentimentVerySatisfied';
 import type { DialogProps, StackProps, SxProps, Theme } from '@mui/material';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { NotaCes } from 'types';
 
 export const ID_TITULO_CES = 'ces-dialog-titulo';
@@ -49,19 +50,19 @@ export const TITULO_COMENTARIO_POR_NOTA: Record<
 };
 
 export const COR_NOTA: Record<NotaCes, string> = {
-  1: '#F8E0E0',
-  2: '#FBECE0',
-  3: '#FDF5D9',
-  4: '#E8F4DE',
-  5: '#C5E3AB',
+  1: paletaDeCores.vermelho[100],
+  2: paletaDeCores.laranja[100],
+  3: paletaDeCores.amarelo[100],
+  4: paletaDeCores.verde[50],
+  5: paletaDeCores.verde[200],
 };
 
 export const COR_NOTA_SELECIONADA: Record<NotaCes, string> = {
-  1: '#E53935',
-  2: '#F57C00',
-  3: '#F0A500',
-  4: '#829E62',
-  5: '#23A455',
+  1: paletaDeCores.vermelho[600],
+  2: paletaDeCores.laranja[600],
+  3: paletaDeCores.amarelo[500],
+  4: paletaDeCores.verde[400],
+  5: paletaDeCores.verde[500],
 };
 
 export type PosicaoCes = 'centro' | 'canto';

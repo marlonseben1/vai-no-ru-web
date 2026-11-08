@@ -1,6 +1,7 @@
 import { AppBar as MuiAppBar, Toolbar, Typography } from '@mui/material';
 import { AccountButtonMobile } from 'components/AccountMenu/AccountButtonMobile';
 import { ALTURA_APPBAR_MOBILE } from 'layouts/PrivateLayout/PrivateLayout.static';
+import { paletaDeCores } from 'theme/paletaDeCores';
 
 // cabeçalho do mobile; no desktop quem faz esse papel é a NavBar
 export function AppBar() {
@@ -9,10 +10,10 @@ export function AppBar() {
       position="static"
       elevation={0}
       sx={{
-        bgcolor: '#F3F8F8',
-        color: '#1F3B38',
+        bgcolor: paletaDeCores.cinza[50],
+        color: paletaDeCores.turquesa[900],
         fontFamily: 'Roboto, sans-serif',
-        borderBottom: '1px solid #DDE3E2',
+        borderBottom: `1px solid ${paletaDeCores.cinza[400]}`,
       }}
     >
       <Toolbar sx={{ minHeight: ALTURA_APPBAR_MOBILE, pr: 0.5 }}>
