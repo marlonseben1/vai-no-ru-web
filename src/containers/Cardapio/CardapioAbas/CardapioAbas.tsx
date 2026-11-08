@@ -1,6 +1,6 @@
 import { Box, ButtonBase } from '@mui/material';
+import { COR_BORDA, COR_DESTAQUE } from 'shared/Cardapio/Cardapio.static';
 import type { Cardapio } from 'types';
-import { COR_BORDA, COR_DESTAQUE } from '../Cardapio.static';
 import { CardapioDiaLabel } from '../CardapioDiaLabel/CardapioDiaLabel';
 
 interface CardapioAbasProps {

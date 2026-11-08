@@ -8,173 +8,206 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { GoogleLogin } from '@react-oauth/google';
-import { useLoginMutation } from 'queries/auth';
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import {
+  COR_BORDA,
+  COR_DESTAQUE,
+  COR_TEXTO,
+  COR_TEXTO_SECUNDARIO,
+} from 'shared/Cardapio/Cardapio.static';
 import { colorPalette } from 'theme/colorPalette';
+import { desktopMediaQuery } from 'utils/isDesktop';
+import { LoginCardapioHoje } from './LoginCardapioHoje/LoginCardapioHoje';
+import { LoginGoogleBotao } from './LoginGoogleBotao/LoginGoogleBotao';
+import { useLogin } from './useLogin';
+
+const DESKTOP = `@media ${desktopMediaQuery}`;
 
 export function Login() {
-  const loginMutation = useLoginMutation();
-  const navigate = useNavigate();
-
-  const [googleToken, setGoogleToken] = useState<string | null>(null);
-  const [aceitarPolitica, setAceitarPolitica] = useState(false);
-
-  const precisaAceitarPolitica =
-    loginMutation.isError && loginMutation.error.code === 'CONSENT_REQUIRED';
-
-  function enviarLogin(token: string, aceitar?: boolean) {
-    loginMutation.mutate(
-      { token, aceitarPolitica: aceitar },
-      { onSuccess: () => navigate('/cardapio') },
-    );
-  }
-
-  function handleGoogleSuccess(credentialResponse: { credential?: string }) {
-    if (!credentialResponse.credential) return;
-    setGoogleToken(credentialResponse.credential);
-    enviarLogin(credentialResponse.credential);
-  }
-
-  function handleAceitarEContinuar() {
-    if (!googleToken) return;
-    enviarLogin(googleToken, true);
-  }
+  const {
+    erro,
+    cardapio,
+    enviando,
+    aceitarPolitica,
+    mostrarCardapio,
+    setAceitarPolitica,
+    handleGoogleSuccess,
+    precisaAceitarPolitica,
+    handleAceitarEContinuar,
+  } = useLogin();
 
   return (
     <Box
       sx={{
         minHeight: '100dvh',
+        bgcolor: '#F6F8F7',
         display: 'flex',
-        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: 'center',
+        justifyContent: 'center',
+        px: { xs: 2.5, md: 6 },
+        py: { xs: 6, md: 8 },
       }}
     >
       <Box
         sx={{
-          flex: { xs: '0 0 auto', md: 1 },
-          bgcolor: colorPalette.primary[800],
-          color: colorPalette.primary[50],
-          display: 'flex',
-          flexDirection: 'column',
+          width: '100%',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 480px)',
+          [DESKTOP]: {
+            gridTemplateColumns: mostrarCardapio
+              ? 'minmax(0, 440px) minmax(0, 500px)'
+              : 'minmax(0, 440px)',
+          },
+          columnGap: 16,
+          rowGap: 4,
           justifyContent: 'center',
-          px: { xs: 4, md: 8 },
-          py: { xs: 6, md: 4 },
+          alignItems: 'center',
         }}
       >
-        <Typography
-          variant="h3"
-          component="h1"
-          sx={{ fontWeight: 800, lineHeight: 1.15, letterSpacing: '-0.01em' }}
-        >
-          Sua vaga no RU,
-          <br />
-          garantida.
-        </Typography>
+        <Stack spacing={3.5}>
+          <Box>
+            <Typography
+              variant="h1"
+              sx={{
+                fontSize: { xs: 40, md: 56 },
+                fontWeight: 700,
+                lineHeight: 1.1,
+                letterSpacing: '-0.01em',
+                color: colorPalette.primary[800],
+              }}
+            >
+              Garanta seu desconto no RU!
+            </Typography>
+            <Typography
+              sx={{
+                mt: 2.5,
+                fontSize: 18,
+                lineHeight: 1.6,
+                color: COR_TEXTO_SECUNDARIO,
+              }}
+            >
+              Suas reservas do RU da UPF feitas automaticamente.
+            </Typography>
+          </Box>
 
-        <Typography sx={{ mt: 3, maxWidth: 420, opacity: 0.9 }}>
-          Reservas automáticas para o Restaurante Universitário da UPF, sem
-          precisar preencher o formulário toda vez.
-        </Typography>
-      </Box>
+          <Box
+            sx={{
+              p: 3.5,
+              bgcolor: '#FFFFFF',
+              border: `1px solid ${COR_BORDA}`,
+              borderRadius: '20px',
+              boxShadow: '0 1px 2px rgba(31, 42, 42, 0.04)',
+            }}
+          >
+            <Stack spacing={3}>
+              {!precisaAceitarPolitica && (
+                <>
+                  <Typography
+                    component="h2"
+                    sx={{ fontSize: 22, fontWeight: 700, color: COR_TEXTO }}
+                  >
+                    Acesse com sua conta da UPF
+                  </Typography>
 
-      <Box
-        sx={{
-          flex: 1,
-          bgcolor: 'background.default',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          px: { xs: 4, md: 8 },
-          py: 6,
-        }}
-      >
-        <Stack spacing={3} sx={{ maxWidth: 360, width: '100%', mx: 'auto' }}>
-          {!precisaAceitarPolitica && (
-            <>
-              <Stack spacing={1}>
-                <Typography
-                  component="h2"
-                  variant="h5"
-                  sx={{ fontWeight: 700 }}
-                >
-                  Acesse com sua conta Google
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Contas <strong>@upf.br</strong> têm acesso liberado na hora.
-                  Outros e-mails ficam como convidado, pendente de aprovação.
-                </Typography>
-              </Stack>
+                  <LoginGoogleBotao onSuccess={handleGoogleSuccess} />
 
-              <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => {}} />
-            </>
-          )}
+                  <Typography
+                    sx={{ fontSize: 13, color: COR_TEXTO_SECUNDARIO }}
+                  >
+                    Contas que não são @upf.br ficam pendentes de aprovação.
+                  </Typography>
+                </>
+              )}
 
-          {precisaAceitarPolitica && (
-            <>
-              <Stack spacing={1}>
-                <Typography
-                  component="h2"
-                  variant="h5"
-                  sx={{ fontWeight: 700 }}
-                >
-                  Só mais uma etapa
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Antes de continuar, você precisa aceitar nossos termos de uso
-                  e a política de privacidade.
-                </Typography>
-              </Stack>
+              {precisaAceitarPolitica && (
+                <>
+                  <Stack spacing={1}>
+                    <Typography
+                      component="h2"
+                      sx={{ fontSize: 22, fontWeight: 700, color: COR_TEXTO }}
+                    >
+                      Só mais uma etapa
+                    </Typography>
+                    <Typography
+                      sx={{ fontSize: 15, color: COR_TEXTO_SECUNDARIO }}
+                    >
+                      Antes de continuar, você precisa aceitar nossos termos de
+                      uso e a política de privacidade.
+                    </Typography>
+                  </Stack>
 
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={aceitarPolitica}
-                    onChange={(event) =>
-                      setAceitarPolitica(event.target.checked)
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={aceitarPolitica}
+                        onChange={(event) =>
+                          setAceitarPolitica(event.target.checked)
+                        }
+                      />
+                    }
+                    label={
+                      <>
+                        Li e aceito os{' '}
+                        <Link href="/termos" target="_blank" rel="noopener">
+                          termos de uso
+                        </Link>{' '}
+                        e a{' '}
+                        <Link
+                          href="/privacidade"
+                          target="_blank"
+                          rel="noopener"
+                        >
+                          política de privacidade
+                        </Link>
+                      </>
                     }
                   />
-                }
-                label={
-                  <>
-                    Li e aceito os{' '}
-                    <Link href="/termos" target="_blank" rel="noopener">
-                      termos de uso
-                    </Link>{' '}
-                    e a{' '}
-                    <Link href="/privacidade" target="_blank" rel="noopener">
-                      política de privacidade
-                    </Link>
-                  </>
-                }
-              />
 
-              <Button
-                variant="contained"
-                size="large"
-                fullWidth
-                disabled={!aceitarPolitica || loginMutation.isPending}
-                onClick={handleAceitarEContinuar}
-              >
-                Aceitar e continuar
-              </Button>
-            </>
-          )}
+                  <Button
+                    variant="contained"
+                    size="large"
+                    fullWidth
+                    disabled={!aceitarPolitica || enviando}
+                    onClick={handleAceitarEContinuar}
+                  >
+                    Aceitar e continuar
+                  </Button>
+                </>
+              )}
 
-          <Typography variant="caption" color="text.secondary">
-            <Link href="/termos" target="_blank" rel="noopener">
+              {erro && <Alert severity="warning">{erro}</Alert>}
+            </Stack>
+          </Box>
+
+          <Typography
+            sx={{
+              fontSize: 14,
+              textAlign: 'center',
+              [DESKTOP]: { textAlign: 'left' },
+            }}
+          >
+            <Link
+              href="/termos"
+              target="_blank"
+              rel="noopener"
+              sx={{ color: COR_DESTAQUE }}
+            >
               Termos de uso
             </Link>
-            {' · '}
-            <Link href="/privacidade" target="_blank" rel="noopener">
+            <Box component="span" sx={{ color: COR_TEXTO_SECUNDARIO }}>
+              {' · '}
+            </Box>
+            <Link
+              href="/privacidade"
+              target="_blank"
+              rel="noopener"
+              sx={{ color: COR_DESTAQUE }}
+            >
               Política de privacidade
             </Link>
           </Typography>
-
-          {loginMutation.isError && !precisaAceitarPolitica && (
-            <Alert severity="warning">{loginMutation.error.message}</Alert>
-          )}
         </Stack>
+
+        {mostrarCardapio && <LoginCardapioHoje cardapio={cardapio} />}
       </Box>
     </Box>
   );

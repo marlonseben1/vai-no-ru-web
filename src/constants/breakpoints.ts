@@ -1,4 +1,4 @@
-export const DESKTOP_BREAKPOINT = 960;
+export const DESKTOP_BREAKPOINT = 1080;
 
 export const MOBILE_BREAKPOINT = {
   width: 599,
