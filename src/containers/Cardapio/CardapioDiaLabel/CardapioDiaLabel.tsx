@@ -1,13 +1,13 @@
 import { Box, Typography } from '@mui/material';
 import dayjs from 'dayjs';
-import type { Cardapio } from 'types';
-import { capitalizar } from 'utils/capitalizar';
-import { dataDoDia } from '../Cardapio.helpers';
+import { dataDoDia } from 'shared/Cardapio/Cardapio.helpers';
 import {
   COR_DESTAQUE,
   COR_TEXTO,
   COR_TEXTO_SECUNDARIO,
-} from '../Cardapio.static';
+} from 'shared/Cardapio/Cardapio.static';
+import type { Cardapio } from 'types';
+import { capitalizar } from 'utils/capitalizar';
 
 interface CardapioDiaLabelProps {
   dia: Cardapio;

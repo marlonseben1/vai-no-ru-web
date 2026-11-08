@@ -1,12 +1,12 @@
 import { Box, Paper } from '@mui/material';
 import dayjs from 'dayjs';
 import { useState } from 'react';
+import { dataDoDia } from 'shared/Cardapio/Cardapio.helpers';
+import { COR_BORDA } from 'shared/Cardapio/Cardapio.static';
+import { CardapioLegenda } from 'shared/Cardapio/CardapioLegenda/CardapioLegenda';
 import type { Cardapio } from 'types';
-import { dataDoDia } from '../Cardapio.helpers';
-import { COR_BORDA } from '../Cardapio.static';
 import { CardapioAbas } from '../CardapioAbas/CardapioAbas';
 import { CardapioDiaConteudo } from '../CardapioDiaConteudo/CardapioDiaConteudo';
-import { CardapioLegenda } from '../CardapioLegenda/CardapioLegenda';
 
 interface CardapioSemanaProps {
   dias: Cardapio[];

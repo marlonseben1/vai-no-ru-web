@@ -2,13 +2,13 @@ import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
+import { dataDoDia } from 'shared/Cardapio/Cardapio.helpers';
+import { COR_DESTAQUE, COR_TEXTO } from 'shared/Cardapio/Cardapio.static';
+import { CardapioMenu } from 'shared/Cardapio/CardapioMenu/CardapioMenu';
 import { ReservasStore } from 'store/reservas/reservas.store';
 import type { Cardapio } from 'types';
 import { capitalizar } from 'utils/capitalizar';
 import { isDataDesabilitada } from '../../Reservas/CriarReservaDialog/CriarReservaDialog.rules';
-import { dataDoDia } from '../Cardapio.helpers';
-import { COR_DESTAQUE, COR_TEXTO } from '../Cardapio.static';
-import { CardapioMenu } from '../CardapioMenu/CardapioMenu';
 
 interface CardapioDiaConteudoProps {
   dia: Cardapio;
