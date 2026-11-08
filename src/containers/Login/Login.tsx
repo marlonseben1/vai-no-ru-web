@@ -8,13 +8,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import {
   COR_BORDA,
   COR_DESTAQUE,
   COR_TEXTO,
   COR_TEXTO_SECUNDARIO,
 } from 'shared/Cardapio/Cardapio.static';
-import { colorPalette } from 'theme/colorPalette';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { desktopMediaQuery } from 'utils/isDesktop';
 import { LoginCardapioHoje } from './LoginCardapioHoje/LoginCardapioHoje';
 import { LoginGoogleBotao } from './LoginGoogleBotao/LoginGoogleBotao';
@@ -39,7 +40,7 @@ export function Login() {
     <Box
       sx={{
         minHeight: '100dvh',
-        bgcolor: '#F6F8F7',
+        bgcolor: paletaDeCores.cinza[50],
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -72,7 +73,7 @@ export function Login() {
                 fontWeight: 700,
                 lineHeight: 1.1,
                 letterSpacing: '-0.01em',
-                color: colorPalette.primary[800],
+                color: paletaDeCores.primaria[800],
               }}
             >
               Garanta seu desconto no RU!
@@ -92,10 +93,10 @@ export function Login() {
           <Box
             sx={{
               p: 3.5,
-              bgcolor: '#FFFFFF',
+              bgcolor: paletaDeCores.neutra[0],
               border: `1px solid ${COR_BORDA}`,
               borderRadius: '20px',
-              boxShadow: '0 1px 2px rgba(31, 42, 42, 0.04)',
+              boxShadow: `0 1px 2px ${alpha(paletaDeCores.cinza[950], 0.04)}`,
             }}
           >
             <Stack spacing={3}>

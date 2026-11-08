@@ -1,6 +1,6 @@
 import { Box, ButtonBase, Typography } from '@mui/material';
 import { Link } from 'react-router';
-import { colorPalette } from 'theme/colorPalette';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { ITENS_CONFIGURACOES } from './Configuracoes.static';
 
 export function Configuracoes() {
@@ -32,10 +32,10 @@ export function Configuracoes() {
               p: 1,
               textAlign: 'center',
               borderRadius: '8px',
-              border: `1px solid ${colorPalette.neutral[200]}`,
+              border: `1px solid ${paletaDeCores.neutra[200]}`,
               bgcolor: 'background.paper',
-              color: colorPalette.primary[800],
-              '&:hover': { bgcolor: colorPalette.primary[50] },
+              color: paletaDeCores.primaria[800],
+              '&:hover': { bgcolor: paletaDeCores.primaria[50] },
               '& svg': { fontSize: 32 },
             }}
           >

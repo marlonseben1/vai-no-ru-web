@@ -5,14 +5,16 @@ import {
   Box,
   Paper,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import {
   ALTURA_BOTTOM_MENU,
   ITENS_MENU,
 } from 'layouts/PrivateLayout/PrivateLayout.static';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { useBottomMenu, VALOR_NOVA_RESERVA } from './useBottomMenu';
 
-const COR_DESTAQUE = '#3F706B';
-const COR_INATIVO = '#4A5453';
+const COR_DESTAQUE = paletaDeCores.turquesa[600];
+const COR_INATIVO = paletaDeCores.cinza[800];
 
 const estiloAcao = {
   flex: 1,
@@ -50,8 +52,8 @@ export function BottomMenu() {
       square
       elevation={0}
       sx={{
-        bgcolor: '#FFFFFF',
-        borderTop: '1px solid #DDE3E2',
+        bgcolor: paletaDeCores.neutra[0],
+        borderTop: `1px solid ${paletaDeCores.cinza[400]}`,
         flexShrink: 0,
       }}
     >
@@ -76,8 +78,8 @@ export function BottomMenu() {
                 height: 48,
                 borderRadius: '50%',
                 bgcolor: COR_DESTAQUE,
-                color: '#FFFFFF',
-                boxShadow: '0 2px 6px rgba(31, 42, 42, 0.25)',
+                color: paletaDeCores.neutra[0],
+                boxShadow: `0 2px 6px ${alpha(paletaDeCores.cinza[950], 0.25)}`,
               }}
             >
               <AddIcon />

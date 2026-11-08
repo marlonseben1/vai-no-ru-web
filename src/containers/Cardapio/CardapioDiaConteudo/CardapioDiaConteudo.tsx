@@ -6,6 +6,7 @@ import { dataDoDia } from 'shared/Cardapio/Cardapio.helpers';
 import { COR_DESTAQUE, COR_TEXTO } from 'shared/Cardapio/Cardapio.static';
 import { CardapioMenu } from 'shared/Cardapio/CardapioMenu/CardapioMenu';
 import { ReservasStore } from 'store/reservas/reservas.store';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { Cardapio } from 'types';
 import { capitalizar } from 'utils/capitalizar';
 import { isDataDesabilitada } from '../../Reservas/CriarReservaDialog/CriarReservaDialog.rules';
@@ -56,10 +57,13 @@ export function CardapioDiaConteudo({ dia }: CardapioDiaConteudoProps) {
               borderRadius: '8px',
               borderColor: COR_DESTAQUE,
               color: COR_DESTAQUE,
-              bgcolor: '#FFFFFF',
+              bgcolor: paletaDeCores.neutra[0],
               fontWeight: 700,
               textTransform: 'none',
-              '&:hover': { bgcolor: '#EAF0EF', borderColor: COR_DESTAQUE },
+              '&:hover': {
+                bgcolor: paletaDeCores.turquesa[50],
+                borderColor: COR_DESTAQUE,
+              },
             }}
           >
             Reservar este dia

@@ -3,9 +3,10 @@ import { Box, Button, ButtonBase, Typography } from '@mui/material';
 import { AccountMenu } from 'components/AccountMenu/AccountMenu';
 import { ITENS_MENU } from 'layouts/PrivateLayout/PrivateLayout.static';
 import { NavLink } from 'react-router';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { useNavBar } from './useNavBar';
 
-const COR_DESTAQUE = '#3F706B';
+const COR_DESTAQUE = paletaDeCores.turquesa[600];
 
 export function NavBar() {
   const { handleReservar } = useNavBar();
@@ -15,8 +16,8 @@ export function NavBar() {
       component="header"
       sx={{
         flexShrink: 0,
-        bgcolor: '#FFFFFF',
-        borderBottom: '1px solid #DDE3E2',
+        bgcolor: paletaDeCores.neutra[0],
+        borderBottom: `1px solid ${paletaDeCores.cinza[400]}`,
       }}
     >
       <Box
@@ -33,7 +34,11 @@ export function NavBar() {
         <Typography
           component="div"
           noWrap
-          sx={{ fontSize: 20, fontWeight: 700, color: '#1F3B38' }}
+          sx={{
+            fontSize: 20,
+            fontWeight: 700,
+            color: paletaDeCores.turquesa[900],
+          }}
         >
           Vai no RU hoje?
         </Typography>
@@ -53,7 +58,7 @@ export function NavBar() {
                 px: 2,
                 fontSize: 15,
                 fontWeight: 500,
-                color: '#4A5453',
+                color: paletaDeCores.cinza[800],
                 borderBottom: '3px solid transparent',
                 '& svg': { fontSize: 20 },
                 '&.active': {
@@ -77,13 +82,16 @@ export function NavBar() {
             minHeight: 40,
             px: 2,
             borderRadius: '8px',
-            borderColor: '#8A9493',
-            color: '#1F2A2A',
-            bgcolor: '#FFFFFF',
+            borderColor: paletaDeCores.cinza[700],
+            color: paletaDeCores.cinza[950],
+            bgcolor: paletaDeCores.neutra[0],
             fontSize: 14,
             fontWeight: 700,
             textTransform: 'none',
-            '&:hover': { bgcolor: '#EAF0EF', borderColor: '#8A9493' },
+            '&:hover': {
+              bgcolor: paletaDeCores.turquesa[50],
+              borderColor: paletaDeCores.cinza[700],
+            },
           }}
         >
           Reservar

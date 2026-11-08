@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LABEL_REFEICAO, LABEL_STATUS_RESERVA } from 'constants/labels';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { ReservaResumo } from 'types';
 import { ESTILO_CHIP_STATUS } from './ReservaCard.static';
 import { useReservaCard } from './useReservaCard';
@@ -63,16 +64,24 @@ export function ReservaCard({ reserva, compacto = false }: ReservaCardProps) {
   function estiloPaper() {
     if (compacto) {
       return {
-        bgcolor: '#F6F8F8',
-        borderColor: '#E3E8E8',
+        bgcolor: paletaDeCores.cinza[50],
+        borderColor: paletaDeCores.cinza[300],
         borderRadius: '8px',
         p: 1,
       };
     }
     if (isResponsivo) {
-      return { borderRadius: '12px', borderColor: '#DDE3E2', p: '14px' };
+      return {
+        borderRadius: '12px',
+        borderColor: paletaDeCores.cinza[400],
+        p: '14px',
+      };
     }
-    return { borderRadius: '8px', borderColor: '#C5CECD', p: 1.5 };
+    return {
+      borderRadius: '8px',
+      borderColor: paletaDeCores.cinza[600],
+      p: 1.5,
+    };
   }
 
   return (

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { dataDoDia } from 'shared/Cardapio/Cardapio.helpers';
 import { COR_BORDA } from 'shared/Cardapio/Cardapio.static';
 import { CardapioLegenda } from 'shared/Cardapio/CardapioLegenda/CardapioLegenda';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { Cardapio } from 'types';
 import { CardapioAbas } from '../CardapioAbas/CardapioAbas';
 import { CardapioDiaConteudo } from '../CardapioDiaConteudo/CardapioDiaConteudo';
@@ -24,7 +25,7 @@ export function CardapioSemana({ dias }: CardapioSemanaProps) {
       sx={{
         width: '100%',
         overflow: 'hidden',
-        bgcolor: '#FFFFFF',
+        bgcolor: paletaDeCores.neutra[0],
         border: `1px solid ${COR_BORDA}`,
         borderRadius: '20px',
       }}
