@@ -5,7 +5,7 @@ import {
   COR_BORDA,
   COR_TEXTO,
   LARGURA_MAXIMA_CARDAPIO,
-} from './Cardapio.static';
+} from 'shared/Cardapio/Cardapio.static';
 import { CardapioConteudo } from './CardapioConteudo/CardapioConteudo';
 import { useCardapio } from './useCardapio';
 

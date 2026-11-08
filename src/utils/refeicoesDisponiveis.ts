@@ -5,7 +5,7 @@ import {
 import dayjs, { type Dayjs } from 'dayjs';
 import { REFEICAO_VALUES, type Refeicao } from 'types';
 
-function emMinutos(horario: string) {
+export function emMinutos(horario: string) {
   const [hora = 0, minuto = 0] = horario.split(':').map(Number);
   return hora * 60 + minuto;
 }
