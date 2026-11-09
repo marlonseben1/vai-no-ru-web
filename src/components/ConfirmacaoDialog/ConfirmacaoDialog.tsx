@@ -8,7 +8,7 @@ import {
   DialogTitle,
   IconButton,
 } from '@mui/material';
-import { colorPalette } from 'theme/colorPalette';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { useConfirmacaoDialog } from './useConfirmacaoDialog';
 
 export function ConfirmacaoDialog() {
@@ -70,8 +70,8 @@ export function ConfirmacaoDialog() {
           sx={{
             borderRadius: 2,
             color: 'text.primary',
-            bgcolor: colorPalette.neutral[100],
-            '&:hover': { bgcolor: colorPalette.neutral[200] },
+            bgcolor: paletaDeCores.neutra[100],
+            '&:hover': { bgcolor: paletaDeCores.neutra[200] },
           }}
         >
           {cancelLabel}

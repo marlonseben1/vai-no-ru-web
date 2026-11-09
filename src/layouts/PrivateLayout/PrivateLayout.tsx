@@ -6,7 +6,7 @@ import { NavBar } from 'components/NavBar/NavBar';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { Outlet } from 'react-router';
 import { requireAuthLoader } from 'routes/guards/requireAuthLoader';
-import { COR_FUNDO_LAYOUT, COR_FUNDO_LAYOUT_MOBILE } from 'theme/colorPalette';
+import { COR_FUNDO_LAYOUT, COR_FUNDO_LAYOUT_MOBILE } from 'theme/paletaDeCores';
 import { CadastroReservaDialog } from './PrivateLayout.comps';
 
 export const loader = requireAuthLoader;

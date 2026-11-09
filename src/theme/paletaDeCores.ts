@@ -1,5 +1,5 @@
-export const colorPalette = {
-  primary: {
+export const paletaDeCores = {
+  primaria: {
     50: '#F2F6F5',
     100: '#E3EBEA',
     200: '#C7D7D5',
@@ -12,7 +12,7 @@ export const colorPalette = {
     900: '#122B29',
     950: '#0B1A19',
   },
-  neutral: {
+  neutra: {
     0: '#FFFFFF',
     50: '#F8FAFC',
     100: '#F1F5F9',
@@ -25,22 +25,22 @@ export const colorPalette = {
     800: '#1E293B',
     900: '#0F172A',
   },
-  success: {
+  sucesso: {
     light: '#DEF7EC',
     main: '#0E9F6E',
     dark: '#046C4E',
   },
-  warning: {
+  aviso: {
     light: '#FDF6B2',
     main: '#C27803',
     dark: '#8E4B10',
   },
-  error: {
+  erro: {
     light: '#FDE8E8',
     main: '#E02424',
     dark: '#9B1C1C',
   },
-  red: {
+  vermelho: {
     50: '#fef2f2',
     100: '#fee2e2',
     200: '#fecaca',
@@ -52,7 +52,7 @@ export const colorPalette = {
     800: '#991b1b',
     900: '#7f1d1d',
   },
-  blue: {
+  azul: {
     50: '#eff6ff',
     100: '#dbeafe',
     200: '#bfdbfe',
@@ -64,7 +64,7 @@ export const colorPalette = {
     800: '#1e40af',
     900: '#1e3a8a',
   },
-  yellow: {
+  amarelo: {
     50: '#fefce8',
     100: '#fef9c3',
     200: '#fef08a',
@@ -76,9 +76,42 @@ export const colorPalette = {
     800: '#854d0e',
     900: '#713f12',
   },
+  turquesa: {
+    50: '#EAF0EF',
+    100: '#DCE9E7',
+    600: '#3F706B',
+    700: '#345B57',
+    900: '#1F3B38',
+  },
+  cinza: {
+    50: '#F6F8F8',
+    100: '#F2F5F5',
+    200: '#E8ECEC',
+    300: '#E3E8E8',
+    400: '#DDE3E2',
+    500: '#C9D1D0',
+    600: '#C5CECD',
+    700: '#8A9493',
+    800: '#4A5453',
+    900: '#3A4443',
+    950: '#1F2A2A',
+  },
+  verde: {
+    50: '#E8F4DE',
+    100: '#E1F0E4',
+    200: '#C5E3AB',
+    400: '#829E62',
+    500: '#23A455',
+    600: '#1E6B3F',
+    700: '#1E5B2F',
+  },
+  laranja: {
+    100: '#FBECE0',
+    600: '#F57C00',
+  },
 };
 
-export const COR_FUNDO_LAYOUT = '#F2F5F5';
-export const COR_FUNDO_LAYOUT_MOBILE = '#F6F8F8';
+export const COR_FUNDO_LAYOUT = paletaDeCores.cinza[100];
+export const COR_FUNDO_LAYOUT_MOBILE = paletaDeCores.cinza[50];
 
 export const FONT_FAMILY_LAYOUT = '"Poppins", "Roboto", sans-serif';

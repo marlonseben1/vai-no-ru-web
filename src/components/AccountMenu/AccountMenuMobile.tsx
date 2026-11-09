@@ -12,7 +12,7 @@ import {
   Slide,
   Typography,
 } from '@mui/material';
-import { colorPalette, FONT_FAMILY_LAYOUT } from 'theme/colorPalette';
+import { FONT_FAMILY_LAYOUT, paletaDeCores } from 'theme/paletaDeCores';
 
 interface AccountMenuMobileProps {
   open: boolean;
@@ -68,8 +68,8 @@ export function AccountMenuMobile({
             height: 70,
             px: 3,
             borderRadius: '0 0 8px 8px',
-            bgcolor: colorPalette.primary[800],
-            color: '#FFF',
+            bgcolor: paletaDeCores.primaria[800],
+            color: paletaDeCores.neutra[0],
           }}
         >
           <Avatar
@@ -77,8 +77,8 @@ export function AccountMenuMobile({
             sx={{
               width: 32,
               height: 32,
-              bgcolor: '#FFF',
-              color: colorPalette.primary[800],
+              bgcolor: paletaDeCores.neutra[0],
+              color: paletaDeCores.primaria[800],
             }}
             data-ph-mask
           >
@@ -103,7 +103,7 @@ export function AccountMenuMobile({
                 px: 2,
                 borderBottom:
                   indice < itens.length - 1
-                    ? `1px solid ${colorPalette.neutral[200]}`
+                    ? `1px solid ${paletaDeCores.neutra[200]}`
                     : undefined,
               }}
             >
@@ -113,7 +113,7 @@ export function AccountMenuMobile({
                 sx={{ py: 1.5, px: 0 }}
               >
                 <ListItemIcon
-                  sx={{ minWidth: 40, color: colorPalette.primary[800] }}
+                  sx={{ minWidth: 40, color: paletaDeCores.primaria[800] }}
                 >
                   {icone}
                 </ListItemIcon>
@@ -121,7 +121,7 @@ export function AccountMenuMobile({
                   primary={texto}
                   slotProps={{ primary: { sx: { fontFamily: 'inherit' } } }}
                 />
-                <ChevronRight sx={{ color: colorPalette.primary[800] }} />
+                <ChevronRight sx={{ color: paletaDeCores.primaria[800] }} />
               </ListItemButton>
             </ListItem>
           ))}

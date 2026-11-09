@@ -1,5 +1,7 @@
 import { Alert, Box, CircularProgress, Paper, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import useIsResponsivo from 'hooks/useIsResponsivo';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { ReservaResumo } from 'types';
 import { ReservaCard } from './ReservaCard/ReservaCard';
 import { separarReservas } from './Reservas.helpers';
@@ -99,7 +101,10 @@ export function Reservas() {
       elevation={0}
       sx={{
         borderRadius: { xs: 0, sm: '12px' },
-        boxShadow: { xs: 'none', sm: '0 2px 8px rgba(31, 42, 42, 0.08)' },
+        boxShadow: {
+          xs: 'none',
+          sm: `0 2px 8px ${alpha(paletaDeCores.cinza[950], 0.08)}`,
+        },
         bgcolor: { xs: 'transparent', sm: 'background.paper' },
         width: '100%',
         minWidth: 0,

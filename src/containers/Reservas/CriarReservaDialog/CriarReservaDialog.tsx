@@ -21,12 +21,13 @@ import { LABEL_REFEICAO } from 'constants/labels';
 import dayjs from 'dayjs';
 import useIsResponsivo from 'hooks/useIsResponsivo';
 import { useCallback } from 'react';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { formatarDataComDiaSemana } from 'utils/formatarDataComDiaSemana';
 import { refeicoesDisponiveis } from 'utils/refeicoesDisponiveis';
 import { useCriarReservaDialog } from './useCriarReservaDialog';
 
-const COR_PRINCIPAL = '#3F706B';
-const COR_PRINCIPAL_HOVER = '#345B57';
+const COR_PRINCIPAL = paletaDeCores.turquesa[600];
+const COR_PRINCIPAL_HOVER = paletaDeCores.turquesa[700];
 
 export function CriarReservaDialog() {
   const isResponsivo = useIsResponsivo();
