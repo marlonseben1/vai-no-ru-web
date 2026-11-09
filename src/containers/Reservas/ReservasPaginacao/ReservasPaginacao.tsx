@@ -1,5 +1,6 @@
 import { Box, Pagination, PaginationItem, Typography } from '@mui/material';
 import useIsResponsivo from 'hooks/useIsResponsivo';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { PAGE_SIZE_RESERVAS } from '../Reservas.static';
 
 interface ReservasPaginacaoProps {
@@ -58,11 +59,14 @@ export function ReservasPaginacao({
                     height: 40,
                     borderRadius: '8px',
                     '&.Mui-selected, &.Mui-selected:hover': {
-                      bgcolor: '#3F706B',
-                      color: '#FFFFFF',
+                      bgcolor: paletaDeCores.turquesa[600],
+                      color: paletaDeCores.neutra[0],
                       fontWeight: 700,
                     },
-                    '&.Mui-disabled': { color: '#8A9493', opacity: 1 },
+                    '&.Mui-disabled': {
+                      color: paletaDeCores.cinza[700],
+                      opacity: 1,
+                    },
                   }
             }
           />

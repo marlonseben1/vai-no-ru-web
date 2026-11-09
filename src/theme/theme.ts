@@ -1,25 +1,25 @@
 import { createTheme } from '@mui/material/styles';
-import { colorPalette } from './colorPalette';
+import { paletaDeCores } from './paletaDeCores';
 
 export const theme = createTheme({
   palette: {
     primary: {
-      light: colorPalette.primary[400],
-      main: colorPalette.primary[500],
-      dark: colorPalette.primary[700],
-      contrastText: colorPalette.neutral[0],
+      light: paletaDeCores.primaria[400],
+      main: paletaDeCores.primaria[500],
+      dark: paletaDeCores.primaria[700],
+      contrastText: paletaDeCores.neutra[0],
     },
     background: {
-      default: colorPalette.neutral[50],
-      paper: colorPalette.neutral[0],
+      default: paletaDeCores.neutra[50],
+      paper: paletaDeCores.neutra[0],
     },
     text: {
-      primary: colorPalette.neutral[800],
-      secondary: colorPalette.neutral[600],
+      primary: paletaDeCores.neutra[800],
+      secondary: paletaDeCores.neutra[600],
     },
-    divider: colorPalette.neutral[200],
-    success: colorPalette.success,
-    warning: colorPalette.warning,
-    error: colorPalette.error,
+    divider: paletaDeCores.neutra[200],
+    success: paletaDeCores.sucesso,
+    warning: paletaDeCores.aviso,
+    error: paletaDeCores.erro,
   },
 });

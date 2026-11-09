@@ -1,12 +1,13 @@
+import { paletaDeCores } from 'theme/paletaDeCores';
 import { SeloCardapio } from 'types';
 
-export const COR_TEXTO = '#1F2A2A';
-export const COR_TEXTO_SECUNDARIO = '#4A5453';
-export const COR_BORDA = '#E3E8E8';
-export const COR_DESTAQUE = '#3F706B';
-export const COR_VEGETARIANO = '#1E6B3F';
-export const COR_BORDA_SELO = '#7C8786';
-export const COR_FUNDO_LEGENDA = '#F3F6F6';
+export const COR_TEXTO = paletaDeCores.cinza[950];
+export const COR_TEXTO_SECUNDARIO = paletaDeCores.cinza[800];
+export const COR_BORDA = paletaDeCores.cinza[300];
+export const COR_DESTAQUE = paletaDeCores.turquesa[600];
+export const COR_VEGETARIANO = paletaDeCores.verde[600];
+export const COR_BORDA_SELO = paletaDeCores.cinza[700];
+export const COR_FUNDO_LEGENDA = paletaDeCores.cinza[50];
 
 // largura máxima do conteúdo no desktop, para os selos não ficarem longe dos nomes
 export const LARGURA_MAXIMA_CARDAPIO = 880;

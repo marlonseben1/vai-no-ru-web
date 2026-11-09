@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import { LABEL_STATUS_RESERVA } from 'constants/labels';
 import useIsResponsivo from 'hooks/useIsResponsivo';
+import { paletaDeCores } from 'theme/paletaDeCores';
 import type { DataFiltroReserva, StatusReserva } from 'types';
 import { OPCOES_DATA_FILTRO } from '../Reservas.static';
 
@@ -49,9 +50,9 @@ export function ReservasFiltros({
               textTransform: 'none',
               color: 'text.primary',
               '&.Mui-selected': {
-                bgcolor: '#DCE9E7',
+                bgcolor: paletaDeCores.turquesa[100],
                 fontWeight: 700,
-                '&:hover': { bgcolor: '#DCE9E7' },
+                '&:hover': { bgcolor: paletaDeCores.turquesa[100] },
               },
             }),
           },
